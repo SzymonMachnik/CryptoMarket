@@ -4,31 +4,17 @@
 #include <vector>
 #include <stdlib.h>
 #include <string>
+#include "memory/memory.h"
 
 using namespace std;
 
-class memoryClass {
-  private:
-    vector<char> memory; 
-  public:
-    size_t writeMemory(void* contents, size_t size, size_t nmemb, void* userp) {
-      size_t realsize = size * nmemb;
-      memory.insert(memory.end(), (char*)contents, (char*)contents + realsize);
 
-      return realsize;
-    }
-    
-    string returnMemoryAsString() {
-      cout << "Rerurn memory called" << endl;
-      return string(memory.begin(), memory.end());
-    }
-};
 
 int main() {
-
+  //INIT
   CURL *curl;
   CURLcode result;
-  memoryClass chunk;
+  Memory chunk;
 
   curl = curl_easy_init();
 
@@ -37,26 +23,28 @@ int main() {
     return 1;
   }
 
-  curl_easy_setopt(curl, CURLOPT_URL, "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd");
+  //GET DATA
+  curl_easy_setopt(curl, CURLOPT_URL, "https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd");
   
   curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
   curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0L);
 
-  curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, &chunk.writeMemory);
+  curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, Memory::writeMemory);
   curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void*)&chunk); 
 
-  cout << "TEST 2" << endl;
   result = curl_easy_perform(curl);
 
- // cout << chunk.returnMemoryAsString() << endl;
-
+  //CHECK CORRECTNESS OF DATA
   if (result != CURLE_OK) {
     cout << "ERROR: " << curl_easy_strerror(result) << endl;
     return 2;
   }
 
-  // chunk.memory.push_back('\0');
+  //PRINT DATA
+  cout << chunk.returnMemoryAsString() << endl;
 
+
+  //CLOSING OPERATIONS 
   curl_easy_cleanup(curl);
   cout << "Finished succesful" << endl;
   
