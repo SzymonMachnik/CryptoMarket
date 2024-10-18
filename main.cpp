@@ -2,7 +2,6 @@
 #include <iostream>
 #include <curl/curl.h>
 #include <vector>
-#include <stdlib.h>
 #include <string>
 #include "memory/memory.h"
 
