@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include "memory/memory.h"
+#include "crypto/crypto.h"
 
 using namespace std;
 
@@ -13,6 +14,7 @@ int main() {
   CURL *curl;
   CURLcode result;
   Memory chunk;
+  Crypto crypto;
 
   curl = curl_easy_init();
 
@@ -22,7 +24,7 @@ int main() {
   }
 
   //GET DATA
-  curl_easy_setopt(curl, CURLOPT_URL, "https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd");
+  curl_easy_setopt(curl, CURLOPT_URL, "https://api.coingecko.com/api/v3/simple/price?ids=shiba&vs_currencies=usd");
   
   curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
   curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0L);
