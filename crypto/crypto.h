@@ -16,6 +16,7 @@ class Crypto {
     Crypto();
     Crypto(string PATHTOCRYPTONAMES);
     string returnCryptoNames();
+    bool include(string coin);
 };
 
 #endif

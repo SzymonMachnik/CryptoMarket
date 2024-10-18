@@ -50,3 +50,8 @@ string Crypto::returnCryptoNames() {
   
   return res;
 }
+
+bool Crypto::include(string coin) {
+  if (cryptoNames.find(coin) != cryptoNames.end()) return true;
+  return false;
+}

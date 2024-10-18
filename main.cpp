@@ -22,9 +22,9 @@ int main() {
     cout << "ERROR: HTTP request failed" << endl;
     return 1;
   }
-
+  
   //GET DATA
-  curl_easy_setopt(curl, CURLOPT_URL, "https://api.coingecko.com/api/v3/simple/price?ids=shiba&vs_currencies=usd");
+  curl_easy_setopt(curl, CURLOPT_URL, "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd");
   
   curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
   curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0L);
