@@ -1,0 +1,18 @@
+{
+  "files.associations": {
+    "iostream": "cpp",
+    "ostream": "cpp",
+    "chrono": "cpp",
+    "xlocale": "cpp"
+  },
+  "cmake.sourceDirectory": "C:/CryptoScraper/vcpkg/ports/7zip",
+  "C_Cpp.errorSquiggles": "disabled"
+}
+
+// {
+//   "files.associations": {
+//     "iostream": "cpp",
+//     "ostream": "cpp"
+//   },
+//   "cmake.sourceDirectory": "C:/CryptoScraper/vcpkg/ports/7zip"
+// }

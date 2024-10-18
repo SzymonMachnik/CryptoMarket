@@ -1,0 +1,5 @@
+# all:
+# 	g++ -o main.exe main.cpp -lcurl -LC:/CryptoScraper/curlLib/lib -IC:/CryptoScraper/curlLib/include
+
+all:
+	g++ -o main.exe main.cpp -lcurl -LC:/CryptoScraper/curlLib/lib -IC:/CryptoScraper/curlLib/include

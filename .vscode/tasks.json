@@ -1,0 +1,51 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build-cpp",
+      "type": "shell",
+      "command": "g++",
+      "args": [
+        "-g",
+        "${file}",
+        "-o",
+        "${fileDirname}/${fileBasenameNoExtension}.exe",
+        "-lcurl",
+        "-LC:/CryptoScraper/curlLib/lib",  // ścieżka do katalogu z libcurl
+        "-IC:/CryptoScraper/curlLib/include"  // ścieżka do katalogu z include
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": ["$gcc"],
+      "detail": "Generated task for building C++ with g++"
+    }
+  ]
+}
+
+// {
+//   "version": "2.0.0",
+//   "tasks": [
+//     {
+//       "label": "build-cpp",
+//       "type": "shell",
+//       "command": "g++",
+//       "args": [
+//         "-g",
+//         "${file}",
+//         "-o",
+//         "${fileDirname}/${fileBasenameNoExtension}.exe",
+//         "-lcurl",
+//         "-LC:/CryptoScraper/curlLib/lib",  // ścieżka do katalogu z libcurl
+//         "-IC:/CryptoScraper/curlLib/include"  // ścieżka do katalogu z include
+//       ],
+//       "group": {
+//         "kind": "build",
+//         "isDefault": true
+//       },
+//       "problemMatcher": ["$gcc"],
+//       "detail": "Generated task for building C++ with g++"
+//     }
+//   ]
+// }
