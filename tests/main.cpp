@@ -33,51 +33,51 @@ int main() {
   //   cout << cryptoNamesAndIdsMap[s] << endl;
   // }
 
-  //TEST3 CORECTNESS NAMES IN listOfCryptoNames.txt
-  cout << "\nTEST3 CORECTNESS NAMES IN listOfCryptoNames.txt" << endl;
-  CURL *curl;
-  CURLcode result;
-  Memory chunk;
+  //TEST3 CORECTNESS NAMES IN listOfCryptoNames.txt AND APIIDS IN listOfCryptoApiIds////////
+  // cout << "\nTEST3 CORECTNESS NAMES IN listOfCryptoNames.txt" << endl;
+  // CURL *curl;
+  // CURLcode result;
+  // Memory chunk;
 
-  curl = curl_easy_init();
+  // curl = curl_easy_init();
 
-  if (curl == NULL) {
-    cout << "ERROR: HTTP request failed" << endl;
-    return 1;
-  }
+  // if (curl == NULL) {
+  //   cout << "ERROR: HTTP request failed" << endl;
+  //   return 1;
+  // }
   
-  //GET DATA
-  vector<string> vectorOfCryptoNames = crypto.returnCryptoNamesAsVector();
-  map<string, string> cryptoNamesAndIdsMap = crypto.returnCryptoNamesAndIdsAsMap();
+  // //GET DATA
+  // vector<string> vectorOfCryptoNames = crypto.returnCryptoNamesAsVector();
+  // map<string, string> cryptoNamesAndIdsMap = crypto.returnCryptoNamesAndIdsAsMap();
 
-  for (string cryptoName : vectorOfCryptoNames) {
+  // for (string cryptoName : vectorOfCryptoNames) {
 
-    string address = "https://api.coingecko.com/api/v3/simple/price?ids=";
-    address += cryptoNamesAndIdsMap[cryptoName];
-    address += "&vs_currencies=usd";
+  //   string address = "https://api.coingecko.com/api/v3/simple/price?ids=";
+  //   address += cryptoNamesAndIdsMap[cryptoName];
+  //   address += "&vs_currencies=usd";
 
-    curl_easy_setopt(curl, CURLOPT_URL, address.c_str());
+  //   curl_easy_setopt(curl, CURLOPT_URL, address.c_str());
     
-    curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
-    curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0L);
+  //   curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
+  //   curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0L);
 
-    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, Memory::writeMemory);
-    curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void*)&chunk); 
+  //   curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, Memory::writeMemory);
+  //   curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void*)&chunk); 
 
-    result = curl_easy_perform(curl);
+  //   result = curl_easy_perform(curl);
 
-    //CHECK CORRECTNESS OF DATA
-    if (result != CURLE_OK) {
-      cout << "ERROR: " << curl_easy_strerror(result) << endl;
-      return 2;
-    }
+  //   //CHECK CORRECTNESS OF DATA
+  //   if (result != CURLE_OK) {
+  //     cout << "ERROR: " << curl_easy_strerror(result) << endl;
+  //     return 2;
+  //   }
 
-    std::this_thread::sleep_for(std::chrono::seconds(11));
-  }
+  //   std::this_thread::sleep_for(std::chrono::seconds(15));
+  // }
 
 
-  //PRINT DATA
-  cout << chunk.returnMemoryAsString() << endl;
+  // //PRINT DATA
+  // cout << chunk.returnMemoryAsString() << endl;
 
   
   return 0;
