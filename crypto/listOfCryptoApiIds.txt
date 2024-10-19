@@ -1,0 +1,10 @@
+bitcoin
+ethereum
+binancecoin
+solana
+ripple
+dogecoin
+tron
+the-open-network
+cardano
+avalanche-2

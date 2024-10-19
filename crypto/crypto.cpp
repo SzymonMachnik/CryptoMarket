@@ -7,41 +7,63 @@
 using namespace std;
 
 Crypto::Crypto() {
-  ifstream file;
-  file.open(PATHTOCRYPTONAMES);
+  ifstream fileNames;
+  fileNames.open(PATHTOCRYPTONAMES);
+  ifstream fileApiIds;
+  fileApiIds.open(PATHTOCRYPTOAPIIDS);
 
-  if (file.is_open() == false) {
-    cout << "Can't open" << endl;
+  if (fileNames.is_open() == false) {
+    cout << "Can't open crypto names file" << endl;
+  } else if (fileApiIds.is_open() == false)  {
+    cout << "Can't open crypto api ids file" << endl;
   } else {
-    string line;
+    string lineName;
+    string lineApiId;
 
-    while(file) {
-      getline(file, line);
-      cryptoNames.insert(line);
+    while(fileNames && fileApiIds) {
+      getline(fileNames, lineName);
+      cryptoNames.insert(lineName);
+
+      getline(fileApiIds, lineApiId);
+      cryptoApiIds.insert(lineApiId);
+      cryptoIdsByNamesMap[lineName] = lineApiId;
     }
-    file.close();
+    fileNames.close();
+    fileApiIds.close();
   }
 }
 
-Crypto::Crypto(string PATHTOCRYPTONAMES) {
+Crypto::Crypto(string PATHTOCRYPTONAMES, string PATHTOCRYPTOAPIIDS) {
   this->PATHTOCRYPTONAMES = PATHTOCRYPTONAMES;
-  ifstream file;
-  file.open(PATHTOCRYPTONAMES);
+  this->PATHTOCRYPTOAPIIDS = PATHTOCRYPTOAPIIDS;
 
-  if (file.is_open() == false) {
-    cout << "Can't open" << endl;
+  ifstream fileNames;
+  fileNames.open(PATHTOCRYPTONAMES);
+  ifstream fileApiIds;
+  fileApiIds.open(PATHTOCRYPTOAPIIDS);
+
+  if (fileNames.is_open() == false) {
+    cout << "Can't open crypto names file" << endl;
+  } else if (fileApiIds.is_open() == false)  {
+    cout << "Can't open crypto api ids file" << endl;
   } else {
-    string line;
+    string lineName;
+    string lineApiId;
 
-    while(file) {
-      getline(file, line);
-      cryptoNames.insert(line);
+    while(fileNames && fileApiIds) {
+      getline(fileNames, lineName);
+      cryptoNames.insert(lineName);
+
+      getline(fileApiIds, lineApiId);
+      cryptoApiIds.insert(lineApiId);
+      cryptoIdsByNamesMap[lineName] = lineApiId;
     }
-    file.close();
+    fileNames.close();
+    fileApiIds.close();
   }
 }
 
-string Crypto::returnCryptoNames() {
+string Crypto::returnCryptoNamesAsString() {
   string res;
 
   for (auto& element : cryptoNames) {
@@ -50,6 +72,21 @@ string Crypto::returnCryptoNames() {
   
   return res;
 }
+
+vector<string> Crypto::returnCryptoNamesAsVector() {
+  vector<string> res;
+
+  for (auto& element : cryptoNames) {
+    res.push_back(element);
+  }
+  
+  return res;
+}
+
+map<string, string> Crypto::returnCryptoNamesAndIdsAsMap() {
+  return cryptoIdsByNamesMap;
+}
+
 
 bool Crypto::include(string coin) {
   if (cryptoNames.find(coin) != cryptoNames.end()) return true;

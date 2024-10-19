@@ -13,7 +13,11 @@
     "xstring": "cpp",
     "xtree": "cpp",
     "fstream": "cpp",
-    "set": "cpp"
+    "set": "cpp",
+    "string": "cpp",
+    "xlocmes": "cpp",
+    "span": "cpp",
+    "utility": "cpp"
   },
   "cmake.sourceDirectory": "C:/CryptoScraper/vcpkg/ports/7zip",
   "C_Cpp.errorSquiggles": "disabled"
