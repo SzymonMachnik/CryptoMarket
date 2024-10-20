@@ -10,7 +10,10 @@ using namespace std;
 void makeRequestAndWriteMemory(size_t (*writeMemory)(void* contents, size_t size, size_t nmemb, void* userp), 
                                 Memory &chunk, string cryptoApiId, CURL* curl, CURLcode &result) {
   //GET DATA
-  curl_easy_setopt(curl, CURLOPT_URL, "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd");
+  string address = "https://api.coingecko.com/api/v3/simple/price?ids=";
+  address += cryptoApiId;
+  address += "&vs_currencies=usd";
+  curl_easy_setopt(curl, CURLOPT_URL, address.c_str());
   
   curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
   curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0L);
