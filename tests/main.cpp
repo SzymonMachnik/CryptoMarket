@@ -5,8 +5,8 @@
 #include <map>
 #include "../memory/memory.h"
 #include "../crypto/crypto.h"
-#include <thread> // dla std::this_thread::sleep_for
-#include <chrono> // dla std::chrono::seconds
+#include <thread>
+#include <chrono>
 using namespace std;
 
 
