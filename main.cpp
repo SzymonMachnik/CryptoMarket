@@ -9,10 +9,10 @@ using namespace std;
 
 void makeRequestAndWriteMemory(size_t (*writeMemory)(void* contents, size_t size, size_t nmemb, void* userp), 
                                 Memory &chunk, string cryptoApiId, CURL* curl, CURLcode &result) {
+  //CREATE AND REQUEST ADDRESS
+  string address = "https://api.coingecko.com/api/v3/simple/price?ids=" + cryptoApiId + "&vs_currencies=usd";
+
   //GET DATA
-  string address = "https://api.coingecko.com/api/v3/simple/price?ids=";
-  address += cryptoApiId;
-  address += "&vs_currencies=usd";
   curl_easy_setopt(curl, CURLOPT_URL, address.c_str());
   
   curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
@@ -45,15 +45,21 @@ int main() {
   }
   
   //ASK USER FOR CRYPTO's name
+  string cryptoName = "bitcoinn";
   //Check if the name of this crypto is correct
-  //Get crypto's api id
-  //make an request
-  //print result
-  makeRequestAndWriteMemory(Memory::writeMemory, chunk, "ethereum", curl, result);
+  if (crypto.include(cryptoName)) {
+    //Get crypto's api id
+    string cyrptoApiId = crypto.returnCryptoIdByName(cryptoName);
 
+    //make an request
+    makeRequestAndWriteMemory(Memory::writeMemory, chunk, cyrptoApiId, curl, result);
 
-  //PRINT DATA
-  cout << chunk.returnMemoryAsString() << endl;
+    //PRINT DATA
+    cout << chunk.returnMemoryAsString() << endl;
+  } else {
+    cout << "Wrong crypto name" << endl;
+  }
+
 
 
   //CLOSING OPERATIONS 

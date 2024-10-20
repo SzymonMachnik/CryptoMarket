@@ -24,6 +24,7 @@ class Crypto {
     vector<string> returnCryptoNamesAsVector();
     bool include(string coin);
     map<string, string> returnCryptoNamesAndIdsAsMap();
+    string returnCryptoIdByName(string name);
 };
 
 #endif

@@ -87,6 +87,9 @@ map<string, string> Crypto::returnCryptoNamesAndIdsAsMap() {
   return cryptoIdsByNamesMap;
 }
 
+string Crypto::returnCryptoIdByName(string name) {
+  return cryptoIdsByNamesMap[name];
+}
 
 bool Crypto::include(string coin) {
   if (cryptoNames.find(coin) != cryptoNames.end()) return true;
