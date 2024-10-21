@@ -2,6 +2,7 @@
 #include <curl/curl.h>
 #include <vector>
 #include <string>
+#include <bits/stdc++.h> //to transform string to lower case
 #include "memory/memory.h"
 #include "crypto/crypto.h"
 
@@ -43,23 +44,33 @@ int main() {
     cout << "ERROR: HTTP request failed" << endl;
     return 1;
   }
-  
-  //ASK USER FOR CRYPTO's name
-  string cryptoName = "bitcoinn";
+   
+
+  //Ask user for crypto's name
+  string cryptoName = "";
+  cout << "Enter the name of the crypto you wnat to know the price of.\nNAME: ";
+  cin >> cryptoName;
+  transform(cryptoName.begin(), cryptoName.end(), cryptoName.begin(), ::tolower);
+
   //Check if the name of this crypto is correct
   if (crypto.include(cryptoName)) {
     //Get crypto's api id
     string cyrptoApiId = crypto.returnCryptoIdByName(cryptoName);
 
-    //make an request
+    //Make a request
     makeRequestAndWriteMemory(Memory::writeMemory, chunk, cyrptoApiId, curl, result);
 
-    //PRINT DATA
+    //Print data
     cout << chunk.returnMemoryAsString() << endl;
-  } else {
-    cout << "Wrong crypto name" << endl;
-  }
 
+  } else {
+    //Return inaccurance if crypto name is wrong
+    cout << "Inaccurance: Wrong crypto name" << endl;
+    cout << "=========================================" << endl;
+    cout << "List of available names of cryptos below:" << endl;
+    cout << crypto.returnCryptoNamesAsString();
+    cout << "=========================================" << endl;
+  }
 
 
   //CLOSING OPERATIONS 
