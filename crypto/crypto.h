@@ -2,6 +2,7 @@
 
 #ifndef CRYPTO_H
 #define CRYPTO_H
+
 #include <iostream>
 #include <set>
 #include <string>
@@ -9,6 +10,8 @@
 #include <map>
 
 using namespace std;
+
+
 class Crypto {
   private: 
     set<string> cryptoNames;

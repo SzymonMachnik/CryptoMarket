@@ -1,10 +1,12 @@
 // crypto.cpp
 
-#include "crypto.h"
 #include <iostream>
 #include <fstream>
 
+#include "crypto.h"
+
 using namespace std;
+
 
 Crypto::Crypto() {
   ifstream fileNames;

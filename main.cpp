@@ -1,50 +1,15 @@
+// main.cpp
+
 #include <iostream>
 #include <curl/curl.h>
 #include <vector>
 #include <string>
-#include <bits/stdc++.h> //to transform string to lower case
+
 #include "memory/memory.h"
 #include "crypto/crypto.h"
+#include "handleUser/handleUser.h"
 
 using namespace std;
-
-void makeRequestAndWriteMemory(size_t (*writeMemory)(void* contents, size_t size, size_t nmemb, void* userp), 
-                                Memory &chunk, string &cryptoApiId, CURL* curl, CURLcode &result) {
-  //CREATE AND REQUEST ADDRESS
-  string address = "https://api.coingecko.com/api/v3/simple/price?ids=" + cryptoApiId + "&vs_currencies=usd";
-
-  //GET DATA
-  curl_easy_setopt(curl, CURLOPT_URL, address.c_str());
-  
-  curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
-  curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0L);
-
-  curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeMemory);
-  curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void*)&chunk); 
-
-  result = curl_easy_perform(curl);
-
-  //CHECK CORRECTNESS OF DATA
-  if (result != CURLE_OK) {
-    cout << "ERROR: " << curl_easy_strerror(result) << endl;
-  }
-}
-
-void returnInaccuranceCryptoName(Crypto &crypto) {
-  cout << "Inaccurance: Wrong crypto name" << endl;
-  cout << "=========================================" << endl;
-  cout << "List of available names of cryptos below:" << endl;
-  cout << crypto.returnCryptoNamesAsString();
-  cout << "=========================================" << endl;
-}
-
-string askUserForCryptoName() {
-  string cryptoName = "";
-  cout << "Enter the name of the crypto you wnat to know the price of.\nNAME: ";
-  cin >> cryptoName;
-  transform(cryptoName.begin(), cryptoName.end(), cryptoName.begin(), ::tolower);
-  return cryptoName;
-}
 
 
 int main() {
@@ -60,7 +25,6 @@ int main() {
     cout << "ERROR: HTTP request failed" << endl;
     return 1;
   }
-  
 
   //Ask user for crypto's name
   string cryptoName = askUserForCryptoName();

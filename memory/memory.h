@@ -2,11 +2,14 @@
 
 #ifndef MEMORY_H
 #define MEMORY_H
+
 #include <iostream>
 #include <vector>
 #include <string>
 
 using namespace std;
+
+
 class Memory {
   private:
     vector<char> memory; 
