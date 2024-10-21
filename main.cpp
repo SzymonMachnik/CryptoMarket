@@ -9,7 +9,7 @@
 using namespace std;
 
 void makeRequestAndWriteMemory(size_t (*writeMemory)(void* contents, size_t size, size_t nmemb, void* userp), 
-                                Memory &chunk, string cryptoApiId, CURL* curl, CURLcode &result) {
+                                Memory &chunk, string &cryptoApiId, CURL* curl, CURLcode &result) {
   //CREATE AND REQUEST ADDRESS
   string address = "https://api.coingecko.com/api/v3/simple/price?ids=" + cryptoApiId + "&vs_currencies=usd";
 
@@ -30,6 +30,22 @@ void makeRequestAndWriteMemory(size_t (*writeMemory)(void* contents, size_t size
   }
 }
 
+void returnInaccuranceCryptoName(Crypto &crypto) {
+  cout << "Inaccurance: Wrong crypto name" << endl;
+  cout << "=========================================" << endl;
+  cout << "List of available names of cryptos below:" << endl;
+  cout << crypto.returnCryptoNamesAsString();
+  cout << "=========================================" << endl;
+}
+
+string askUserForCryptoName() {
+  string cryptoName = "";
+  cout << "Enter the name of the crypto you wnat to know the price of.\nNAME: ";
+  cin >> cryptoName;
+  transform(cryptoName.begin(), cryptoName.end(), cryptoName.begin(), ::tolower);
+  return cryptoName;
+}
+
 
 int main() {
   //INIT
@@ -44,13 +60,10 @@ int main() {
     cout << "ERROR: HTTP request failed" << endl;
     return 1;
   }
-   
+  
 
   //Ask user for crypto's name
-  string cryptoName = "";
-  cout << "Enter the name of the crypto you wnat to know the price of.\nNAME: ";
-  cin >> cryptoName;
-  transform(cryptoName.begin(), cryptoName.end(), cryptoName.begin(), ::tolower);
+  string cryptoName = askUserForCryptoName();
 
   //Check if the name of this crypto is correct
   if (crypto.include(cryptoName)) {
@@ -65,11 +78,7 @@ int main() {
 
   } else {
     //Return inaccurance if crypto name is wrong
-    cout << "Inaccurance: Wrong crypto name" << endl;
-    cout << "=========================================" << endl;
-    cout << "List of available names of cryptos below:" << endl;
-    cout << crypto.returnCryptoNamesAsString();
-    cout << "=========================================" << endl;
+    returnInaccuranceCryptoName(crypto);
   }
 
 
