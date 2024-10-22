@@ -28,36 +28,36 @@ int main() {
 
   bool ran = true;
   while (ran) {
+    string input;
     int decision;
 
-    cout << "[1] Check price of crypto" << endl;
-    cout << "[2] Quit" << endl;
-    cin >> decision;
+    askForDecisionFirstTime(input); 
 
-    while (decision != 1 && decision != 2) {
-        cout << "Wrong input, choose one of below." << endl;
-        cout << "[1] Check price of crypto" << endl;
-        cout << "[2] Quit" << endl;
-        cin.clear();
-        cin.ignore(1000, '\n');
-        cin >> decision;
+    // Until input isn't correct
+    while (input.length() != 1 || (input != "1" && input != "2")) {
+      returnInaccurenceWrongDecision(input);
     }
+    
+    // If input is correct convert it to an int
+    decision = stoi(input);
 
+    string cryptoName;
+    string cryptoApiId;
     switch (decision) {
       case 2:
         ran = false;
         break;
       case 1:
         //Ask user for crypto's name
-        string cryptoName = askUserForCryptoName();
+        cryptoName = askUserForCryptoName();
 
         //Check if the name of this crypto is correct
         if (crypto.include(cryptoName)) {
           //Get crypto's api id
-          string cyrptoApiId = crypto.returnCryptoIdByName(cryptoName);
+          cryptoApiId = crypto.returnCryptoIdByName(cryptoName);
 
           //Make a request
-          makeRequestAndWriteMemory(Memory::writeMemory, chunk, cyrptoApiId, curl, result);
+          makeRequestAndWriteMemory(Memory::writeMemory, chunk, cryptoApiId, curl, result);
 
           //Print data
           cout << chunk.returnMemoryAsString() << endl;

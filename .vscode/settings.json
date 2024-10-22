@@ -20,7 +20,8 @@
     "utility": "cpp",
     "system_error": "cpp",
     "istream": "cpp",
-    "ios": "cpp"
+    "ios": "cpp",
+    "format": "cpp"
   },
   "cmake.sourceDirectory": "C:/CryptoScraper/vcpkg/ports/7zip",
   "C_Cpp.errorSquiggles": "disabled"

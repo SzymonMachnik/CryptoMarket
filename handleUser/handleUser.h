@@ -19,5 +19,7 @@ void makeRequestAndWriteMemory(size_t (*writeMemory)(void* contents, size_t size
                                 Memory &chunk, string &cryptoApiId, CURL* curl, CURLcode &result);
 void returnInaccuranceCryptoName(Crypto &crypto);
 string askUserForCryptoName();
+void askForDecisionFirstTime(string &input);
+void returnInaccurenceWrongDecision(string &input);
 
 #endif

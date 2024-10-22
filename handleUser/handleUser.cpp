@@ -40,3 +40,18 @@ string askUserForCryptoName() {
   transform(cryptoName.begin(), cryptoName.end(), cryptoName.begin(), ::tolower);
   return cryptoName;
 }
+
+void askForDecisionFirstTime(string &input) {
+  cout << "[1] Check price of crypto" << endl;
+  cout << "[2] Quit" << endl;
+  cin >> input;
+}
+
+void returnInaccurenceWrongDecision(string &input) {
+  cout << "Inaccurance: Wrong input, choose one of below." << endl;
+  cout << "[1] Check price of crypto" << endl;
+  cout << "[2] Quit" << endl;
+  // cin.clear();
+  // cin.ignore(1000, '\n');
+  cin >> input;
+}
