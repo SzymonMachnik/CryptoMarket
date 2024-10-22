@@ -28,18 +28,10 @@ int main() {
 
   bool ran = true;
   while (ran) {
-    string input;
+    
     int decision;
 
-    askForDecisionFirstTime(input); 
-
-    // Until input isn't correct
-    while (input.length() != 1 || (input != "1" && input != "2")) {
-      returnInaccurenceWrongDecision(input);
-    }
-    
-    // If input is correct convert it to an int
-    decision = stoi(input);
+    askForDecision(decision);
 
     string cryptoName;
     string cryptoApiId;

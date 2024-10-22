@@ -21,5 +21,6 @@ void returnInaccuranceCryptoName(Crypto &crypto);
 string askUserForCryptoName();
 void askForDecisionFirstTime(string &input);
 void returnInaccurenceWrongDecision(string &input);
+void askForDecision(int &decision);
 
 #endif
