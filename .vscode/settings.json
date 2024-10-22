@@ -18,7 +18,9 @@
     "xlocmes": "cpp",
     "span": "cpp",
     "utility": "cpp",
-    "system_error": "cpp"
+    "system_error": "cpp",
+    "istream": "cpp",
+    "ios": "cpp"
   },
   "cmake.sourceDirectory": "C:/CryptoScraper/vcpkg/ports/7zip",
   "C_Cpp.errorSquiggles": "disabled"

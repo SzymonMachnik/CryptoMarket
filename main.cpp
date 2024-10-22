@@ -26,24 +26,53 @@ int main() {
     return 1;
   }
 
-  //Ask user for crypto's name
-  string cryptoName = askUserForCryptoName();
+  bool ran = true;
+  while (ran) {
+    int decision;
 
-  //Check if the name of this crypto is correct
-  if (crypto.include(cryptoName)) {
-    //Get crypto's api id
-    string cyrptoApiId = crypto.returnCryptoIdByName(cryptoName);
+    cout << "[1] Check price of crypto" << endl;
+    cout << "[2] Quit" << endl;
+    cin >> decision;
 
-    //Make a request
-    makeRequestAndWriteMemory(Memory::writeMemory, chunk, cyrptoApiId, curl, result);
+    while (decision != 1 && decision != 2) {
+        cout << "Wrong input, choose one of below." << endl;
+        cout << "[1] Check price of crypto" << endl;
+        cout << "[2] Quit" << endl;
+        cin.clear();
+        cin.ignore(1000, '\n');
+        cin >> decision;
+    }
 
-    //Print data
-    cout << chunk.returnMemoryAsString() << endl;
+    switch (decision) {
+      case 2:
+        ran = false;
+        break;
+      case 1:
+        //Ask user for crypto's name
+        string cryptoName = askUserForCryptoName();
 
-  } else {
-    //Return inaccurance if crypto name is wrong
-    returnInaccuranceCryptoName(crypto);
+        //Check if the name of this crypto is correct
+        if (crypto.include(cryptoName)) {
+          //Get crypto's api id
+          string cyrptoApiId = crypto.returnCryptoIdByName(cryptoName);
+
+          //Make a request
+          makeRequestAndWriteMemory(Memory::writeMemory, chunk, cyrptoApiId, curl, result);
+
+          //Print data
+          cout << chunk.returnMemoryAsString() << endl;
+
+        } else {
+          //Return inaccurance if crypto name is wrong
+          returnInaccuranceCryptoName(crypto);
+        }
+        break;
+      default:
+        break;
+    }
+
   }
+
 
 
   //CLOSING OPERATIONS 
