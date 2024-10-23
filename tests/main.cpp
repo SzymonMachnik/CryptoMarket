@@ -79,6 +79,37 @@ int main() {
   // //PRINT DATA
   // cout << chunk.returnMemoryAsString() << endl;
 
-  
+
+  //TEST3 MEMORY formatStringGotFromRequest()///////////////////////////////////////////////////// 
+  Memory memory;
+
+  string data = "{\"bitcoin\":{\"usd\":65969}}";
+  memory.formatStringGotFromRequest(data);
+  cout << data << endl;
+
+  data = "{\"zzzzzz\":{\"xxx\":99.999}}";
+  memory.formatStringGotFromRequest(data);
+  cout << data << endl;
+
+  data = "{\"aaaaaa\":{\"xxx\":00.000}}";
+  memory.formatStringGotFromRequest(data);
+  cout << data << endl;
+
+  data = "{\"xyz\":{\"usd\":123.123}}";
+  memory.formatStringGotFromRequest(data);
+  cout << data << endl;
+
+  data = "{\"a123z\":{\"usd\":1aaax}}";
+  memory.formatStringGotFromRequest(data);
+  cout << data << endl;
+
+  data = "{\"avalanche-2\":{\"usd\":1aaax}}";
+  memory.formatStringGotFromRequest(data);
+  cout << data << endl;
+
+  data = "{\"the-open-network\":{\"usd\":1aaax}}";
+  memory.formatStringGotFromRequest(data);
+  cout << data << endl;
+
   return 0;
 }

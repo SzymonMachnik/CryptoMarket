@@ -52,7 +52,7 @@ int main() {
           makeRequestAndWriteMemory(Memory::writeMemory, chunk, cryptoApiId, curl, result);
 
           //Print data
-          cout << chunk.returnMemoryAsString() << endl;
+          cout << chunk.returnMemoryByIndex(Memory::memorySize - 1) << endl;
 
         } else {
           //Return inaccurance if crypto name is wrong

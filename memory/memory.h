@@ -12,12 +12,16 @@ using namespace std;
 
 class Memory {
   private:
-    vector<char> memory; 
+    vector<string> memory; 
 
   public:
+    static int memorySize;
     static size_t writeMemory(void* contents, size_t size, size_t nmemb, void* userp);
 
-    string returnMemoryAsString();
+    string returnAllMemoryAsString();
+    string returnMemoryByIndex(int index);
+
+    void formatStringGotFromRequest(string &data);
 };
 
 #endif

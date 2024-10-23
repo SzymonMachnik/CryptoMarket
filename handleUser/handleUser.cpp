@@ -35,7 +35,7 @@ void returnInaccuranceCryptoName(Crypto &crypto) {
 
 string askUserForCryptoName() {
   string cryptoName = "";
-  cout << "Enter the name of the crypto you wnat to know the price of.\nNAME: ";
+  cout << "Enter the name of the crypto you wnat to know the price of.\nName: ";
   cin >> cryptoName;
   transform(cryptoName.begin(), cryptoName.end(), cryptoName.begin(), ::tolower);
   return cryptoName;
