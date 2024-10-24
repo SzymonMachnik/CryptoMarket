@@ -6,6 +6,7 @@
 
 using namespace std;
 
+
 int Memory::memorySize = 0;
 
 size_t Memory::writeMemory(void* contents, size_t size, size_t nmemb, void* userp) {

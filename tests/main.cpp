@@ -5,6 +5,7 @@
 #include <map>
 #include "../memory/memory.h"
 #include "../crypto/crypto.h"
+#include "../user/user.h"
 #include <thread>
 #include <chrono>
 using namespace std;
@@ -81,35 +82,42 @@ int main() {
 
 
   //TEST3 MEMORY formatStringGotFromRequest()///////////////////////////////////////////////////// 
-  Memory memory;
+  // Memory memory;
 
-  string data = "{\"bitcoin\":{\"usd\":65969}}";
-  memory.formatStringGotFromRequest(data);
-  cout << data << endl;
+  // string data = "{\"bitcoin\":{\"usd\":65969}}";
+  // memory.formatStringGotFromRequest(data);
+  // cout << data << endl;
 
-  data = "{\"zzzzzz\":{\"xxx\":99.999}}";
-  memory.formatStringGotFromRequest(data);
-  cout << data << endl;
+  // data = "{\"zzzzzz\":{\"xxx\":99.999}}";
+  // memory.formatStringGotFromRequest(data);
+  // cout << data << endl;
 
-  data = "{\"aaaaaa\":{\"xxx\":00.000}}";
-  memory.formatStringGotFromRequest(data);
-  cout << data << endl;
+  // data = "{\"aaaaaa\":{\"xxx\":00.000}}";
+  // memory.formatStringGotFromRequest(data);
+  // cout << data << endl;
 
-  data = "{\"xyz\":{\"usd\":123.123}}";
-  memory.formatStringGotFromRequest(data);
-  cout << data << endl;
+  // data = "{\"xyz\":{\"usd\":123.123}}";
+  // memory.formatStringGotFromRequest(data);
+  // cout << data << endl;
 
-  data = "{\"a123z\":{\"usd\":1aaax}}";
-  memory.formatStringGotFromRequest(data);
-  cout << data << endl;
+  // data = "{\"a123z\":{\"usd\":1aaax}}";
+  // memory.formatStringGotFromRequest(data);
+  // cout << data << endl;
 
-  data = "{\"avalanche-2\":{\"usd\":1aaax}}";
-  memory.formatStringGotFromRequest(data);
-  cout << data << endl;
+  // data = "{\"avalanche-2\":{\"usd\":1aaax}}";
+  // memory.formatStringGotFromRequest(data);
+  // cout << data << endl;
 
-  data = "{\"the-open-network\":{\"usd\":1aaax}}";
-  memory.formatStringGotFromRequest(data);
-  cout << data << endl;
+  // data = "{\"the-open-network\":{\"usd\":1aaax}}";
+  // memory.formatStringGotFromRequest(data);
+  // cout << data << endl;
+
+  //TEST4 USER registerUser() loginUser()///////////////////////////////////////////////////// 
+
+  User user;
+
+  user.registerUser();
+  user.loginUser();
 
   return 0;
 }
