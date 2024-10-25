@@ -10,7 +10,7 @@ using namespace std;
 
 bool User::isUserLoged = false;
 
-void User::loginUser() {
+void User::loginUser {
   string login;
   cout << "Enter login to your account: ";
   cin >> login;
