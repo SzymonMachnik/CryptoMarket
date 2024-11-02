@@ -8,9 +8,15 @@ using namespace std;
 
 
 void Memory::makeRequestAndWriteMemory(size_t (*writeMemory)(void* contents, size_t size, size_t nmemb, void* userp), 
-                                      CURL* curl, CURLcode &result) {
+                                      vector<string> apiId, CURL* curl, CURLcode &result) {
   // Tworzenie adresu URL dla zapytania
-  string url = "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,cardano,ripple&vs_currencies=usd";
+  string url = "https://api.coingecko.com/api/v3/simple/price?ids=";
+  for (string a : apiId) {
+    url += a;
+    url += ",";
+  }
+  url.pop_back();
+  url += "&vs_currencies=usd";
   
   // Czyszczenie odpowiedzi na nową próbę
   chunk.clear();

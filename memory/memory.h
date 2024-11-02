@@ -19,7 +19,7 @@ class Memory {
   public:
     string chunk;
     void makeRequestAndWriteMemory(size_t (*writeMemory)(void* contents, size_t size, size_t nmemb, void* userp), 
-                                   CURL* curl, CURLcode &result);
+                                   vector<string> apiId, CURL* curl, CURLcode &result);
     static size_t WriteCallback(void* contents, size_t size, size_t nmemb, void* userp);
 };
 

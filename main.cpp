@@ -21,7 +21,7 @@ int main() {
 
 
   // Wywołanie funkcji wykonującej zapytanie i zapisującej wynik
-  memory.makeRequestAndWriteMemory(Memory::WriteCallback, curl, res);
+  memory.makeRequestAndWriteMemory(Memory::WriteCallback, crypto.getCryptoApiIdVector(), curl, res);
 
   // Wyświetlenie wyniku
   cout << "Odpowiedź API:\n" << memory.chunk << endl;
