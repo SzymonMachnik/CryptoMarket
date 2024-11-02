@@ -1,0 +1,10 @@
+bitcoin
+ethereum
+bnb
+solana
+xrp
+dogecoin
+tron
+toncoin
+cardano
+avalanche

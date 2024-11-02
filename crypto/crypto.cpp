@@ -15,20 +15,19 @@ Crypto::Crypto() {
   fileApiIds.open(PATHTOCRYPTOAPIIDS);
 
   if (fileNames.is_open() == false) {
-    cout << "Can't open crypto names file" << endl;
+    cout << "ERROR: Can't open crypto names file" << endl;
   } else if (fileApiIds.is_open() == false)  {
-    cout << "Can't open crypto api ids file" << endl;
+    cout << "ERROR: Can't open crypto api ids file" << endl;
   } else {
     string lineName;
     string lineApiId;
 
-    while(fileNames && fileApiIds) {
-      getline(fileNames, lineName);
-      cryptoNames.insert(lineName);
+    while (getline(fileNames, lineName) && getline(fileApiIds, lineApiId)) {
 
-      getline(fileApiIds, lineApiId);
-      cryptoApiIds.insert(lineApiId);
-      cryptoIdsByNamesMap[lineName] = lineApiId;
+      cryptoNameVector.push_back(lineName);
+      cryptoApiIdVector.push_back(lineApiId);
+
+      cryptoApiIdAndNameMap[lineName] = lineApiId;
     }
     fileNames.close();
     fileApiIds.close();
@@ -45,55 +44,33 @@ Crypto::Crypto(string PATHTOCRYPTONAMES, string PATHTOCRYPTOAPIIDS) {
   fileApiIds.open(PATHTOCRYPTOAPIIDS);
 
   if (fileNames.is_open() == false) {
-    cout << "Can't open crypto names file" << endl;
+    cout << "ERROR: Can't open crypto names file" << endl;
   } else if (fileApiIds.is_open() == false)  {
-    cout << "Can't open crypto api ids file" << endl;
+    cout << "ERROR: Can't open crypto api ids file" << endl;
   } else {
     string lineName;
     string lineApiId;
 
-    while(fileNames && fileApiIds) {
-      getline(fileNames, lineName);
-      cryptoNames.insert(lineName);
+    while (getline(fileNames, lineName) && getline(fileApiIds, lineApiId)) {
+      
+      cryptoNameVector.push_back(lineName);
+      cryptoApiIdVector.push_back(lineApiId);
 
-      getline(fileApiIds, lineApiId);
-      cryptoApiIds.insert(lineApiId);
-      cryptoIdsByNamesMap[lineName] = lineApiId;
+      cryptoApiIdAndNameMap[lineName] = lineApiId;
     }
     fileNames.close();
     fileApiIds.close();
   }
 }
 
-string Crypto::returnCryptoNamesAsString() {
-  string res;
-
-  for (auto& element : cryptoNames) {
-    res += element + "\n";
-  }
-  
-  return res;
+map<string, string> Crypto::getCryptoApiIdAndNameMap() {
+  return cryptoApiIdAndNameMap;
 }
 
-vector<string> Crypto::returnCryptoNamesAsVector() {
-  vector<string> res;
-
-  for (auto& element : cryptoNames) {
-    res.push_back(element);
-  }
-  
-  return res;
+vector<string> Crypto::getCryptoNameVector() {
+  return cryptoNameVector;
 }
 
-map<string, string> Crypto::returnCryptoNamesAndIdsAsMap() {
-  return cryptoIdsByNamesMap;
-}
-
-string Crypto::returnCryptoIdByName(string name) {
-  return cryptoIdsByNamesMap[name];
-}
-
-bool Crypto::include(string coin) {
-  if (cryptoNames.find(coin) != cryptoNames.end()) return true;
-  return false;
+vector<string> Crypto::getCryptoApiIdVector() {
+  return cryptoApiIdVector;
 }

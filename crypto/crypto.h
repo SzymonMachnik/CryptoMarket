@@ -4,30 +4,28 @@
 #define CRYPTO_H
 
 #include <iostream>
-#include <set>
 #include <string>
-#include <vector>
 #include <map>
+#include <vector>
 
 using namespace std;
 
 
 class Crypto {
-  private: 
-    set<string> cryptoNames;
-    set<string> cryptoApiIds;
-    map<string, string> cryptoIdsByNamesMap;
+  private:
+    map<string, string> cryptoApiIdAndNameMap;
+    vector<string> cryptoNameVector;
+    vector<string> cryptoApiIdVector;
     string PATHTOCRYPTONAMES = "crypto/listOfCryptoNames.txt";
     string PATHTOCRYPTOAPIIDS = "crypto/listOfCryptoApiIds.txt";
 
   public:
     Crypto();
     Crypto(string PATHTOCRYPTONAMES, string PATHTOCRYPTOAPIIDS);
-    string returnCryptoNamesAsString();
-    vector<string> returnCryptoNamesAsVector();
-    bool include(string coin);
-    map<string, string> returnCryptoNamesAndIdsAsMap();
-    string returnCryptoIdByName(string name);
+
+    map<string, string> getCryptoApiIdAndNameMap();
+    vector<string> getCryptoNameVector();
+    vector<string> getCryptoApiIdVector();
 };
 
 #endif
