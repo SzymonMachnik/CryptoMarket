@@ -42,3 +42,30 @@ size_t Memory::WriteCallback(void* contents, size_t size, size_t nmemb, void* us
   static_cast<string*>(userp)->append(static_cast<char*>(contents), total_size);
   return total_size;
 }
+
+void Memory::formatStringReceivedFromRequestToMap(string data) {
+  string ans = "";
+  for (int i = 0; i < data.size(); i++) {
+    if (data[i] == '"') {
+      int j = i + 1;
+      while (j < data.size() && data[j] != '"') {
+        ans += data[j];
+        j++;
+      }
+      i = j + 1;
+      if (i + 7 < data.size()) {
+        i += 7;
+        j = i + 1;  //Moving to price
+        while (j < data.size() && data[j] != '}') {
+          ans += data[j];
+          j++;
+        }
+        i = j + 1;
+      } else {
+        break;
+      }
+    }
+  }
+  
+  cout << ans << endl;
+}
