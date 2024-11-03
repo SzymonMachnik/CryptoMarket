@@ -14,6 +14,7 @@ using namespace std;
 class Crypto {
   private:
     map<string, string> cryptoApiIdAndNameMap;
+
     vector<string> cryptoNameVector;
     vector<string> cryptoApiIdVector;
     string PATHTOCRYPTONAMES = "crypto/listOfCryptoNames.txt";

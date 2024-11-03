@@ -27,7 +27,7 @@ Crypto::Crypto() {
       cryptoNameVector.push_back(lineName);
       cryptoApiIdVector.push_back(lineApiId);
 
-      cryptoApiIdAndNameMap[lineName] = lineApiId;
+      cryptoApiIdAndNameMap[lineApiId] = lineName;
     }
     fileNames.close();
     fileApiIds.close();
@@ -56,7 +56,7 @@ Crypto::Crypto(string PATHTOCRYPTONAMES, string PATHTOCRYPTOAPIIDS) {
       cryptoNameVector.push_back(lineName);
       cryptoApiIdVector.push_back(lineApiId);
 
-      cryptoApiIdAndNameMap[lineName] = lineApiId;
+      cryptoApiIdAndNameMap[lineApiId] = lineName;
     }
     fileNames.close();
     fileApiIds.close();

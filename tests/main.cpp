@@ -35,7 +35,9 @@ int main() {
 
   //TEST3 FORMATSTRINGRECEIVEDFROMREQUEST() /////////
   Memory memory;
-  memory.formatStringReceivedFromRequestToMap("{\"avalanche-2\":{\"usd\":24.09},\"binancecoin\":{\"usd\":568.55},\"bitcoin\":{\"usd\":69412},\"cardano\":{\"usd\":0.352065},\"dogecoin\":{\"usd\":0.158325},\"ethereum\":{\"usd\":2487.54},\"ripple\":{\"usd\":0.509382},\"solana\":{\"usd\":163.76},\"the-open-network\":{\"usd\":4.86},\"tron\":{\"usd\":0.166085}}");
+  string data = "{\"avalanche-2\":{\"usd\":24.09},\"binancecoin\":{\"usd\":568.55},\"bitcoin\":{\"usd\":69412},\"cardano\":{\"usd\":0.352065},\"dogecoin\":{\"usd\":0.158325},\"ethereum\":{\"usd\":2487.54},\"ripple\":{\"usd\":0.509382},\"solana\":{\"usd\":163.76},\"the-open-network\":{\"usd\":4.86},\"tron\":{\"usd\":0.166085}}";
+  memory.formatStringReceivedFromRequestToMap(data);
+  cout << data << endl;
   
   return 0;
 }

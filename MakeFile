@@ -1,2 +1,2 @@
 all:
-	g++ main.cpp -o main.exe memory/memory.cpp crypto/crypto.cpp -LC:/CryptoScraper/curlLib/lib -IC:/CryptoScraper/curlLib/include -lcurl
+	g++ main.cpp -o main.exe crypto/crypto.cpp memory/memory.cpp -LC:/CryptoScraper/curlLib/lib -IC:/CryptoScraper/curlLib/include -lcurl

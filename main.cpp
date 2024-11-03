@@ -5,8 +5,8 @@
 #include <chrono>
 #include <atomic>
 
-#include "memory/memory.h"
 #include "crypto/crypto.h"
+#include "memory/memory.h"
 using namespace std;
 
 
@@ -17,17 +17,16 @@ Memory memory;
 Crypto crypto;
 
 
-std::atomic<bool> keep_running(true); // Flaga do zatrzymania wątku
+atomic<bool> keep_running(true); // Flag to stop thread
 
-void printMessageEvery30Seconds() {
+void refreshAndPrintPriceEvery60s() {
+  memory.makeRequestAndWriteMemory(Memory::WriteCallback, crypto.getCryptoApiIdVector(), curl, res);
+  memory.printMapOfCryptosIdAndPrice();
   while (keep_running) {
-    std::this_thread::sleep_for(std::chrono::seconds(61)); // Czeka 30 sekund
-    // Wywołanie funkcji wykonującej zapytanie i zapisującej wynik
+    this_thread::sleep_for(chrono::seconds(61)); // Wait 60s for price refresh
     memory.makeRequestAndWriteMemory(Memory::WriteCallback, crypto.getCryptoApiIdVector(), curl, res);
-
-    // Wyświetlenie wyniku
-    cout << "Odpowiedź API:\n" << memory.chunk << endl;
-  }
+    memory.printMapOfCryptosIdAndPrice();
+  } 
 }
 
 int main() {
@@ -37,7 +36,8 @@ int main() {
     cout << "ERROR: Failed to initialize CURL." << endl;
     return 1;
   }
-  std::thread messageThread(printMessageEvery30Seconds);
+  thread messageThread(refreshAndPrintPriceEvery60s);
+
 
   while (true) {
     char input;
@@ -46,8 +46,10 @@ int main() {
     if (input == 'b') {
       cout << "Crypto boughten" << endl;
     } else if (input == 'c') {
+      memory.printMapOfCryptosIdAndPrice();
+    }  else if (input == 'r') {
       memory.makeRequestAndWriteMemory(Memory::WriteCallback, crypto.getCryptoApiIdVector(), curl, res);
-      cout << "Odpowiedź API:\n" << memory.chunk << endl;
+      memory.printMapOfCryptosIdAndPrice();
     }  else if (input == 'q') {
       keep_running = false;
       break;
