@@ -15,14 +15,14 @@ using namespace std;
 
 class Memory {
   private:
-    map<string, string> mapOfCryptosNameAndPrice;
+    map<string, float> mapOfCryptosNameAndPrice;
 
   public:
     void makeRequestAndWriteMemory(size_t (*writeMemory)(void* contents, size_t size, size_t nmemb, void* userp), 
                                    vector<string> apiId, CURL* curl, CURLcode &result);
     static size_t WriteCallback(void* contents, size_t size, size_t nmemb, void* userp);
     void formatStringReceivedFromRequestToMap(string &data);
-    map<string, string> getMapOfCryptosIdAndPrice();
+    map<string, float> getMapOfCryptosIdAndPrice();
     void printMapOfCryptosIdAndPrice();
 };
 

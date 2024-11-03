@@ -74,12 +74,13 @@ void Memory::formatStringReceivedFromRequestToMap(string &data) {
       } else {
         break;
       }
-      mapOfCryptosNameAndPrice[cryptoName] = cryptoPrice;
+      float f_cryptoPrice = stof(cryptoPrice);
+      mapOfCryptosNameAndPrice[cryptoName] = f_cryptoPrice;
     }
   }
 }
 
-map<string, string> Memory::getMapOfCryptosIdAndPrice() {
+map<string, float> Memory::getMapOfCryptosIdAndPrice() {
   return mapOfCryptosNameAndPrice;
 }
 
