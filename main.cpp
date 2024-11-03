@@ -45,7 +45,10 @@ int main() {
     cin >> input;
     if (input == 'b') {
       cout << "Crypto boughten" << endl;
-    } else if (input == 'q') {
+    } else if (input == 'c') {
+      memory.makeRequestAndWriteMemory(Memory::WriteCallback, crypto.getCryptoApiIdVector(), curl, res);
+      cout << "Odpowiedź API:\n" << memory.chunk << endl;
+    }  else if (input == 'q') {
       keep_running = false;
       break;
     } else {

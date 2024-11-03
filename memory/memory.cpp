@@ -37,13 +37,25 @@ void Memory::makeRequestAndWriteMemory(size_t (*writeMemory)(void* contents, siz
   }
 }
 
+// size_t Memory::WriteCallback(void* contents, size_t size, size_t nmemb, void* userp) {
+//   size_t total_size = size * nmemb;
+//   static_cast<string*>(userp)->append(static_cast<char*>(contents), total_size);
+//   return total_size;
+// }
+
 size_t Memory::WriteCallback(void* contents, size_t size, size_t nmemb, void* userp) {
-  size_t total_size = size * nmemb;
-  static_cast<string*>(userp)->append(static_cast<char*>(contents), total_size);
-  return total_size;
+  size_t realsize = size * nmemb;
+  Memory* mem = static_cast<Memory*>(userp);
+  string chunk((char*)contents, realsize);
+
+  mem->formatStringReceivedFromRequestToMap(chunk);
+
+  mem->chunk = chunk;
+  
+  return realsize;
 }
 
-void Memory::formatStringReceivedFromRequestToMap(string data) {
+void Memory::formatStringReceivedFromRequestToMap(string &data) {
   string ans = "";
   for (int i = 0; i < data.size(); i++) {
     if (data[i] == '"') {
@@ -67,5 +79,6 @@ void Memory::formatStringReceivedFromRequestToMap(string data) {
     }
   }
   
-  cout << ans << endl;
+  // cout << ans << endl;
+  data = ans;
 }

@@ -21,7 +21,7 @@ class Memory {
     void makeRequestAndWriteMemory(size_t (*writeMemory)(void* contents, size_t size, size_t nmemb, void* userp), 
                                    vector<string> apiId, CURL* curl, CURLcode &result);
     static size_t WriteCallback(void* contents, size_t size, size_t nmemb, void* userp);
-    void formatStringReceivedFromRequestToMap(string data);
+    void formatStringReceivedFromRequestToMap(string &data);
 };
 
 #endif
