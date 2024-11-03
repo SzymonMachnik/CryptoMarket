@@ -2,6 +2,8 @@
 
 #include "handleUser.h"
 
+using namespace std;
+
 
 void makeRequestAndWriteMemory(size_t (*writeMemory)(void* contents, size_t size, size_t nmemb, void* userp), 
                                 Memory &chunk, string &cryptoApiId, CURL* curl, CURLcode &result) {

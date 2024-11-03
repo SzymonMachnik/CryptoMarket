@@ -7,6 +7,7 @@
 
 #include "crypto/crypto.h"
 #include "memory/memory.h"
+#include "user/user.h"
 using namespace std;
 
 
@@ -15,6 +16,7 @@ CURL* curl;
 CURLcode res;
 Memory memory;
 Crypto crypto;
+User user;
 
 
 atomic<bool> keep_running(true); // Flag to stop thread
@@ -30,6 +32,26 @@ void refreshAndPrintPriceEvery60s() {
 }
 
 int main() {
+  // Login user
+  while (user.getUserLoginStatus() == false) {
+    char input;
+    cout << "[1] Login to your account" << endl;
+    cout << "[2] Create account" << endl;
+    cout << "[3] Quit" << endl;
+    cin >> input;
+
+    if (input == '1') {
+      user.loginUser();
+    } else if (input == '2') {
+      user.registerUser();
+    } else if (input == '3') {
+      return 0;
+    } else {
+      cout << "Inaccurance: Wrong input" << endl;
+    }
+  }
+
+
   // Curl init
   curl = curl_easy_init();
   if (!curl) {
@@ -37,7 +59,7 @@ int main() {
     return 1;
   }
   thread messageThread(refreshAndPrintPriceEvery60s);
-
+  
 
   while (true) {
     char input;
@@ -54,7 +76,7 @@ int main() {
       keep_running = false;
       break;
     } else {
-      cout << "Wrong ans" << endl;
+      cout << "Inaccurance: Wrong input" << endl;
     }
   }
 
