@@ -22,14 +22,13 @@ User user;
 atomic<bool> keep_running(true); // Flag to stop thread
 
 void refreshAndPrintPriceEvery60s() {
-  memory.makeRequestAndWriteMemory(Memory::WriteCallback, crypto.getCryptoApiIdVector(), curl, res);
-  memory.printMapOfCryptosIdAndPrice();
   while (keep_running) {
-    this_thread::sleep_for(chrono::seconds(61)); // Wait 60s for price refresh
     memory.makeRequestAndWriteMemory(Memory::WriteCallback, crypto.getCryptoApiIdVector(), curl, res);
     memory.printMapOfCryptosIdAndPrice();
+    this_thread::sleep_for(chrono::seconds(61)); // Wait 60s for price refresh
   } 
 }
+
 
 int main() {
   // Login user
@@ -84,6 +83,7 @@ int main() {
   if (messageThread.joinable()) {
     messageThread.join();
   }
+
 
   // Czyszczenie zasobów CURL
   curl_easy_cleanup(curl);
