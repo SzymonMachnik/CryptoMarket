@@ -8,6 +8,7 @@
 #include "crypto/crypto.h"
 #include "memory/memory.h"
 #include "user/user.h"
+#include "handleUser/handleUser.h"
 using namespace std;
 
 
@@ -24,7 +25,7 @@ atomic<bool> keep_running(true); // Flag to stop thread
 void refreshAndPrintPriceEvery60s() {
   while (keep_running) {
     memory.makeRequestAndWriteMemory(Memory::WriteCallback, crypto.getCryptoApiIdVector(), curl, res);
-    memory.printMapOfCryptosIdAndPrice();
+    //memory.printMapOfCryptosIdAndPrice();
     this_thread::sleep_for(chrono::seconds(61)); // Wait 60s for price refresh
   } 
 }
@@ -33,17 +34,19 @@ void refreshAndPrintPriceEvery60s() {
 int main() {
   // Login user
   while (user.getUserLoginStatus() == false) {
-    char input;
+    string input;
     cout << "[1] Login to your account" << endl;
     cout << "[2] Create account" << endl;
     cout << "[3] Quit" << endl;
+    cout << "Input: ";
     cin >> input;
+    cin.ignore(1000, '\n');
 
-    if (input == '1') {
+    if (input == "1") {
       user.loginUser();
-    } else if (input == '2') {
+    } else if (input == "2") {
       user.registerUser();
-    } else if (input == '3') {
+    } else if (input == "3") {
       return 0;
     } else {
       cout << "Inaccurance: Wrong input" << endl;
@@ -60,18 +63,33 @@ int main() {
   thread messageThread(refreshAndPrintPriceEvery60s);
   
 
+  // Main loop
   while (true) {
-    char input;
-    cout << "Input: " << endl;
+    string input;
+    cout << "[1] Buy a crypto" << endl;
+    cout << "[2] Check price of cryptos" << endl;
+    cout << "[3] Deposit money to your account" << endl;
+    cout << "[9] Quit" << endl;
+    cout << "Input: ";
     cin >> input;
-    if (input == 'b') {
+    cin.ignore(1000, '\n');
+
+    if (input == "1") {
       cout << "Crypto boughten" << endl;
-    } else if (input == 'c') {
+    } else if (input == "2") {
       memory.printMapOfCryptosIdAndPrice();
-    }  else if (input == 'r') {
-      memory.makeRequestAndWriteMemory(Memory::WriteCallback, crypto.getCryptoApiIdVector(), curl, res);
-      memory.printMapOfCryptosIdAndPrice();
-    }  else if (input == 'q') {
+    } else if (input == "3") {
+      string money;
+      cout << "Amount to money to deposit: ";
+      cin >> money;
+      cin.ignore(1000, '\n');
+
+      int formattedMoney; 
+      formattedMoney = formatStringToMoneyInCentsToDeposit(money);
+      user.deposit(formattedMoney);
+      cout << "Your current balance: " << user.getBalanceInCents() << " cents" << endl;
+    }  else if (input == "9") {
+      cout << "Wait for close the application. This can take max 60 seconds." << endl;
       keep_running = false;
       break;
     } else {

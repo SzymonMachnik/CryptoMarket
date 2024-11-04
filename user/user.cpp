@@ -54,9 +54,9 @@ void User::registerUser() {
   bool correctLogin = false;
   do {
     cout << "Enter login to your new account: ";
-    //cin.clear();
+    cin >> login;
     cin.ignore(1000, '\n');
-    getline(cin, login);
+
     if (login.find(' ') != string::npos) continue; // checking if login contains space
 
     // min 10 characters
@@ -79,26 +79,27 @@ void User::registerUser() {
   bool correctPassword = false;
   do {
     cout << "Enter password to your new account: ";
-    cin.clear();
-    getline(cin, password);
+    cin >> password;
+    cin.ignore(1000, '\n');
+    
     if (password.find(' ') != string::npos) continue; // checking if password contains space
 
     correctPassword = true;
-    char lowerLetterCounter = 0;
-    char capitalLetterCounter = 0;
-    char digitCounter = 0;
-    char specialCharacterCounter = 0;
+    int lowerLetterCounter = 0;
+    int capitalLetterCounter = 0;
+    int digitCounter = 0;
+    int specialCharacterCounter = 0;
 
-    char minLowerLetter = 4;
-    char minCapitalLetter = 1;
-    char minDigit = 2;
-    char minSpecialCharacter = 1;
+    int minLowerLetter = 4;
+    int minCapitalLetter = 1;
+    int minDigit = 2;
+    int minSpecialCharacter = 1;
 
     if (password.size() < 8 || 32 < password.size()) {
       cout << "Password size must to be beteen 8 and 32 characters" << endl;
       correctPassword = false;
     } else {
-      for (char c : login) {
+      for (char c : password) {
         if (0 <= c - 'a' && c - 'a' <= 25) {
           lowerLetterCounter++;
         } else if (0 <= c - 'A' && c - 'A' <= 25) {
@@ -107,7 +108,10 @@ void User::registerUser() {
           digitCounter++;
         } else if (33 <= c && c <= 125) {
           specialCharacterCounter++;
-        } else correctLogin = false;
+        } else {
+          correctLogin = false;
+          break;
+        }
       }
     }
     if (correctPassword == true) {
@@ -117,16 +121,16 @@ void User::registerUser() {
           && specialCharacterCounter >= minSpecialCharacter)) {
 
         cout << "Password has to include at least:" << endl;
-        cout << minLowerLetter << " small letters" << endl;
-        cout << minCapitalLetter << " capital letter" << endl;
-        cout << minDigit << " digits" << endl;
-        cout << minSpecialCharacter << " special character" << endl;
+        cout << minLowerLetter << " small letters" << " Includes: " << lowerLetterCounter << endl;
+        cout << minCapitalLetter << " capital letter" << " Includes: " << capitalLetterCounter << endl;
+        cout << minDigit << " digits" << " Includes: " << digitCounter << endl;
+        cout << minSpecialCharacter << " special character" << " Includes: " << specialCharacterCounter << endl;
 
         correctPassword = false;
       }
     }
     
-  } while (correctLogin == false);
+  } while (correctPassword == false);
 
   ofstream file;
   file.open(login + ".txt");
@@ -151,6 +155,6 @@ void User::deposit(int moneyToDepositInCents) {
   }
 }
 
-string User::getBalanceInCents() {
+int User::getBalanceInCents() {
   return balanceInCents;
 }
