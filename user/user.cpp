@@ -150,3 +150,7 @@ void User::deposit(int moneyToDepositInCents) {
     balanceInCents += moneyToDepositInCents;
   }
 }
+
+string User::getBalanceInCents() {
+  return balanceInCents;
+}

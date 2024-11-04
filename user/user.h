@@ -27,6 +27,7 @@ class User {
     void registerUser();
 
     void deposit(int moneyInCents);
+    string getBalanceInCents();
 };
 
 #endif
