@@ -16,12 +16,17 @@ class User {
     string login; 
     bool isUserLoged;
 
+    int balanceInCents;
+    int balanceAboveWhichUserCantDepositInCents;
+
   public:
     User();
 
     bool getUserLoginStatus();
     void loginUser();
     void registerUser();
+
+    void deposit(int moneyInCents);
 };
 
 #endif

@@ -9,6 +9,7 @@ using namespace std;
 
 User::User() {
   this->isUserLoged = false;
+  this->balanceAboveWhichUserCantDepositInCents = 500000000; // 5 000 000 . 00
 }
 
 bool User::getUserLoginStatus() {
@@ -137,4 +138,15 @@ void User::registerUser() {
   this->isUserLoged = true;
   this->login = login;
   this->password = password;
+}
+
+void User::deposit(int moneyToDepositInCents) {
+  
+  if (balanceInCents > balanceAboveWhichUserCantDepositInCents) {
+    // do nothing
+  } if (balanceInCents + moneyToDepositInCents > balanceAboveWhichUserCantDepositInCents) {
+    balanceInCents = balanceAboveWhichUserCantDepositInCents;
+  } else {
+    balanceInCents += moneyToDepositInCents;
+  }
 }
