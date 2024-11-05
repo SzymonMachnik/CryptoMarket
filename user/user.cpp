@@ -16,6 +16,15 @@ bool User::getUserLoginStatus() {
   return isUserLoged;
 }
 
+void User::saveData() {
+  ofstream file;
+  file.open(login + ".txt");
+
+  file << password << '\n';
+  file << balanceInCents;
+  file.close(); 
+}
+
 void User::loginUser() {
   string login;
   cout << "Enter login to your account: ";
@@ -39,12 +48,18 @@ void User::loginUser() {
     if (line == password) {
       this->isUserLoged = true;
       cout << "Loged succesful" << endl;
+      string line;
+      getline(file, line);
+      this->balanceInCents = stoi(line);
     } else {
       cout << "Inaccurance: Wrong password" << endl;
     }
 
     file.close();
   }
+
+  this->login = login;
+  this->password = password;
 }
 
 void User::registerUser() {
@@ -132,26 +147,23 @@ void User::registerUser() {
     
   } while (correctPassword == false);
 
-  ofstream file;
-  file.open(login + ".txt");
-
-  file << password;
-
-  file.close();
-
   this->isUserLoged = true;
   this->login = login;
   this->password = password;
+  this->balanceInCents = 0;
+
+  saveData();
 }
 
 void User::deposit(int moneyToDepositInCents) {
-  
   if (balanceInCents > balanceAboveWhichUserCantDepositInCents) {
     // do nothing
-  } if (balanceInCents + moneyToDepositInCents > balanceAboveWhichUserCantDepositInCents) {
+  } else if (balanceInCents + moneyToDepositInCents > balanceAboveWhichUserCantDepositInCents) {
     balanceInCents = balanceAboveWhichUserCantDepositInCents;
+    saveData();
   } else {
     balanceInCents += moneyToDepositInCents;
+    saveData();
   }
 }
 

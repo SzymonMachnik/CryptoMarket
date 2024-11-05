@@ -26,6 +26,8 @@ class User {
     void loginUser();
     void registerUser();
 
+    void saveData();
+
     void deposit(int moneyInCents);
     int getBalanceInCents();
 };
