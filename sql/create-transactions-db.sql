@@ -1,0 +1,1 @@
+SELECT * FROM sql_crypto.transactions;
