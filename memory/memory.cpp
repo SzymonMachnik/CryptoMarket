@@ -33,7 +33,7 @@ void Memory::makeRequestAndWriteMemory(size_t (*writeMemory)(void* contents, siz
     cout << "ERROR: " << curl_easy_strerror(result) << endl;
   }
 
-  insertCryptoPriceIntoDB();
+  updateCryptoPriceIntoDB();
 }
 
 size_t Memory::WriteCallback(void* contents, size_t size, size_t nmemb, void* userp) {
@@ -94,11 +94,11 @@ void Memory::printMapOfCryptosIdAndPrice() {
   }
 }
 
-void Memory::insertCryptoPriceIntoDB() {
+void Memory::updateCryptoPriceIntoDB() {
     sqlite3 *db;
     char *errMsg = nullptr;
 
-    // Otwarcie połączenia z bazą danych
+    // Connect with databse
     if (sqlite3_open("sqlite/database.db", &db)) {
         std::cerr << "Nie udało się otworzyć bazy danych: " << sqlite3_errmsg(db) << std::endl;
         return;
@@ -107,12 +107,12 @@ void Memory::insertCryptoPriceIntoDB() {
     map<string, double> mapOfCryptosNameAndPrice = getMapOfCryptosNameAndPrice();
 
     for (const auto &it : mapOfCryptosNameAndPrice) {
-        // Formatowanie zapytania SQL
+        // Create sql request
         ostringstream sql;
         sql << "UPDATE crypto_price SET price = " << it.second 
             << " WHERE name = '" << it.first << "';";
 
-        // Wykonanie zapytania SQL
+        // Make a request
         if (sqlite3_exec(db, sql.str().c_str(), nullptr, nullptr, &errMsg) != SQLITE_OK) {
             std::cerr << "Błąd podczas wykonywania zapytania: " << errMsg << std::endl;
             sqlite3_free(errMsg);
@@ -121,6 +121,6 @@ void Memory::insertCryptoPriceIntoDB() {
         }
     }
 
-    // Zamknięcie połączenia z bazą danych
+    // Close
     sqlite3_close(db);
 }

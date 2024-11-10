@@ -26,7 +26,7 @@ class Memory {
     void formatStringReceivedFromRequestToMap(string &data);
     map<string, double> getMapOfCryptosNameAndPrice();
     void printMapOfCryptosIdAndPrice();
-    void insertCryptoPriceIntoDB();
+    void updateCryptoPriceIntoDB();
 };
 
 #endif

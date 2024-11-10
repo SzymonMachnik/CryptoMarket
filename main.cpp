@@ -17,7 +17,7 @@ using namespace std;
 CURL* curl;
 CURLcode res;
 Memory memory;
-Crypto crypto;
+Crypto crypto;  
 User user;
 
 
