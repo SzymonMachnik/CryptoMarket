@@ -1,5 +1,6 @@
 #include <iostream>
 #include <curl/curl.h>
+#include <sqlite3.h>
 #include <string>
 #include <thread>
 #include <chrono>
@@ -25,6 +26,7 @@ atomic<bool> keep_running(true); // Flag to stop thread
 void refreshAndPrintPriceEvery60s() {
   while (keep_running) {
     memory.makeRequestAndWriteMemory(Memory::WriteCallback, crypto.getCryptoApiIdVector(), curl, res);
+    //cout << "Crypto price updated" << endl;
     //memory.printMapOfCryptosIdAndPrice();
     this_thread::sleep_for(chrono::seconds(61)); // Wait 60s for price refresh
   } 
@@ -33,25 +35,25 @@ void refreshAndPrintPriceEvery60s() {
 
 int main() {
   // Login user
-  while (user.getUserLoginStatus() == false) {
-    string input;
-    cout << "[1] Login to your account" << endl;
-    cout << "[2] Create account" << endl;
-    cout << "[3] Quit" << endl;
-    cout << "Input: ";
-    cin >> input;
-    cin.ignore(1000, '\n');
+  // while (user.getUserLoginStatus() == false) {
+  //   string input;
+  //   cout << "[1] Login to your account" << endl;
+  //   cout << "[2] Create account" << endl;
+  //   cout << "[3] Quit" << endl;
+  //   cout << "Input: ";
+  //   cin >> input;
+  //   cin.ignore(1000, '\n');
 
-    if (input == "1") {
-      user.loginUser();
-    } else if (input == "2") {
-      user.registerUser();
-    } else if (input == "3") {
-      return 0;
-    } else {
-      cout << "Inaccurance: Wrong input" << endl;
-    }
-  }
+  //   if (input == "1") {
+  //     user.loginUser();
+  //   } else if (input == "2") {
+  //     user.registerUser();
+  //   } else if (input == "3") {
+  //     return 0;
+  //   } else {
+  //     cout << "Inaccurance: Wrong input" << endl;
+  //   }
+  // }
 
 
   // Curl init
@@ -109,6 +111,40 @@ int main() {
   curl_easy_cleanup(curl);
 
   cout << "Finished succesful." << endl;
+
+
+  // sqlite3 *db;
+  // char *errMsg = nullptr;
+
+  // // Otwarcie połączenia z bazą danych
+  // if (sqlite3_open("sqlite/database.db", &db)) {
+  //     std::cerr << "Nie udało się otworzyć bazy danych: " << sqlite3_errmsg(db) << std::endl;
+  //     return 1;
+  // }
+
+  // vector<string> names = crypto.getCryptoNameVector();
+  // vector<string> api = crypto.getCryptoApiIdVector();
+
+  // for (int i = 0; i < names.size(); i++) {
+  //   // Zapytanie SQL - wstawienie danych
+  //   string sql = "INSERT INTO crypto_price (name, api, price) VALUES ('";
+  //   sql += names[i];
+  //   sql += "', '";
+  //   sql += api[i];
+  //   sql += "', 0);";
+
+  //   // Wykonanie zapytania SQL
+  //   if (sqlite3_exec(db, sql.c_str(), nullptr, nullptr, &errMsg) != SQLITE_OK) {
+  //       std::cerr << "Błąd podczas wykonywania zapytania: " << errMsg << std::endl;
+  //       sqlite3_free(errMsg);
+  //   } else {
+  //       std::cout << "Dane zostały dodane pomyślnie!" << std::endl;
+  //   }
+  // }
+
+
+  // // Zamknięcie połączenia z bazą danych
+  // sqlite3_close(db);
 
   return 0;
 }

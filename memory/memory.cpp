@@ -32,6 +32,8 @@ void Memory::makeRequestAndWriteMemory(size_t (*writeMemory)(void* contents, siz
   if (result != CURLE_OK) {
     cout << "ERROR: " << curl_easy_strerror(result) << endl;
   }
+
+  insertCryptoPriceIntoDB();
 }
 
 size_t Memory::WriteCallback(void* contents, size_t size, size_t nmemb, void* userp) {
@@ -49,7 +51,7 @@ void Memory::formatStringReceivedFromRequestToMap(string &data) {
   Crypto crypto;
   map<string, string> mapIdAndNameCrypto;
   mapIdAndNameCrypto = crypto.getCryptoApiIdAndNameMap(); 
-
+  //cout << data << endl;
   for (int i = 0; i < data.size(); i++) {
     if (data[i] == '"') {
       string cryptoApiId;
@@ -74,13 +76,13 @@ void Memory::formatStringReceivedFromRequestToMap(string &data) {
       } else {
         break;
       }
-      float f_cryptoPrice = stof(cryptoPrice);
+      double f_cryptoPrice = stof(cryptoPrice);
       mapOfCryptosNameAndPrice[cryptoName] = f_cryptoPrice;
     }
   }
 }
 
-map<string, float> Memory::getMapOfCryptosIdAndPrice() {
+map<string, double> Memory::getMapOfCryptosNameAndPrice() {
   return mapOfCryptosNameAndPrice;
 }
 
@@ -90,4 +92,35 @@ void Memory::printMapOfCryptosIdAndPrice() {
   for (auto it : mapOfCryptosNameAndPrice) {
     cout << it.first << " : " << it.second << endl;
   }
+}
+
+void Memory::insertCryptoPriceIntoDB() {
+    sqlite3 *db;
+    char *errMsg = nullptr;
+
+    // Otwarcie połączenia z bazą danych
+    if (sqlite3_open("sqlite/database.db", &db)) {
+        std::cerr << "Nie udało się otworzyć bazy danych: " << sqlite3_errmsg(db) << std::endl;
+        return;
+    }
+
+    map<string, double> mapOfCryptosNameAndPrice = getMapOfCryptosNameAndPrice();
+
+    for (const auto &it : mapOfCryptosNameAndPrice) {
+        // Formatowanie zapytania SQL
+        ostringstream sql;
+        sql << "UPDATE crypto_price SET price = " << it.second 
+            << " WHERE name = '" << it.first << "';";
+
+        // Wykonanie zapytania SQL
+        if (sqlite3_exec(db, sql.str().c_str(), nullptr, nullptr, &errMsg) != SQLITE_OK) {
+            std::cerr << "Błąd podczas wykonywania zapytania: " << errMsg << std::endl;
+            sqlite3_free(errMsg);
+        } else {
+            //std::cout << "Dane dla " << it.first << " zostały zaktualizowane pomyślnie!" << std::endl;
+        }
+    }
+
+    // Zamknięcie połączenia z bazą danych
+    sqlite3_close(db);
 }
