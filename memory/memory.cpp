@@ -124,3 +124,35 @@ void Memory::updateCryptoPriceIntoDB() {
     // Close
     sqlite3_close(db);
 }
+
+void callback(void *NotUsed, int argc, char **argv, char **azColName) {
+  for (int i = 0; i < argc; i++) {
+    // Dodajemy nazwę kolumny i wartość do zmiennej result
+    result += std::string(azColName[i]) + ": " + (argv[i] ? argv[i] : "NULL") + "\t";
+  }
+  result += "\n";
+}
+
+void printCryptoNameAndPriceDb() {
+  sqlite3 *db;
+  char *errMsg = nullptr;
+  const char *sql = "SELECT * FROM users";
+
+  // Otwieramy bazę danych
+  if (sqlite3_open("database.db", &db) != SQLITE_OK) {
+      std::cerr << "Nie udało się otworzyć bazy danych: " << sqlite3_errmsg(db) << std::endl;
+      return 1;
+  }
+
+  // Wykonujemy zapytanie SELECT z funkcją callback
+  if (sqlite3_exec(db, sql, callback, nullptr, &errMsg) != SQLITE_OK) {
+      std::cerr << "Błąd wykonania zapytania: " << errMsg << std::endl;
+      sqlite3_free(errMsg);
+  }
+
+  // Zamykamy bazę danych
+  sqlite3_close(db);
+
+  // Wyświetlamy wynik jako string
+  std::cout << "Wynik zapytania:\n" << result << std::endl;
+}

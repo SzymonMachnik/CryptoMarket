@@ -18,6 +18,7 @@ using namespace std;
 class Memory {
   private:
     map<string, double> mapOfCryptosNameAndPrice;
+    void dbCallback(void *NotUsed, int argc, char **argv, char **azColName);
 
   public:
     void makeRequestAndWriteMemory(size_t (*writeMemory)(void* contents, size_t size, size_t nmemb, void* userp), 
