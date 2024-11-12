@@ -17,17 +17,13 @@ using namespace std;
 
 class Memory {
   private:
-    map<string, double> mapOfCryptosNameAndPrice;
-    void dbCallback(void *NotUsed, int argc, char **argv, char **azColName);
 
   public:
-    void makeRequestAndWriteMemory(size_t (*writeMemory)(void* contents, size_t size, size_t nmemb, void* userp), 
-                                   vector<string> apiId, CURL* curl, CURLcode &result);
+    void makeRequestAndWriteMemory(const vector<string> apiId, CURL* curl, CURLcode &result);
     static size_t WriteCallback(void* contents, size_t size, size_t nmemb, void* userp);
-    void formatStringReceivedFromRequestToMap(string &data);
-    map<string, double> getMapOfCryptosNameAndPrice();
-    void printMapOfCryptosIdAndPrice();
-    void updateCryptoPriceIntoDB();
+    void formatStringReceivedFromApiRequestAndSaveIntooDb(string &data);
+    void updateCryptoPriceIntoDB(string name, double price);
+    void printCryptoNameAndPriceDb();
 };
 
 #endif

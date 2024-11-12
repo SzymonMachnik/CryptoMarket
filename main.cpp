@@ -25,9 +25,8 @@ atomic<bool> keep_running(true); // Flag to stop thread
 
 void refreshAndPrintPriceEvery60s() {
   while (keep_running) {
-    memory.makeRequestAndWriteMemory(Memory::WriteCallback, crypto.getCryptoApiIdVector(), curl, res);
+    memory.makeRequestAndWriteMemory(crypto.getCryptoApiIdVector(), curl, res);
     //cout << "Crypto price updated" << endl;
-    //memory.printMapOfCryptosIdAndPrice();
     this_thread::sleep_for(chrono::seconds(61)); // Wait 60s for price refresh
   } 
 }
@@ -80,7 +79,7 @@ int main() {
     if (input == "1") {
       cout << "Crypto boughten" << endl;
     } else if (input == "2") {
-      memory.printMapOfCryptosIdAndPrice();
+      memory.printCryptoNameAndPriceDb();
     } else if (input == "3") {
       string money;
       cout << "Amount to money to deposit: ";

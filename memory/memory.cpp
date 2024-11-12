@@ -6,9 +6,17 @@
 
 using namespace std;
 
+size_t Memory::WriteCallback(void* contents, size_t size, size_t nmemb, void* userp) {
+  size_t realsize = size * nmemb;
+  Memory* mem = static_cast<Memory*>(userp);
+  string chunk((char*)contents, realsize);
 
-void Memory::makeRequestAndWriteMemory(size_t (*writeMemory)(void* contents, size_t size, size_t nmemb, void* userp), 
-                                      vector<string> apiId, CURL* curl, CURLcode &result) {
+  mem->formatStringReceivedFromApiRequestAndSaveIntooDb(chunk);
+  
+  return realsize;
+}
+
+void Memory::makeRequestAndWriteMemory(const vector<string> apiId, CURL* curl, CURLcode &result) {
   // Create url request
   string url = "https://api.coingecko.com/api/v3/simple/price?ids=";
   for (string a : apiId) {
@@ -22,7 +30,7 @@ void Memory::makeRequestAndWriteMemory(size_t (*writeMemory)(void* contents, siz
   curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
   curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
   curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0L);
-  curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeMemory);
+  curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
   curl_easy_setopt(curl, CURLOPT_WRITEDATA, this); 
 
   // Make a request
@@ -33,25 +41,43 @@ void Memory::makeRequestAndWriteMemory(size_t (*writeMemory)(void* contents, siz
     cout << "ERROR: " << curl_easy_strerror(result) << endl;
   }
 
-  updateCryptoPriceIntoDB();
 }
 
-size_t Memory::WriteCallback(void* contents, size_t size, size_t nmemb, void* userp) {
-  size_t realsize = size * nmemb;
-  Memory* mem = static_cast<Memory*>(userp);
-  string chunk((char*)contents, realsize);
 
-  mem->formatStringReceivedFromRequestToMap(chunk);
-  
-  return realsize;
+
+void Memory::updateCryptoPriceIntoDB(string name, double price) {
+    sqlite3 *db;
+    char *errMsg = nullptr;
+
+    // Connect with databse
+    if (sqlite3_open("sqlite/database.db", &db)) {
+        std::cerr << "Nie udało się otworzyć bazy danych: " << sqlite3_errmsg(db) << std::endl;
+        return;
+    }
+        // Create sql request
+        ostringstream sql;
+        sql << "UPDATE crypto_price SET price = " << price
+            << " WHERE name = '" << name << "';";
+
+        // Make a request
+        if (sqlite3_exec(db, sql.str().c_str(), nullptr, nullptr, &errMsg) != SQLITE_OK) {
+            std::cerr << "Błąd podczas wykonywania zapytania: " << errMsg << std::endl;
+            sqlite3_free(errMsg);
+        } else {
+            //std::cout << "Dane dla " << it.first << " zostały zaktualizowane pomyślnie!" << std::endl;
+        }
+
+    // Close
+    sqlite3_close(db);
 }
 
-void Memory::formatStringReceivedFromRequestToMap(string &data) {
+
+void Memory::formatStringReceivedFromApiRequestAndSaveIntooDb(string &data) {
 
   Crypto crypto;
   map<string, string> mapIdAndNameCrypto;
   mapIdAndNameCrypto = crypto.getCryptoApiIdAndNameMap(); 
-  //cout << data << endl;
+
   for (int i = 0; i < data.size(); i++) {
     if (data[i] == '"') {
       string cryptoApiId;
@@ -76,83 +102,38 @@ void Memory::formatStringReceivedFromRequestToMap(string &data) {
       } else {
         break;
       }
-      double f_cryptoPrice = stof(cryptoPrice);
-      mapOfCryptosNameAndPrice[cryptoName] = f_cryptoPrice;
+      double d_cryptoPrice = stod(cryptoPrice);
+
+      updateCryptoPriceIntoDB(cryptoName, d_cryptoPrice);
     }
   }
 }
 
-map<string, double> Memory::getMapOfCryptosNameAndPrice() {
-  return mapOfCryptosNameAndPrice;
-}
-
-void Memory::printMapOfCryptosIdAndPrice() {
-  // cout << "Map size: " << mapOfCryptosNameAndPrice.size() << endl;
-  
-  for (auto it : mapOfCryptosNameAndPrice) {
-    cout << it.first << " : " << it.second << endl;
-  }
-}
-
-void Memory::updateCryptoPriceIntoDB() {
+void Memory::printCryptoNameAndPriceDb() {
     sqlite3 *db;
     char *errMsg = nullptr;
+    const char *sql = "SELECT name, price FROM crypto_price ORDER BY price DESC";
 
-    // Connect with databse
-    if (sqlite3_open("sqlite/database.db", &db)) {
+    if (sqlite3_open("sqlite/database.db", &db) != SQLITE_OK) {
         std::cerr << "Nie udało się otworzyć bazy danych: " << sqlite3_errmsg(db) << std::endl;
         return;
     }
 
-    map<string, double> mapOfCryptosNameAndPrice = getMapOfCryptosNameAndPrice();
-
-    for (const auto &it : mapOfCryptosNameAndPrice) {
-        // Create sql request
-        ostringstream sql;
-        sql << "UPDATE crypto_price SET price = " << it.second 
-            << " WHERE name = '" << it.first << "';";
-
-        // Make a request
-        if (sqlite3_exec(db, sql.str().c_str(), nullptr, nullptr, &errMsg) != SQLITE_OK) {
-            std::cerr << "Błąd podczas wykonywania zapytania: " << errMsg << std::endl;
-            sqlite3_free(errMsg);
-        } else {
-            //std::cout << "Dane dla " << it.first << " zostały zaktualizowane pomyślnie!" << std::endl;
+    auto callback = [](void *data, int argc, char **argv, char **azColName) -> int {
+        std::string *result = static_cast<std::string *>(data);
+        for (int i = 0; i < argc; i++) {
+            *result += std::string(azColName[i]) + ": " + (argv[i] ? argv[i] : "NULL") + "\t";
         }
+        *result += "\n";
+        return 0;
+    };
+    
+    std::string result;
+    if (sqlite3_exec(db, sql, callback, &result, &errMsg) != SQLITE_OK) {
+        std::cerr << "Błąd wykonania zapytania: " << errMsg << std::endl;
+        sqlite3_free(errMsg);
     }
 
-    // Close
+    std::cout << result << std::endl;
     sqlite3_close(db);
-}
-
-void callback(void *NotUsed, int argc, char **argv, char **azColName) {
-  for (int i = 0; i < argc; i++) {
-    // Dodajemy nazwę kolumny i wartość do zmiennej result
-    result += std::string(azColName[i]) + ": " + (argv[i] ? argv[i] : "NULL") + "\t";
-  }
-  result += "\n";
-}
-
-void printCryptoNameAndPriceDb() {
-  sqlite3 *db;
-  char *errMsg = nullptr;
-  const char *sql = "SELECT * FROM users";
-
-  // Otwieramy bazę danych
-  if (sqlite3_open("database.db", &db) != SQLITE_OK) {
-      std::cerr << "Nie udało się otworzyć bazy danych: " << sqlite3_errmsg(db) << std::endl;
-      return 1;
-  }
-
-  // Wykonujemy zapytanie SELECT z funkcją callback
-  if (sqlite3_exec(db, sql, callback, nullptr, &errMsg) != SQLITE_OK) {
-      std::cerr << "Błąd wykonania zapytania: " << errMsg << std::endl;
-      sqlite3_free(errMsg);
-  }
-
-  // Zamykamy bazę danych
-  sqlite3_close(db);
-
-  // Wyświetlamy wynik jako string
-  std::cout << "Wynik zapytania:\n" << result << std::endl;
 }
