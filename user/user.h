@@ -6,6 +6,8 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <sqlite3.h>
+#include <sstream>
 
 using namespace std;
 

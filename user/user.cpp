@@ -17,12 +17,35 @@ bool User::getUserLoginStatus() {
 }
 
 void User::saveData() {
-  ofstream file;
-  file.open(login + ".txt");
+  // ofstream file;
+  // file.open(login + ".txt");
 
-  file << password << '\n';
-  file << balanceInCents;
-  file.close(); 
+  // file << password << '\n';
+  // file << balanceInCents;
+  // file.close(); 
+
+  sqlite3 *db;
+  char *errMsg = nullptr;
+
+  // Connect with databse
+  if (sqlite3_open("sqlite/database.db", &db)) {
+    cerr << "Nie udało się otworzyć bazy danych: " << sqlite3_errmsg(db) << endl;
+    return;
+  }
+
+  // Create sql request
+  ostringstream sql;
+  sql << "INSERT INTO users (login, password, first_name, last_name)"
+      << " VALUES ('" << this->login << "', '" << this->password << "', '" << this->firstName << "', '" << this->lastName << "');";
+
+  // Make a request
+  if (sqlite3_exec(db, sql.str().c_str(), nullptr, nullptr, &errMsg) != SQLITE_OK) {
+    cerr << "Błąd podczas wykonywania zapytania: " << errMsg << endl;
+    sqlite3_free(errMsg);
+  }
+
+  // Close
+  sqlite3_close(db);
 }
 
 void User::loginUser() {
@@ -187,8 +210,6 @@ void User::registerUser() {
   this->balanceInCents = 0;
 
   // split register login and register password (?)
-  // get first name and last name func;
-  // insert into db
 
   this->firstName = setFirstName();
   this->lastName = setLastName();
