@@ -11,7 +11,7 @@ size_t Memory::WriteCallback(void* contents, size_t size, size_t nmemb, void* us
   Memory* mem = static_cast<Memory*>(userp);
   string chunk((char*)contents, realsize);
 
-  mem->formatStringReceivedFromApiRequestAndSaveIntooDb(chunk);
+  mem->formatStringReceivedFromApiRequestAndSaveIntoDb(chunk);
   
   return realsize;
 }
@@ -46,33 +46,32 @@ void Memory::makeRequestAndWriteMemory(const vector<string> apiId, CURL* curl, C
 
 
 void Memory::updateCryptoPriceIntoDB(string name, double price) {
-    sqlite3 *db;
-    char *errMsg = nullptr;
+  sqlite3 *db;
+  char *errMsg = nullptr;
 
-    // Connect with databse
-    if (sqlite3_open("sqlite/database.db", &db)) {
-        std::cerr << "Nie udało się otworzyć bazy danych: " << sqlite3_errmsg(db) << std::endl;
-        return;
-    }
-        // Create sql request
-        ostringstream sql;
-        sql << "UPDATE crypto_price SET price = " << price
-            << " WHERE name = '" << name << "';";
+  // Connect with databse
+  if (sqlite3_open("sqlite/database.db", &db)) {
+    cerr << "Nie udało się otworzyć bazy danych: " << sqlite3_errmsg(db) << endl;
+    return;
+  }
 
-        // Make a request
-        if (sqlite3_exec(db, sql.str().c_str(), nullptr, nullptr, &errMsg) != SQLITE_OK) {
-            std::cerr << "Błąd podczas wykonywania zapytania: " << errMsg << std::endl;
-            sqlite3_free(errMsg);
-        } else {
-            //std::cout << "Dane dla " << it.first << " zostały zaktualizowane pomyślnie!" << std::endl;
-        }
+  // Create sql request
+  ostringstream sql;
+  sql << "UPDATE crypto_price SET price = " << price
+      << " WHERE name = '" << name << "';";
 
-    // Close
-    sqlite3_close(db);
+  // Make a request
+  if (sqlite3_exec(db, sql.str().c_str(), nullptr, nullptr, &errMsg) != SQLITE_OK) {
+    cerr << "Błąd podczas wykonywania zapytania: " << errMsg << endl;
+    sqlite3_free(errMsg);
+  }
+
+  // Close
+  sqlite3_close(db);
 }
 
 
-void Memory::formatStringReceivedFromApiRequestAndSaveIntooDb(string &data) {
+void Memory::formatStringReceivedFromApiRequestAndSaveIntoDb(string &data) {
 
   Crypto crypto;
   map<string, string> mapIdAndNameCrypto;
@@ -110,30 +109,30 @@ void Memory::formatStringReceivedFromApiRequestAndSaveIntooDb(string &data) {
 }
 
 void Memory::printCryptoNameAndPriceDb() {
-    sqlite3 *db;
-    char *errMsg = nullptr;
-    const char *sql = "SELECT name, price FROM crypto_price ORDER BY price DESC";
+  sqlite3 *db;
+  char *errMsg = nullptr;
+  const char *sql = "SELECT name, price FROM crypto_price ORDER BY price DESC";
 
-    if (sqlite3_open("sqlite/database.db", &db) != SQLITE_OK) {
-        std::cerr << "Nie udało się otworzyć bazy danych: " << sqlite3_errmsg(db) << std::endl;
-        return;
+  if (sqlite3_open("sqlite/database.db", &db) != SQLITE_OK) {
+    cerr << "Can not open database: " << sqlite3_errmsg(db) << endl;
+    return;
+  }
+
+  auto callback = [](void *data, int argc, char **argv, char **azColName) -> int {
+    string *result = static_cast<string *>(data);
+    for (int i = 0; i < argc; i++) {
+      *result += string(azColName[i]) + ": " + (argv[i] ? argv[i] : "NULL") + "\t";
     }
+    *result += "\n";
+    return 0;
+  };
+  
+  string result;
+  if (sqlite3_exec(db, sql, callback, &result, &errMsg) != SQLITE_OK) {
+    cerr << "Error in making db request: " << errMsg << endl;
+    sqlite3_free(errMsg);
+  }
 
-    auto callback = [](void *data, int argc, char **argv, char **azColName) -> int {
-        std::string *result = static_cast<std::string *>(data);
-        for (int i = 0; i < argc; i++) {
-            *result += std::string(azColName[i]) + ": " + (argv[i] ? argv[i] : "NULL") + "\t";
-        }
-        *result += "\n";
-        return 0;
-    };
-    
-    std::string result;
-    if (sqlite3_exec(db, sql, callback, &result, &errMsg) != SQLITE_OK) {
-        std::cerr << "Błąd wykonania zapytania: " << errMsg << std::endl;
-        sqlite3_free(errMsg);
-    }
-
-    std::cout << result << std::endl;
-    sqlite3_close(db);
+  cout << result << endl;
+  sqlite3_close(db);
 }
