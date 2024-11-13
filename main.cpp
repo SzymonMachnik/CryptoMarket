@@ -105,46 +105,10 @@ int main() {
     messageThread.join();
   }
 
-
   // Czyszczenie zasobów CURL
   curl_easy_cleanup(curl);
 
   cout << "Finished succesful." << endl;
 
-
-  // sqlite3 *db;
-  // char *errMsg = nullptr;
-
-  // // Otwarcie połączenia z bazą danych
-  // if (sqlite3_open("sqlite/database.db", &db)) {
-  //     std::cerr << "Nie udało się otworzyć bazy danych: " << sqlite3_errmsg(db) << std::endl;
-  //     return 1;
-  // }
-
-  // vector<string> names = crypto.getCryptoNameVector();
-  // vector<string> api = crypto.getCryptoApiIdVector();
-
-  // for (int i = 0; i < names.size(); i++) {
-  //   // Zapytanie SQL - wstawienie danych
-  //   string sql = "INSERT INTO crypto_price (name, api, price) VALUES ('";
-  //   sql += names[i];
-  //   sql += "', '";
-  //   sql += api[i];
-  //   sql += "', 0);";
-
-  //   // Wykonanie zapytania SQL
-  //   if (sqlite3_exec(db, sql.c_str(), nullptr, nullptr, &errMsg) != SQLITE_OK) {
-  //       std::cerr << "Błąd podczas wykonywania zapytania: " << errMsg << std::endl;
-  //       sqlite3_free(errMsg);
-  //   } else {
-  //       std::cout << "Dane zostały dodane pomyślnie!" << std::endl;
-  //   }
-  // }
-
-
-  // // Zamknięcie połączenia z bazą danych
-  // sqlite3_close(db);
-
   return 0;
 }
-//nth
