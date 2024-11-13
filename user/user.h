@@ -16,8 +16,14 @@ class User {
     string login; 
     bool isUserLoged;
 
+    string firstName;
+    string lastName;
+
     int balanceInCents;
     int balanceAboveWhichUserCantDepositInCents;
+
+    string setFirstName();
+    string setLastName();
 
   public:
     User();

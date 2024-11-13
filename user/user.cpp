@@ -62,6 +62,40 @@ void User::loginUser() {
   this->password = password;
 }
 
+string User::setFirstName() {
+  string firstName;
+
+  do {
+    cout << "Enter your first name: ";
+    cin >> firstName;
+    cin.ignore(1000, '\n');
+
+    if (firstName.find(' ') != string::npos) {
+      firstName = "";
+      continue;
+    }; // checking if name contains space    
+  } while (firstName.size() == 0);
+
+  return firstName;
+}
+
+string User::setLastName() {
+  string lastName;
+
+  do {
+    cout << "Enter your first name: ";
+    cin >> lastName;
+    cin.ignore(1000, '\n');
+
+    if (lastName.find(' ') != string::npos) {
+      lastName = "";
+      continue;
+    }; // checking if name contains space    
+  } while (lastName.size() == 0);
+
+  return lastName;
+}
+
 void User::registerUser() {
   string login;
   string password;
@@ -151,6 +185,15 @@ void User::registerUser() {
   this->login = login;
   this->password = password;
   this->balanceInCents = 0;
+
+  // split register login and register password (?)
+  // get first name and last name func;
+  // insert into db
+
+  this->firstName = setFirstName();
+  this->lastName = setLastName();
+
+  cout << "Welcome " << firstName << " " << lastName << "!" << endl;
 
   saveData();
 }
