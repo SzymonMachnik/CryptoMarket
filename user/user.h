@@ -27,12 +27,15 @@ class User {
     void setUserLogin();
     void setUserPassword();
 
+
     void setFirstName();
     void setLastName();
 
 
   public:
     User();
+
+    bool doesLoginExistInDb(string login);
 
     bool getUserLoginStatus();
     void loginUser();

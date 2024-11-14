@@ -3,6 +3,7 @@
 #include <string>
 #include <map>
 #include <cassert>
+#include <sqlite3.h>
 #include "../memory/memory.h"
 #include "../crypto/crypto.h"
 #include "../user/user.h"
@@ -79,6 +80,16 @@ int main() {
   // assert(formatStringToMoneyInCentsToDeposit("-123") == 0); // Invalid -> 0 cents
 
   // cout << "All tests completed successfully!" << endl;
+
+  // TEST6 USER doesLoginExistInDb() ////////////////////////////////////////////////////////////////////////////////////
   
+  User user;
+
+  cout << "Test1 \t Expected: True \t Returned: " << user.doesLoginExistInDb("szymonmachnik") << endl;
+  cout << "Test2 \t Expected: True \t Returned: " << user.doesLoginExistInDb("szymonmach") << endl;
+  cout << "Test3 \t Expected: False \t Returned: " << user.doesLoginExistInDb("szymonmachh") << endl;
+  cout << "Test4 \t Expected: False \t Returned: " << user.doesLoginExistInDb("") << endl;
+
+
   return 0;
 }
