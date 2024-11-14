@@ -225,8 +225,6 @@ void User::registerUser() {
   this->isUserLoged = true;
   this->balanceInCents = 0;
 
-  // split register login and register password (?)
-
   setFirstName();
   setLastName();
 
