@@ -109,10 +109,10 @@ void User::setLastName() {
     if (lastName.find(' ') != string::npos) {
       lastName = "";
       continue;
-    }; // checking if name contains space    
+    } // checking if name contains space    
   } while (lastName.size() == 0);
 
-    this->lastName = lastName;
+  this->lastName = lastName;
 }
 
 bool User::doesLoginExistInDb(string login) {
