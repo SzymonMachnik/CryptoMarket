@@ -85,7 +85,10 @@ void User::loginUser() {
   this->password = password;
 }
 
-string User::setFirstName() {
+
+
+
+void User::setFirstName() {
   string firstName;
 
   do {
@@ -99,10 +102,10 @@ string User::setFirstName() {
     }; // checking if name contains space    
   } while (firstName.size() == 0);
 
-  return firstName;
+  this->firstName = firstName;
 }
 
-string User::setLastName() {
+void User::setLastName() {
   string lastName;
 
   do {
@@ -116,13 +119,13 @@ string User::setLastName() {
     }; // checking if name contains space    
   } while (lastName.size() == 0);
 
-  return lastName;
+    this->lastName = lastName;
 }
 
-void User::registerUser() {
-  string login;
-  string password;
+void User::setUserLogin() {
   
+  string login;
+
   bool correctLogin = false;
   do {
     cout << "Enter login to your new account: ";
@@ -135,19 +138,26 @@ void User::registerUser() {
     // only small letters
     correctLogin = true;
     if (login.size() < 10 || 32 < login.size()) {
-      cout << "Login size must to be beteen 10 and 32 characters" << endl;
+      cout << "Login size must to be beteen 10 and 32 characters." << endl;
       correctLogin = false;
     } else {
       for (char c : login) {
         if (!(0 <= c - 'a' && c - 'a' <= 25)) {
           correctLogin = false;
+          cout << "Login must contain only letters." << endl;
           break;
         }
       }
     }
     
   } while (correctLogin == false);
-  
+
+  this->login = login;
+}
+
+void User::setUserPassword() {
+  string password;
+    
   bool correctPassword = false;
   do {
     cout << "Enter password to your new account: ";
@@ -168,7 +178,7 @@ void User::registerUser() {
     int minSpecialCharacter = 1;
 
     if (password.size() < 8 || 32 < password.size()) {
-      cout << "Password size must to be beteen 8 and 32 characters" << endl;
+      cout << "Password size must to be beteen 8 and 32 characters." << endl;
       correctPassword = false;
     } else {
       for (char c : password) {
@@ -181,8 +191,7 @@ void User::registerUser() {
         } else if (33 <= c && c <= 125) {
           specialCharacterCounter++;
         } else {
-          correctLogin = false;
-          break;
+          correctPassword = false;
         }
       }
     }
@@ -192,11 +201,11 @@ void User::registerUser() {
           && digitCounter >= minDigit
           && specialCharacterCounter >= minSpecialCharacter)) {
 
-        cout << "Password has to include at least:" << endl;
-        cout << minLowerLetter << " small letters" << " Includes: " << lowerLetterCounter << endl;
-        cout << minCapitalLetter << " capital letter" << " Includes: " << capitalLetterCounter << endl;
+        cout << "Password has to contain at least:" << endl;
+        cout << minLowerLetter << " small letters" << " Contains: " << lowerLetterCounter << endl;
+        cout << minCapitalLetter << " capital letter" << " Contains: " << capitalLetterCounter << endl;
         cout << minDigit << " digits" << " Includes: " << digitCounter << endl;
-        cout << minSpecialCharacter << " special character" << " Includes: " << specialCharacterCounter << endl;
+        cout << minSpecialCharacter << " special character" << " Contains: " << specialCharacterCounter << endl;
 
         correctPassword = false;
       }
@@ -204,15 +213,22 @@ void User::registerUser() {
     
   } while (correctPassword == false);
 
+    this->password = password;
+}
+
+
+void User::registerUser() {
+
+  setUserLogin();
+  setUserPassword();
+  
   this->isUserLoged = true;
-  this->login = login;
-  this->password = password;
   this->balanceInCents = 0;
 
   // split register login and register password (?)
 
-  this->firstName = setFirstName();
-  this->lastName = setLastName();
+  setFirstName();
+  setLastName();
 
   cout << "Welcome " << firstName << " " << lastName << "!" << endl;
 

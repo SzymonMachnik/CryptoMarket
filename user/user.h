@@ -24,8 +24,12 @@ class User {
     int balanceInCents;
     int balanceAboveWhichUserCantDepositInCents;
 
-    string setFirstName();
-    string setLastName();
+    void setUserLogin();
+    void setUserPassword();
+
+    void setFirstName();
+    void setLastName();
+
 
   public:
     User();
