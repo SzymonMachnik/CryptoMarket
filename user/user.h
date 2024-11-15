@@ -14,6 +14,9 @@ using namespace std;
 
 class User {
   private:
+
+    int userId;
+
     string password;
     string login; 
     bool isUserLoged;
@@ -31,6 +34,7 @@ class User {
     void setFirstName();
     void setLastName();
 
+    void setUserId();
 
   public:
     User();
