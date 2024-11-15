@@ -41,41 +41,90 @@ void User::saveData() {
   sqlite3_close(db);
 }
 
-void User::loginUser() {
-  string login;
-  cout << "Enter login to your account: ";
-  cin >> login;
+void User::setUserDataDuringLogin() {
+  sqlite3* db;
+  sqlite3_open("sqlite/database.db", &db);
 
-  ifstream file;
+  // Create sql request
+  ostringstream sql;
+  sql << "SELECT user_id, login, password, first_name, last_name, balance_cent FROM users WHERE login = '" << this->login << "';";
+  sqlite3_stmt* stmt;
 
-  file.open(login + ".txt");
-
-  if (file.is_open() == false) {
-    cout << "Inaccurance: Account with this login doesn't exist" << endl;
+    
+  if (sqlite3_prepare_v2(db, sql.str().c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
+    cout << "ERROR setUserDataDuringLogin: Failed to prepare statement: " << sqlite3_errmsg(db) << endl;
     return;
-  } else {
-    string password;
-    cout << "Enter password to your account: ";
-    cin >> password;
-
-    string line;
-    getline(file, line);
-
-    if (line == password) {
-      this->isUserLoged = true;
-      cout << "Loged succesful" << endl;
-      string line;
-      getline(file, line);
-      this->balanceInCents = stoi(line);
-    } else {
-      cout << "Inaccurance: Wrong password" << endl;
-    }
-
-    file.close();
   }
 
-  this->login = login;
-  this->password = password;
+  sqlite3_bind_int(stmt, 1, this->userId);
+
+  // Make a request and assing result to user data
+  if (sqlite3_step(stmt) == SQLITE_ROW) {
+    this->userId = sqlite3_column_int(stmt, 0);
+    this->login = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
+    this->password = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
+    this->firstName = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 3));
+    this->lastName = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 4));
+    this->balanceInCents = sqlite3_column_int(stmt, 5);
+    this->isUserLoged = true;
+  } else {
+    cout << "ERROR setUserDataDuringLogin: User not found." << endl;
+  }
+
+  // Clean up
+  sqlite3_finalize(stmt);
+  sqlite3_close(db);
+}
+
+void User::loginUser() {
+  string tempLogin;
+  cout << "Enter login to your account: ";
+  cin >> tempLogin;
+
+  sqlite3 *db;
+  char *errMsg = nullptr;
+
+  ostringstream sql;
+  sql << "SELECT password FROM users WHERE login = '" << tempLogin << "';";
+
+  if (sqlite3_open("sqlite/database.db", &db) != SQLITE_OK) {
+    cerr << "Can not open database: " << sqlite3_errmsg(db) << endl;
+    return;
+  }
+
+  auto callback = [](void *data, int argc, char **argv, char **azColName) -> int {
+    string *passwordInDb = static_cast<string *>(data);
+    for (int i = 0; i < argc; i++) {
+      *passwordInDb += string(argv[i]);
+    }
+    
+    return 0;
+  };
+  
+  string passwordInDb;
+  if (sqlite3_exec(db, sql.str().c_str(), callback, &passwordInDb, &errMsg) != SQLITE_OK) {
+    cerr << "Error in making db request: " << errMsg << endl;
+    sqlite3_free(errMsg);
+  }
+
+  sqlite3_close(db);
+
+  if (passwordInDb.size() == 0) {
+    cout << "Account with this login doesn't exist." << endl;
+  } else {  
+    string tempPassword;
+    cout << "Enter password to your account: ";
+    cin >> tempPassword;
+    
+    if (tempPassword == passwordInDb) {
+      this->login = tempLogin;
+      setUserDataDuringLogin();
+
+      cout << userId << firstName << lastName << balanceInCents << endl;
+    } else {
+      cout << "Wrong password." << endl;
+    }
+  }
 }
 
 

@@ -36,6 +36,8 @@ class User {
 
     void setUserId();
 
+    void setUserDataDuringLogin();
+
   public:
     User();
 
