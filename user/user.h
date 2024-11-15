@@ -33,21 +33,21 @@ class User {
 
     void setFirstName();
     void setLastName();
-
     void setUserId();
 
     void setUserDataDuringLogin();
 
+    void setBalanceInDb();
+    bool doesLoginExistInDb(string login);
+    void insertUserIntoDb();
+        
+
   public:
     User();
-
-    bool doesLoginExistInDb(string login);
 
     bool getUserLoginStatus();
     void loginUser();
     void registerUser();
-
-    void saveData();
 
     void deposit(int moneyInCents);
     int getBalanceInCents();

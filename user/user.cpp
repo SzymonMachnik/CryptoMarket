@@ -16,7 +16,7 @@ bool User::getUserLoginStatus() {
   return isUserLoged;
 }
 
-void User::saveData() {
+void User::insertUserIntoDb() {
   sqlite3 *db;
   char *errMsg = nullptr;
 
@@ -120,7 +120,6 @@ void User::loginUser() {
       this->login = tempLogin;
       setUserDataDuringLogin();
 
-      cout << userId << firstName << lastName << balanceInCents << endl;
     } else {
       cout << "Wrong password." << endl;
     }
@@ -346,10 +345,35 @@ void User::registerUser() {
   this->isUserLoged = true;
   this->balanceInCents = 0;
 
-  saveData();
+  insertUserIntoDb();
   cout << "Welcome " << firstName << " " << lastName << "!" << endl;
   
   setUserId();
+}
+
+void User::setBalanceInDb() {
+  sqlite3 *db;
+  char *errMsg = nullptr;
+
+  // Connect with databse
+  if (sqlite3_open("sqlite/database.db", &db)) {
+    cerr << "Nie udało się otworzyć bazy danych: " << sqlite3_errmsg(db) << endl;
+    return;
+  }
+
+  // Create sql request
+  ostringstream sql;
+  sql << "UPDATE users SET balance_cent = " << this->balanceInCents <<
+         " WHERE user_id = " << this->userId << ";";
+
+  // Make a request
+  if (sqlite3_exec(db, sql.str().c_str(), nullptr, nullptr, &errMsg) != SQLITE_OK) {
+    cerr << "Błąd podczas wykonywania zapytania: " << errMsg << endl;
+    sqlite3_free(errMsg);
+  }
+
+  // Close
+  sqlite3_close(db);  
 }
 
 void User::deposit(int moneyToDepositInCents) {
@@ -357,10 +381,10 @@ void User::deposit(int moneyToDepositInCents) {
     // do nothing
   } else if (balanceInCents + moneyToDepositInCents > balanceAboveWhichUserCantDepositInCents) {
     balanceInCents = balanceAboveWhichUserCantDepositInCents;
-    saveData();
+    setBalanceInDb();
   } else {
     balanceInCents += moneyToDepositInCents;
-    saveData();
+    setBalanceInDb();
   }
 }
 
