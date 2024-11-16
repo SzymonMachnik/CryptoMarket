@@ -436,8 +436,29 @@ void User::buyCrypto() {
   cin.ignore(1000, '\n');
 
   double price = returnPriceOfCrypto(crypto);
+  if (price == 0.0) return;
 
-  cout << price << endl;
+  string amount;
+  cout << "Enter how much " << crypto << " you want to buy." << endl;
+  cin >> amount;
+  cin.ignore(1000, '\n'); 
+  double d_amount = stod(amount);
+  
+
+  cout << price * d_amount << endl;
+  int amountToSpendInCent = price * d_amount * 100 + 1;
+  cout << "Amount to spend (cents): " << amountToSpendInCent << endl;
+  cout << "Balance (cents): " << balanceInCents << endl;
+  
+  if (amountToSpendInCent > this->balanceInCents) {
+    cout << "You can't afford it." << endl;
+    return;
+  }
+
+  balanceInCents -= amountToSpendInCent;
+  setBalanceInDb();
+  cout << "Bought succesful" << endl;
+
 }
 
 void User::buyCrypto(string crypto) {

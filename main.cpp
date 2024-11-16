@@ -77,7 +77,7 @@ int main() {
     cin.ignore(1000, '\n');
 
     if (input == "1") {
-      cout << "Crypto boughten" << endl;
+      user.buyCrypto();
     } else if (input == "2") {
       memory.printCryptoNameAndPriceDb();
     } else if (input == "3") {
@@ -101,9 +101,9 @@ int main() {
   }
 
 
-  if (messageThread.joinable()) {
-    messageThread.join();
-  }
+  // if (messageThread.joinable()) {
+  //   messageThread.join();
+  // }
 
   // Czyszczenie zasobów CURL
   curl_easy_cleanup(curl);
