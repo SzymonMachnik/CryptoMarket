@@ -40,6 +40,9 @@ class User {
     void setBalanceInDb();
     bool doesLoginExistInDb(string login);
     void insertUserIntoDb();
+
+
+    double returnPriceOfCrypto(string crypto);
         
 
   public:
@@ -51,6 +54,10 @@ class User {
 
     void deposit(int moneyInCents);
     int getBalanceInCents();
+
+    void buyCrypto();
+    void buyCrypto(string crypto);
+
 };
 
 #endif

@@ -83,12 +83,20 @@ int main() {
 
   // TEST6 USER doesLoginExistInDb() ////////////////////////////////////////////////////////////////////////////////////
   
-  User user;
+  // User user;
 
-  cout << "Test1 \t Expected: True \t Returned: " << user.doesLoginExistInDb("szymonmachnik") << endl;
-  cout << "Test2 \t Expected: True \t Returned: " << user.doesLoginExistInDb("szymonmach") << endl;
-  cout << "Test3 \t Expected: False \t Returned: " << user.doesLoginExistInDb("szymonmachh") << endl;
-  cout << "Test4 \t Expected: False \t Returned: " << user.doesLoginExistInDb("") << endl;
+  // cout << "Test1 \t Expected: True \t Returned: " << user.doesLoginExistInDb("szymonmachnik") << endl;
+  // cout << "Test2 \t Expected: True \t Returned: " << user.doesLoginExistInDb("szymonmach") << endl;
+  // cout << "Test3 \t Expected: False \t Returned: " << user.doesLoginExistInDb("szymonmachh") << endl;
+  // cout << "Test4 \t Expected: False \t Returned: " << user.doesLoginExistInDb("") << endl;
+
+  // TEST 7 USER returnPriceOfCrypto() //////////////////////////////////////////////////////////////////////////////////
+
+  User user;
+  cout << "TEST1 Expected price \t"; user.buyCrypto("bitcoin");
+  cout << "TEST2 Expected price \t"; user.buyCrypto("dogecoin");
+  cout << "TEST3 Expected noprc \t"; user.buyCrypto("etherem");
+  cout << "TEST3 Expected price \t"; user.buyCrypto("xrp");
 
 
   return 0;

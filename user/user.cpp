@@ -391,3 +391,62 @@ void User::deposit(int moneyToDepositInCents) {
 int User::getBalanceInCents() {
   return balanceInCents;
 }
+
+
+
+double User::returnPriceOfCrypto(string crypto) {
+  sqlite3 *db;
+  char *errMsg = nullptr;
+  ostringstream sql;
+  sql << "SELECT price FROM crypto_price WHERE name = '" << crypto << "';";
+
+  // Otwieramy bazę danych
+  if (sqlite3_open("sqlite/database.db", &db) != SQLITE_OK) {
+    cerr << "Nie można otworzyć bazy danych: " << sqlite3_errmsg(db) << endl;
+    return -1.0; // Zwracamy wartość sygnalizującą błąd
+  }
+
+  // Callback jako lambda
+  double cryptoPrice = 0.0;
+  auto callback = [](void *data, int argc, char **argv, char **azColName) -> int {
+    if (argc > 0 && argv[0]) {
+      *static_cast<double *>(data) = stod(argv[0]);
+    }
+    return 0;
+  };
+
+  // Wykonujemy zapytanie SQL
+  if (sqlite3_exec(db, sql.str().c_str(), callback, &cryptoPrice, &errMsg) != SQLITE_OK) {
+    cerr << "Błąd w zapytaniu SQL: " << errMsg << endl;
+    sqlite3_free(errMsg);
+    sqlite3_close(db);
+    return -1.0;
+  }
+
+  // Zamykamy bazę danych
+  sqlite3_close(db);
+
+  return cryptoPrice;
+}
+
+void User::buyCrypto() {
+  string crypto;
+  cout << "Enter crypto which you are like to buy: ";
+  cin >> crypto;
+  cin.ignore(1000, '\n');
+
+  double price = returnPriceOfCrypto(crypto);
+
+  cout << price << endl;
+}
+
+void User::buyCrypto(string crypto) {
+  // string crypto;
+  // cout << "Enter crypto which you are like to buy: ";
+  // cin >> crypto;
+  // cin.ignore(1000, '\n');
+
+  double price = returnPriceOfCrypto(crypto);
+
+  cout << crypto << " price: " << (price > 0.0 ? to_string(price) : "doesn't exist") << endl;
+}
