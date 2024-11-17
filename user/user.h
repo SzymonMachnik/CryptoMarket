@@ -36,7 +36,9 @@ class User {
     void setUserId();
 
     void setUserDataDuringLogin();
+
     void generateUserWallet();
+    void insertCryptoToWallet(string cryptoName, double cryptoAmount, double cryptoPrice, int valueCent);
 
     void setBalanceInDb();
     bool doesLoginExistInDb(string login);
@@ -44,6 +46,7 @@ class User {
 
 
     double returnPriceOfCrypto(string crypto);
+    int getCryptoId(string cryptoName);
         
 
   public:

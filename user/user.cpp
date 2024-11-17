@@ -351,7 +351,8 @@ void User::generateUserWallet() {
                     << " crypto_id INTEGER PRIMARY KEY NOT NULL,"
                     << " name TEXT NOT NULL,"
                     << " amount DECIMAL(20, 8) NOT NULL,"
-                    << " value DECIMAL(20, 8) NOT NULL"
+                    << " price DECIMAL(20, 8) NOT NULL,"
+                    << " value_cent INTEGER NOT NULL"
                     << " );";
 
   // Make a request CREATE TABLE
@@ -462,33 +463,99 @@ double User::returnPriceOfCrypto(string crypto) {
   return cryptoPrice;
 }
 
+int User::getCryptoId(string cryptoName) {
+
+  sqlite3 *db;
+  char *errMsg = nullptr;
+
+  ostringstream sql;
+  sql << "SELECT crypto_id FROM crypto_price WHERE name = '" << cryptoName << "';";
+
+  if (sqlite3_open("sqlite/database.db", &db) != SQLITE_OK) {
+    cerr << "Can not open database: " << sqlite3_errmsg(db) << endl;
+    return -1;
+  }
+
+  auto callback = [](void *data, int argc, char **argv, char **azColName) -> int {
+    string *result = static_cast<string *>(data);
+    for (int i = 0; i < argc; i++) {
+      *result += string(argv[i]);
+    }
+    
+    return 0;
+  };
+  
+  string result;
+  if (sqlite3_exec(db, sql.str().c_str(), callback, &result, &errMsg) != SQLITE_OK) {
+    cerr << "Error in making db request: " << errMsg << endl;
+    sqlite3_free(errMsg);
+  }
+
+  sqlite3_close(db);
+
+  return stoi(result);
+}
+
+void User::insertCryptoToWallet(string cryptoName, double cryptoAmount, double cryptoPrice, int valueCent) {
+  cout << "TEST" << endl;
+  int cryptoId = getCryptoId(cryptoName);
+  if (cryptoId == -1) return;
+
+  sqlite3 *db;
+  char *errMsg = nullptr;
+
+  // Connect with databse
+  if (sqlite3_open("sqlite/database.db", &db)) {
+    cerr << "Nie udało się otworzyć bazy danych: " << sqlite3_errmsg(db) << endl;
+    return;
+  }
+
+  // Create sql request
+  ostringstream sql;
+  sql << "INSERT INTO wallet_"<< this->userId << " (crypto_id, name, amount, price, value_cent)"
+      << " VALUES ('" << cryptoId << "', '" << cryptoName << "', '" << cryptoAmount << "', '" << cryptoPrice << "', '" << valueCent << "');";
+
+  // Make a request
+  if (sqlite3_exec(db, sql.str().c_str(), nullptr, nullptr, &errMsg) != SQLITE_OK) {
+    cerr << "Błąd podczas wykonywania zapytania: " << errMsg << endl;
+    sqlite3_free(errMsg);
+  }
+
+  // Close
+  sqlite3_close(db);
+
+  cout << "TEST" << endl;
+
+}
+
 void User::buyCrypto() {
-  string crypto;
+  string cryptoName;
   cout << "Enter crypto which you are like to buy: ";
-  cin >> crypto;
+  cin >> cryptoName;
   cin.ignore(1000, '\n');
 
-  double price = returnPriceOfCrypto(crypto);
-  if (price == 0.0) return;
+  double cryptoPrice = returnPriceOfCrypto(cryptoName);
+  if (cryptoPrice == 0.0) return;
 
-  string amount;
-  cout << "Enter how much " << crypto << " you want to buy." << endl;
-  cin >> amount;
+  string s_cryptoAmount;
+  cout << "Enter how much " << cryptoName << " you want to buy: ";
+  cin >> s_cryptoAmount;
   cin.ignore(1000, '\n'); 
-  double d_amount = stod(amount);
+  double d_cryptoAmount = stod(s_cryptoAmount);
   
 
-  cout << price * d_amount << endl;
-  int amountToSpendInCent = price * d_amount * 100 + 1;
-  cout << "Amount to spend (cents): " << amountToSpendInCent << endl;
+  int moneyToSpendInCent = cryptoPrice * d_cryptoAmount * 100 + 1;
+  cout << "Amount to spend (cents): " << moneyToSpendInCent << endl;
   cout << "Balance (cents): " << balanceInCents << endl;
   
-  if (amountToSpendInCent > this->balanceInCents) {
+  if (moneyToSpendInCent > this->balanceInCents) {
     cout << "You can't afford it." << endl;
     return;
   }
 
-  balanceInCents -= amountToSpendInCent;
+  insertCryptoToWallet(cryptoName, d_cryptoAmount, cryptoPrice, moneyToSpendInCent);
+  
+  balanceInCents -= moneyToSpendInCent;
   setBalanceInDb();
   cout << "Bought succesful" << endl;
 
