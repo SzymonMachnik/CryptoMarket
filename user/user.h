@@ -36,6 +36,7 @@ class User {
     void setUserId();
 
     void setUserDataDuringLogin();
+    void generateUserWallet();
 
     void setBalanceInDb();
     bool doesLoginExistInDb(string login);

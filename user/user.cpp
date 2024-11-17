@@ -334,6 +334,39 @@ void User::setUserId() {
   
 }
 
+
+void User::generateUserWallet() {
+  sqlite3* db;
+  char* errorMessage = 0;
+
+  // Connect to database
+  if (sqlite3_open("sqlite/database.db", &db) != SQLITE_OK) {
+    cerr << "Nie udało się otworzyć bazy danych: " << sqlite3_errmsg(db) << endl;
+    return;
+  }
+
+  // Create a request
+  ostringstream sqlCreateTable;
+
+  // ZMIENIĆ na wallet_1 i usunąć nawiasy i przetestwoać
+  sqlCreateTable << "CREATE TABLE wallet_" << userId << " ("
+                    << " crypto_id INTEGER PRIMARY KEY NOT NULL,"
+                    << " name TEXT NOT NULL,"
+                    << " amount NUMERIC NOT NULL,"
+                    << " value NUMERIC NOT NULL"
+                    << " );";
+
+  // Make a request CREATE TABLE
+  if (sqlite3_exec(db, sqlCreateTable.str().c_str(), nullptr, nullptr, &errorMessage) != SQLITE_OK) {
+    cerr << "Błąd podczas tworzenia tabeli: " << errorMessage << endl;
+    sqlite3_free(errorMessage);
+  }
+
+  // Zamknij połączenie z bazą danych
+  sqlite3_close(db);
+}
+
+
 void User::registerUser() {
 
   setUserLogin();
@@ -346,9 +379,11 @@ void User::registerUser() {
   this->balanceInCents = 0;
 
   insertUserIntoDb();
-  cout << "Welcome " << firstName << " " << lastName << "!" << endl;
-  
   setUserId();
+
+  generateUserWallet();
+
+  cout << "Welcome " << firstName << " " << lastName << "!" << endl;
 }
 
 void User::setBalanceInDb() {
