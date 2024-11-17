@@ -328,9 +328,9 @@ void User::setUserId() {
 
   sqlite3_close(db);
 
-  this->userId = result[0] - '0';
+  this->userId = stoi(result);
 
-  cout << userId << endl;
+  // cout << userId << endl;
   
 }
 
@@ -347,13 +347,11 @@ void User::generateUserWallet() {
 
   // Create a request
   ostringstream sqlCreateTable;
-
-  // ZMIENIĆ na wallet_1 i usunąć nawiasy i przetestwoać
   sqlCreateTable << "CREATE TABLE wallet_" << userId << " ("
                     << " crypto_id INTEGER PRIMARY KEY NOT NULL,"
                     << " name TEXT NOT NULL,"
-                    << " amount NUMERIC NOT NULL,"
-                    << " value NUMERIC NOT NULL"
+                    << " amount DECIMAL(20, 8) NOT NULL,"
+                    << " value DECIMAL(20, 8) NOT NULL"
                     << " );";
 
   // Make a request CREATE TABLE
