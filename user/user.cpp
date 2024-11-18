@@ -45,7 +45,7 @@ void User::insertUserIntoDb() {
 void User::setUserDataDuringLogin() {
   // Init
   sqlite3* db;
-  
+
   // Connect to databse
   if (sqlite3_open("sqlite/database.db", &db) != SQLITE_OK) {
     cerr << "Can not open database: " << sqlite3_errmsg(db) << endl;
@@ -609,4 +609,93 @@ void User::buyCrypto(string crypto) {
   double price = returnPriceOfCrypto(crypto);
 
   cout << crypto << " price: " << (price > 0.0 ? to_string(price) : "doesn't exist") << endl;
+}
+
+void User::walletUpdatePrice() {
+  // Init
+  sqlite3 *db;
+  char *errMsg = nullptr;
+
+  // Connect to database
+  if (sqlite3_open("sqlite/database.db", &db) != SQLITE_OK) {
+    cerr << "Can not open database: " << sqlite3_errmsg(db) << endl;
+    return;
+  }
+  
+  // Create 1st sql request
+  ostringstream sql;
+  sql << "UPDATE wallet_" << this->userId
+      << " SET price = ("
+      << "   SELECT cp.price"
+      << "   FROM crypto_price cp"
+      << "   WHERE cp.crypto_id = wallet_" << this->userId << ".crypto_id"
+      << " )";
+  // Make 1st sql request
+  if (sqlite3_exec(db, sql.str().c_str(), nullptr, nullptr, &errMsg) != SQLITE_OK) {
+    cerr << "Błąd podczas aktualizacji kolumny price: " << errMsg << endl;
+    sqlite3_free(errMsg);
+    return;
+  }
+
+  // Create 2nd sql request
+  ostringstream sql2;
+  sql2 << "UPDATE wallet_" << this->userId
+      << " SET value_cent = price * amount * 100";
+  // Make 2nd sql request
+  if (sqlite3_exec(db, sql2.str().c_str(), nullptr, nullptr, &errMsg) != SQLITE_OK) {
+    cerr << "Błąd podczas aktualizacji kolumny value_cent: " << errMsg << endl;
+    sqlite3_free(errMsg);
+    return;
+  }
+
+  // Close
+  sqlite3_close(db);
+ 
+}
+
+void User::displayWallet() {
+  // Init
+  sqlite3 *db;
+  char *errMsg = nullptr;
+
+  // Connect to database
+  if (sqlite3_open("sqlite/database.db", &db) != SQLITE_OK) {
+    cerr << "Can not open database: " << sqlite3_errmsg(db) << endl;
+    return;
+  }
+  walletUpdatePrice();
+  // Create a sql request
+  ostringstream sql;
+  sql << "SELECT name, amount, price, value_cent FROM wallet_" << this->userId << " ORDER BY price DESC";
+
+  auto callback = [](void *data, int argc, char **argv, char **azColName) -> int {
+      string *result = static_cast<string *>(data);
+      for (int i = 0; i < argc; i++) {
+          // Sprawdzamy, czy argv[i] nie jest nullptr
+          if (string(azColName[i]) == "value_cent") {
+              // Przekształcamy na double i dzielimy przez 100
+            
+              double value = stod(argv[i]);
+              *result += to_string(value / 100)  + "\t";
+
+          } else {
+              *result += string(argv[i]) + "\t";
+          }
+      }
+      *result += "\n";
+      return 0;
+  };
+  
+  // Make a sql request
+  string result;
+  cout << "Name \t Amount \t Price \t Value \t" << endl;
+  if (sqlite3_exec(db, sql.str().c_str(), callback, &result, &errMsg) != SQLITE_OK) {
+    cerr << "Error in making db request: " << errMsg << endl;
+    sqlite3_free(errMsg);
+  }
+
+  cout << result << endl;
+
+  // Close
+  sqlite3_close(db);
 }

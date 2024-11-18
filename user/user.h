@@ -43,6 +43,7 @@ class User {
 
     void generateUserWallet();
     void insertCryptoToWallet(string cryptoName, double cryptoAmount, double cryptoPrice, int valueCent);
+    void walletUpdatePrice();
     string setCryptoName();
     double setCryptoAmount();
 
@@ -61,6 +62,8 @@ class User {
 
     void buyCrypto();
     void buyCrypto(string crypto);
+
+    void displayWallet();
 
 };
 

@@ -71,6 +71,7 @@ int main() {
     cout << "[2] Check price of cryptos" << endl;
     cout << "[3] Deposit money to your account" << endl;
     cout << "[4] Check current balance" << endl;
+    cout << "[5] Display wallet" << endl;
     cout << "[9] Quit" << endl;
     cout << "Input: ";
     cin >> input;
@@ -91,6 +92,8 @@ int main() {
       if (formattedMoney > 0) user.deposit(formattedMoney);
     } else if (input == "4") {
       cout << "Your current balance: " << user.getBalanceInCents() / 100 << " $" << endl;
+    } else if (input == "5") {
+      user.displayWallet();
     } else if (input == "9") {
       cout << "Wait for close the application. This can take max 60 seconds." << endl;
       keep_running = false;
