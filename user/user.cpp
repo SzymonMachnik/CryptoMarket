@@ -671,11 +671,9 @@ void User::displayWallet() {
   auto callback = [](void *data, int argc, char **argv, char **azColName) -> int {
       string *result = static_cast<string *>(data);
       for (int i = 0; i < argc; i++) {
-          // Sprawdzamy, czy argv[i] nie jest nullptr
-          if (string(azColName[i]) == "value_cent") {
-              // Przekształcamy na double i dzielimy przez 100
-            
+          if (string(azColName[i]) == "value_cent") {            
               double value = stod(argv[i]);
+              // tranform to real value (not cents)
               *result += to_string(value / 100)  + "\t";
 
           } else {
