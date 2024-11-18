@@ -17,21 +17,22 @@ bool User::getUserLoginStatus() {
 }
 
 void User::insertUserIntoDb() {
+  // Init
   sqlite3 *db;
   char *errMsg = nullptr;
 
-  // Connect with databse
+  // Connect to databse
   if (sqlite3_open("sqlite/database.db", &db)) {
     cerr << "Nie udało się otworzyć bazy danych: " << sqlite3_errmsg(db) << endl;
     return;
   }
 
-  // Create sql request
+  // Create q sql request
   ostringstream sql;
   sql << "INSERT INTO users (login, password, first_name, last_name)"
       << " VALUES ('" << this->login << "', '" << this->password << "', '" << this->firstName << "', '" << this->lastName << "');";
 
-  // Make a request
+  // Make a sql request
   if (sqlite3_exec(db, sql.str().c_str(), nullptr, nullptr, &errMsg) != SQLITE_OK) {
     cerr << "Błąd podczas wykonywania zapytania: " << errMsg << endl;
     sqlite3_free(errMsg);
@@ -42,10 +43,16 @@ void User::insertUserIntoDb() {
 }
 
 void User::setUserDataDuringLogin() {
+  // Init
   sqlite3* db;
-  sqlite3_open("sqlite/database.db", &db);
+  
+  // Connect to databse
+  if (sqlite3_open("sqlite/database.db", &db) != SQLITE_OK) {
+    cerr << "Can not open database: " << sqlite3_errmsg(db) << endl;
+    return;
+  }
 
-  // Create sql request
+  // Create a sql request
   ostringstream sql;
   sql << "SELECT user_id, login, password, first_name, last_name, balance_cent FROM users WHERE login = '" << this->login << "';";
   sqlite3_stmt* stmt;
@@ -77,6 +84,7 @@ void User::setUserDataDuringLogin() {
 }
 
 void User::loginUser() {
+  // Init
   string tempLogin;
   cout << "Enter login to your account: ";
   cin >> tempLogin;
@@ -84,13 +92,15 @@ void User::loginUser() {
   sqlite3 *db;
   char *errMsg = nullptr;
 
-  ostringstream sql;
-  sql << "SELECT password FROM users WHERE login = '" << tempLogin << "';";
-
+  // Connect to databse
   if (sqlite3_open("sqlite/database.db", &db) != SQLITE_OK) {
     cerr << "Can not open database: " << sqlite3_errmsg(db) << endl;
     return;
   }
+
+  // Create a sql request  
+  ostringstream sql;
+  sql << "SELECT password FROM users WHERE login = '" << tempLogin << "';";
 
   auto callback = [](void *data, int argc, char **argv, char **azColName) -> int {
     string *passwordInDb = static_cast<string *>(data);
@@ -101,6 +111,7 @@ void User::loginUser() {
     return 0;
   };
   
+  // Make a sql request
   string passwordInDb;
   if (sqlite3_exec(db, sql.str().c_str(), callback, &passwordInDb, &errMsg) != SQLITE_OK) {
     cerr << "Error in making db request: " << errMsg << endl;
@@ -163,16 +174,20 @@ void User::setLastName() {
 }
 
 bool User::doesLoginExistInDb(string login) {
+  // Init
   sqlite3 *db;
   char *errMsg = nullptr;
 
-  ostringstream sql;
-  sql << "SELECT user_id FROM users WHERE login = '" << login << "';";
-
+  // Connect to database
   if (sqlite3_open("sqlite/database.db", &db) != SQLITE_OK) {
     cerr << "Can not open database: " << sqlite3_errmsg(db) << endl;
     return false;
   }
+  
+  // Create a sql request  
+  ostringstream sql;
+  sql << "SELECT user_id FROM users WHERE login = '" << login << "';";
+
 
   auto callback = [](void *data, int argc, char **argv, char **azColName) -> int {
     string *result = static_cast<string *>(data);
@@ -183,12 +198,14 @@ bool User::doesLoginExistInDb(string login) {
     return 0;
   };
   
+  // Make a sql request
   string result;
   if (sqlite3_exec(db, sql.str().c_str(), callback, &result, &errMsg) != SQLITE_OK) {
     cerr << "Error in making db request: " << errMsg << endl;
     sqlite3_free(errMsg);
   }
 
+  // Close
   sqlite3_close(db);
 
   if (result.empty()) return false;
@@ -300,16 +317,20 @@ void User::setUserId() {
     return;
   }
 
+  // Init
   sqlite3 *db;
   char *errMsg = nullptr;
 
-  ostringstream sql;
-  sql << "SELECT user_id FROM users WHERE login = '" << this->login << "';";
-
+  // Connect to database
   if (sqlite3_open("sqlite/database.db", &db) != SQLITE_OK) {
     cerr << "Can not open database: " << sqlite3_errmsg(db) << endl;
     return;
   }
+
+  // Create a sql request  
+  ostringstream sql;
+  sql << "SELECT user_id FROM users WHERE login = '" << this->login << "';";
+
 
   auto callback = [](void *data, int argc, char **argv, char **azColName) -> int {
     string *result = static_cast<string *>(data);
@@ -319,23 +340,23 @@ void User::setUserId() {
     
     return 0;
   };
-  
+
+  // Make a sql request
   string result;
   if (sqlite3_exec(db, sql.str().c_str(), callback, &result, &errMsg) != SQLITE_OK) {
     cerr << "Error in making db request: " << errMsg << endl;
     sqlite3_free(errMsg);
   }
 
+  // Close
   sqlite3_close(db);
 
   this->userId = stoi(result);
-
-  // cout << userId << endl;
-  
 }
 
 
 void User::generateUserWallet() {
+  // Init
   sqlite3* db;
   char* errorMessage = 0;
 
@@ -345,7 +366,7 @@ void User::generateUserWallet() {
     return;
   }
 
-  // Create a request
+  // Create a sql request
   ostringstream sqlCreateTable;
   sqlCreateTable << "CREATE TABLE wallet_" << userId << " ("
                     << " crypto_id INTEGER PRIMARY KEY NOT NULL,"
@@ -355,13 +376,13 @@ void User::generateUserWallet() {
                     << " value_cent INTEGER NOT NULL"
                     << " );";
 
-  // Make a request CREATE TABLE
+  // Make a sql request
   if (sqlite3_exec(db, sqlCreateTable.str().c_str(), nullptr, nullptr, &errorMessage) != SQLITE_OK) {
     cerr << "Błąd podczas tworzenia tabeli: " << errorMessage << endl;
     sqlite3_free(errorMessage);
   }
 
-  // Zamknij połączenie z bazą danych
+  // Close
   sqlite3_close(db);
 }
 
@@ -386,21 +407,22 @@ void User::registerUser() {
 }
 
 void User::setBalanceInDb() {
+  // Init
   sqlite3 *db;
   char *errMsg = nullptr;
 
-  // Connect with databse
+  // Connect to databse
   if (sqlite3_open("sqlite/database.db", &db)) {
     cerr << "Nie udało się otworzyć bazy danych: " << sqlite3_errmsg(db) << endl;
     return;
   }
 
-  // Create sql request
+  // Create a sql request
   ostringstream sql;
   sql << "UPDATE users SET balance_cent = " << this->balanceInCents <<
          " WHERE user_id = " << this->userId << ";";
 
-  // Make a request
+  // Make a sql request
   if (sqlite3_exec(db, sql.str().c_str(), nullptr, nullptr, &errMsg) != SQLITE_OK) {
     cerr << "Błąd podczas wykonywania zapytania: " << errMsg << endl;
     sqlite3_free(errMsg);
@@ -429,18 +451,22 @@ int User::getBalanceInCents() {
 
 
 double User::returnPriceOfCrypto(string crypto) {
+  // Init
   sqlite3 *db;
   char *errMsg = nullptr;
+
+  // Connect to database
+  if (sqlite3_open("sqlite/database.db", &db) != SQLITE_OK) {
+    cerr << "Nie można otworzyć bazy danych: " << sqlite3_errmsg(db) << endl;
+    return -1.0;
+  }
+
+  // Create a sql request
   ostringstream sql;
   sql << "SELECT price FROM crypto_price WHERE name = '" << crypto << "';";
 
-  // Otwieramy bazę danych
-  if (sqlite3_open("sqlite/database.db", &db) != SQLITE_OK) {
-    cerr << "Nie można otworzyć bazy danych: " << sqlite3_errmsg(db) << endl;
-    return -1.0; // Zwracamy wartość sygnalizującą błąd
-  }
 
-  // Callback jako lambda
+  // Callback as lambda
   double cryptoPrice = 0.0;
   auto callback = [](void *data, int argc, char **argv, char **azColName) -> int {
     if (argc > 0 && argv[0]) {
@@ -449,7 +475,7 @@ double User::returnPriceOfCrypto(string crypto) {
     return 0;
   };
 
-  // Wykonujemy zapytanie SQL
+  // Make a sql request
   if (sqlite3_exec(db, sql.str().c_str(), callback, &cryptoPrice, &errMsg) != SQLITE_OK) {
     cerr << "Błąd w zapytaniu SQL: " << errMsg << endl;
     sqlite3_free(errMsg);
@@ -457,24 +483,26 @@ double User::returnPriceOfCrypto(string crypto) {
     return -1.0;
   }
 
-  // Zamykamy bazę danych
+  // Close
   sqlite3_close(db);
 
   return cryptoPrice;
 }
 
 int User::getCryptoId(string cryptoName) {
-
+  // Init
   sqlite3 *db;
   char *errMsg = nullptr;
 
-  ostringstream sql;
-  sql << "SELECT crypto_id FROM crypto_price WHERE name = '" << cryptoName << "';";
-
+  // Connect to database
   if (sqlite3_open("sqlite/database.db", &db) != SQLITE_OK) {
     cerr << "Can not open database: " << sqlite3_errmsg(db) << endl;
     return -1;
   }
+
+  // Create a sql request
+  ostringstream sql;
+  sql << "SELECT crypto_id FROM crypto_price WHERE name = '" << cryptoName << "';";
 
   auto callback = [](void *data, int argc, char **argv, char **azColName) -> int {
     string *result = static_cast<string *>(data);
@@ -485,37 +513,39 @@ int User::getCryptoId(string cryptoName) {
     return 0;
   };
   
+  // Make a sql reuqest
   string result;
   if (sqlite3_exec(db, sql.str().c_str(), callback, &result, &errMsg) != SQLITE_OK) {
     cerr << "Error in making db request: " << errMsg << endl;
     sqlite3_free(errMsg);
   }
 
+  // Close
   sqlite3_close(db);
 
   return stoi(result);
 }
 
 void User::insertCryptoToWallet(string cryptoName, double cryptoAmount, double cryptoPrice, int valueCent) {
-  cout << "TEST" << endl;
   int cryptoId = getCryptoId(cryptoName);
   if (cryptoId == -1) return;
 
+  // Init
   sqlite3 *db;
   char *errMsg = nullptr;
 
-  // Connect with databse
+  // Connect to databse
   if (sqlite3_open("sqlite/database.db", &db)) {
     cerr << "Nie udało się otworzyć bazy danych: " << sqlite3_errmsg(db) << endl;
     return;
   }
 
-  // Create sql request
+  // Create a sql request
   ostringstream sql;
   sql << "INSERT INTO wallet_"<< this->userId << " (crypto_id, name, amount, price, value_cent)"
       << " VALUES ('" << cryptoId << "', '" << cryptoName << "', '" << cryptoAmount << "', '" << cryptoPrice << "', '" << valueCent << "');";
 
-  // Make a request
+  // Make a sql request
   if (sqlite3_exec(db, sql.str().c_str(), nullptr, nullptr, &errMsg) != SQLITE_OK) {
     cerr << "Błąd podczas wykonywania zapytania: " << errMsg << endl;
     sqlite3_free(errMsg);
@@ -524,27 +554,36 @@ void User::insertCryptoToWallet(string cryptoName, double cryptoAmount, double c
   // Close
   sqlite3_close(db);
 
-  cout << "TEST" << endl;
-
 }
 
-void User::buyCrypto() {
+string User::setCryptoName() {
   string cryptoName;
   cout << "Enter crypto which you are like to buy: ";
   cin >> cryptoName;
   cin.ignore(1000, '\n');
 
-  double cryptoPrice = returnPriceOfCrypto(cryptoName);
-  if (cryptoPrice == 0.0) return;
+  return cryptoName;
+}
 
+double User::setCryptoAmount() {
   string s_cryptoAmount;
-  cout << "Enter how much " << cryptoName << " you want to buy: ";
+  cout << "Enter how much you want to buy: ";
   cin >> s_cryptoAmount;
   cin.ignore(1000, '\n'); 
   double d_cryptoAmount = stod(s_cryptoAmount);
-  
 
-  int moneyToSpendInCent = cryptoPrice * d_cryptoAmount * 100 + 1;
+  return d_cryptoAmount;
+}
+
+void User::buyCrypto() {
+  string cryptoName = setCryptoName();
+
+  double cryptoPrice = returnPriceOfCrypto(cryptoName);
+  if (cryptoPrice == 0.0) return;
+
+  double cryptoAmount = setCryptoAmount();
+
+  int moneyToSpendInCent = cryptoPrice * cryptoAmount * 100 + 1;
   cout << "Amount to spend (cents): " << moneyToSpendInCent << endl;
   cout << "Balance (cents): " << balanceInCents << endl;
   
@@ -553,7 +592,7 @@ void User::buyCrypto() {
     return;
   }
 
-  insertCryptoToWallet(cryptoName, d_cryptoAmount, cryptoPrice, moneyToSpendInCent);
+  insertCryptoToWallet(cryptoName, cryptoAmount, cryptoPrice, moneyToSpendInCent);
   
   balanceInCents -= moneyToSpendInCent;
   setBalanceInDb();

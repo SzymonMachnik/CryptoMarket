@@ -37,18 +37,18 @@ class User {
 
     void setUserDataDuringLogin();
 
-    void generateUserWallet();
-    void insertCryptoToWallet(string cryptoName, double cryptoAmount, double cryptoPrice, int valueCent);
-
     void setBalanceInDb();
     bool doesLoginExistInDb(string login);
     void insertUserIntoDb();
 
+    void generateUserWallet();
+    void insertCryptoToWallet(string cryptoName, double cryptoAmount, double cryptoPrice, int valueCent);
+    string setCryptoName();
+    double setCryptoAmount();
 
     double returnPriceOfCrypto(string crypto);
     int getCryptoId(string cryptoName);
         
-
   public:
     User();
 
