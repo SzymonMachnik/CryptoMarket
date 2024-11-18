@@ -640,7 +640,7 @@ void User::walletUpdatePrice() {
   // Create 2nd sql request
   ostringstream sql2;
   sql2 << "UPDATE wallet_" << this->userId
-      << " SET value_cent = price * amount * 100";
+      << " SET value_cent = CAST(price * amount * 100 AS INTEGER)";
   // Make 2nd sql request
   if (sqlite3_exec(db, sql2.str().c_str(), nullptr, nullptr, &errMsg) != SQLITE_OK) {
     cerr << "Błąd podczas aktualizacji kolumny value_cent: " << errMsg << endl;
