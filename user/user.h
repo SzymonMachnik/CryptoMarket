@@ -42,7 +42,9 @@ class User {
     void insertUserIntoDb();
 
     void generateUserWallet();
+    bool doesCryptoExistInWallet(string cryptoName);
     void insertCryptoToWallet(string cryptoName, double cryptoAmount, double cryptoPrice, int valueCent);
+    void setCryptoToWallet(string cryptoName, double cryptoAmount);
     void walletUpdatePrice();
     string setCryptoName();
     double setCryptoAmount();

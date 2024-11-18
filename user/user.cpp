@@ -575,6 +575,77 @@ double User::setCryptoAmount() {
   return d_cryptoAmount;
 }
 
+
+bool User::doesCryptoExistInWallet(string cryptoName) {
+  // Init
+  sqlite3 *db;
+  char *errMsg = nullptr;
+
+  // Connect to database
+  if (sqlite3_open("sqlite/database.db", &db) != SQLITE_OK) {
+    cerr << "Can not open database: " << sqlite3_errmsg(db) << endl;
+    return false;
+  }
+
+  // Create a sql request  
+  ostringstream sql;
+  sql << "SELECT crypto_id FROM wallet_" << this->userId << " WHERE name = '" << cryptoName << "';";
+
+
+  auto callback = [](void *data, int argc, char **argv, char **azColName) -> int {
+    string *result = static_cast<string *>(data);
+    for (int i = 0; i < argc; i++) {
+      *result += string(argv[i]);
+    }
+    
+    return 0;
+  };
+
+  // Make a sql request
+  string result;
+  if (sqlite3_exec(db, sql.str().c_str(), callback, &result, &errMsg) != SQLITE_OK) {
+    cerr << "Error in making db request: " << errMsg << endl;
+    sqlite3_free(errMsg);
+  }
+
+  // Close
+  sqlite3_close(db);
+
+  if (result.size() > 0) return true;
+  else return false;
+}
+
+void User::setCryptoToWallet(string cryptoName, double cryptoAmount) {
+  int cryptoId = getCryptoId(cryptoName);
+  if (cryptoId == -1) return;
+
+  // Init
+  sqlite3 *db;
+  char *errMsg = nullptr;
+
+  // Connect to databse
+  if (sqlite3_open("sqlite/database.db", &db)) {
+    cerr << "Nie udało się otworzyć bazy danych: " << sqlite3_errmsg(db) << endl;
+    return;
+  }
+
+  // Create a sql request
+  ostringstream sql;
+  sql << "UPDATE wallet_" << this->userId
+      << " SET amount = amount + " << cryptoAmount
+      << " WHERE crypto_id = " << cryptoId << ";";
+
+  // Make a sql request
+  if (sqlite3_exec(db, sql.str().c_str(), nullptr, nullptr, &errMsg) != SQLITE_OK) {
+    cerr << "Błąd podczas wykonywania zapytania: " << errMsg << endl;
+    sqlite3_free(errMsg);
+  }
+
+  // Close
+  sqlite3_close(db);
+
+}
+
 void User::buyCrypto() {
   string cryptoName = setCryptoName();
 
@@ -591,8 +662,15 @@ void User::buyCrypto() {
     cout << "You can't afford it." << endl;
     return;
   }
+  
+  if (doesCryptoExistInWallet(cryptoName) == false) {
+    insertCryptoToWallet(cryptoName, cryptoAmount, cryptoPrice, moneyToSpendInCent);
+  } else {
+    setCryptoToWallet(cryptoName, cryptoAmount);
+    walletUpdatePrice();
+  }
 
-  insertCryptoToWallet(cryptoName, cryptoAmount, cryptoPrice, moneyToSpendInCent);
+  
   
   balanceInCents -= moneyToSpendInCent;
   setBalanceInDb();
@@ -663,7 +741,10 @@ void User::displayWallet() {
     cerr << "Can not open database: " << sqlite3_errmsg(db) << endl;
     return;
   }
+
+  // IMPORTANT - UPDATE WALLET
   walletUpdatePrice();
+
   // Create a sql request
   ostringstream sql;
   sql << "SELECT name, amount, price, value_cent FROM wallet_" << this->userId << " ORDER BY price DESC";
@@ -675,7 +756,6 @@ void User::displayWallet() {
               double value = stod(argv[i]);
               // tranform to real value (not cents)
               *result += to_string(value / 100)  + "\t";
-
           } else {
               *result += string(argv[i]) + "\t";
           }
