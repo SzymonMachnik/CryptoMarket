@@ -386,6 +386,38 @@ void User::generateUserWallet() {
   sqlite3_close(db);
 }
 
+void User::generateUserTransactionsList() {
+  // Init
+  sqlite3* db;
+  char* errorMessage = 0;
+
+  // Connect to database
+  if (sqlite3_open("sqlite/database.db", &db) != SQLITE_OK) {
+    cerr << "Nie udało się otworzyć bazy danych: " << sqlite3_errmsg(db) << endl;
+    return;
+  }
+
+  // Create a sql request
+  ostringstream sqlCreateTable;
+  sqlCreateTable << "CREATE TABLE transactions_" << userId << " ("
+                    << " transaction_id INTEGER PRIMARY KEY,"
+                    << " date DATE NOT NULL,"
+                    << " crypto_id INTEGER NOT NULL,"
+                    << " crypto_amount DECIMAL(20, 8) NOT NULL,"
+                    << " crypto_price DECIMAL(20, 8) NOT NULL,"
+                    << " value_cent INTEGER NOT NULL,"
+                    << " type TEXT CHECK(type IN ('sell', 'buy')) NOT NULL"
+                    << " );";
+
+  // Make a sql request
+  if (sqlite3_exec(db, sqlCreateTable.str().c_str(), nullptr, nullptr, &errorMessage) != SQLITE_OK) {
+    cerr << "Błąd podczas tworzenia tabeli: " << errorMessage << endl;
+    sqlite3_free(errorMessage);
+  }
+
+  // Close
+  sqlite3_close(db);
+}
 
 void User::registerUser() {
 
@@ -402,6 +434,7 @@ void User::registerUser() {
   setUserId();
 
   generateUserWallet();
+  generateUserTransactionsList();
 
   cout << "Welcome " << firstName << " " << lastName << "!" << endl;
 }
@@ -670,6 +703,7 @@ void User::buyCrypto() {
     walletUpdatePrice();
   }
 
+  
   
   
   balanceInCents -= moneyToSpendInCent;

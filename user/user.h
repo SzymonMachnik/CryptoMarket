@@ -49,6 +49,8 @@ class User {
     string setCryptoName();
     double setCryptoAmount();
 
+    void generateUserTransactionsList();
+
     double returnPriceOfCrypto(string crypto);
     int getCryptoId(string cryptoName);
         
