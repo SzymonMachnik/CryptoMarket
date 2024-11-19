@@ -72,6 +72,7 @@ int main() {
     cout << "[3] Deposit money to your account" << endl;
     cout << "[4] Check current balance" << endl;
     cout << "[5] Display wallet" << endl;
+    cout << "[6] Display transactions list" << endl;
     cout << "[9] Quit" << endl;
     cout << "Input: ";
     cin >> input;
@@ -94,6 +95,8 @@ int main() {
       cout << "Your current balance: " << user.getBalanceInCents() / 100 << " $" << endl;
     } else if (input == "5") {
       user.displayWallet();
+    } else if (input == "6") {
+      user.displayTransactionsList();
     } else if (input == "9") {
       cout << "Wait for close the application. This can take max 60 seconds." << endl;
       keep_running = false;

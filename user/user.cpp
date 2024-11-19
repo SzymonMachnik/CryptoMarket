@@ -481,6 +481,87 @@ int User::getBalanceInCents() {
   return balanceInCents;
 }
 
+int User::getCryptoId(string cryptoName) {
+  // Init
+  sqlite3 *db;
+  char *errMsg = nullptr;
+
+  // Connect to database
+  if (sqlite3_open("sqlite/database.db", &db) != SQLITE_OK) {
+    cerr << "Can not open database: " << sqlite3_errmsg(db) << endl;
+    return -1;
+  }
+
+  // Create a sql request
+  ostringstream sql;
+  sql << "SELECT crypto_id FROM crypto_price WHERE name = '" << cryptoName << "';";
+
+  auto callback = [](void *data, int argc, char **argv, char **azColName) -> int {
+    string *result = static_cast<string *>(data);
+    for (int i = 0; i < argc; i++) {
+      *result += string(argv[i]);
+    }
+    
+    return 0;
+  };
+  
+  // Make a sql reuqest
+  string result;
+  if (sqlite3_exec(db, sql.str().c_str(), callback, &result, &errMsg) != SQLITE_OK) {
+    cerr << "Error in making db request: " << errMsg << endl;
+    sqlite3_free(errMsg);
+  }
+
+  // Close
+  sqlite3_close(db);
+
+  return stoi(result);
+}
+
+string User::getCurrentDate() {
+  time_t now = time(nullptr);
+
+  tm* localTime = localtime(&now);
+
+  ostringstream date;
+  date      << 1900 + localTime->tm_year << "-"    // Year
+            << 1 + localTime->tm_mon << "-"       // Month
+            << localTime->tm_mday;               // Day
+
+  return date.str();
+}
+
+void User::insertTransactionToTransactionsList(string cryptoName, double cryptoAmount, double cryptoPrice, int valueCent, string type) {
+  int cryptoId = getCryptoId(cryptoName);
+  if (cryptoId == -1) return;
+
+  string date = getCurrentDate();
+
+  // Init
+  sqlite3 *db;
+  char *errMsg = nullptr;
+
+  // Connect to databse
+  if (sqlite3_open("sqlite/database.db", &db)) {
+    cerr << "Nie udało się otworzyć bazy danych: " << sqlite3_errmsg(db) << endl;
+    return;
+  }
+
+  // Create a sql request
+  ostringstream sql;
+  sql << "INSERT INTO transactions_"<< this->userId << " (date, crypto_id, crypto_amount, crypto_price, value_cent, type)"
+      << " VALUES ('" << date << "', '" << cryptoId << "', '" << cryptoAmount << "', '" << cryptoPrice <<"', '" << valueCent << "', '" << type << "');";
+
+  // Make a sql request
+  if (sqlite3_exec(db, sql.str().c_str(), nullptr, nullptr, &errMsg) != SQLITE_OK) {
+    cerr << "Błąd podczas wykonywania zapytania: " << errMsg << endl;
+    sqlite3_free(errMsg);
+  }
+
+  // Close
+  sqlite3_close(db);
+}
+
 
 
 double User::returnPriceOfCrypto(string crypto) {
@@ -522,42 +603,7 @@ double User::returnPriceOfCrypto(string crypto) {
   return cryptoPrice;
 }
 
-int User::getCryptoId(string cryptoName) {
-  // Init
-  sqlite3 *db;
-  char *errMsg = nullptr;
 
-  // Connect to database
-  if (sqlite3_open("sqlite/database.db", &db) != SQLITE_OK) {
-    cerr << "Can not open database: " << sqlite3_errmsg(db) << endl;
-    return -1;
-  }
-
-  // Create a sql request
-  ostringstream sql;
-  sql << "SELECT crypto_id FROM crypto_price WHERE name = '" << cryptoName << "';";
-
-  auto callback = [](void *data, int argc, char **argv, char **azColName) -> int {
-    string *result = static_cast<string *>(data);
-    for (int i = 0; i < argc; i++) {
-      *result += string(argv[i]);
-    }
-    
-    return 0;
-  };
-  
-  // Make a sql reuqest
-  string result;
-  if (sqlite3_exec(db, sql.str().c_str(), callback, &result, &errMsg) != SQLITE_OK) {
-    cerr << "Error in making db request: " << errMsg << endl;
-    sqlite3_free(errMsg);
-  }
-
-  // Close
-  sqlite3_close(db);
-
-  return stoi(result);
-}
 
 void User::insertCryptoToWallet(string cryptoName, double cryptoAmount, double cryptoPrice, int valueCent) {
   int cryptoId = getCryptoId(cryptoName);
@@ -680,6 +726,7 @@ void User::setCryptoToWallet(string cryptoName, double cryptoAmount) {
 }
 
 void User::buyCrypto() {
+  cout << getCurrentDate() << endl;
   string cryptoName = setCryptoName();
 
   double cryptoPrice = returnPriceOfCrypto(cryptoName);
@@ -703,7 +750,7 @@ void User::buyCrypto() {
     walletUpdatePrice();
   }
 
-  
+  insertTransactionToTransactionsList(cryptoName, cryptoAmount, cryptoPrice, moneyToSpendInCent, "buy");
   
   
   balanceInCents -= moneyToSpendInCent;
@@ -811,3 +858,45 @@ void User::displayWallet() {
   // Close
   sqlite3_close(db);
 }
+
+void User::displayTransactionsList() {
+  // Init
+  sqlite3 *db;
+  char *errMsg = nullptr;
+
+  // Connect to database
+  if (sqlite3_open("sqlite/database.db", &db) != SQLITE_OK) {
+    cerr << "Can not open database: " << sqlite3_errmsg(db) << endl;
+    return;
+  }
+
+
+  // Create a sql request
+  ostringstream sql;
+  sql << "SELECT transaction_id, cp.name, crypto_amount, crypto_price, value_cent, type FROM transactions_" << this->userId << " t"
+      << " LEFT JOIN crypto_price cp"
+      << " ON cp.crypto_id = t.crypto_id"
+      << " ORDER BY transaction_id DESC";
+
+  auto callback = [](void *data, int argc, char **argv, char **azColName) -> int {
+      string *result = static_cast<string *>(data);
+      for (int i = 0; i < argc; i++) {
+        *result += string(argv[i]) + "\t";
+      }
+      *result += "\n";
+      return 0;
+  };
+  
+  // Make a sql request
+  string result;
+  if (sqlite3_exec(db, sql.str().c_str(), callback, &result, &errMsg) != SQLITE_OK) {
+    cerr << "Error in making db request: " << errMsg << endl;
+    sqlite3_free(errMsg);
+  }
+
+  cout << result << endl;
+
+  // Close
+  sqlite3_close(db); 
+}
+

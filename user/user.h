@@ -8,6 +8,7 @@
 #include <string>
 #include <sqlite3.h>
 #include <sstream>
+#include <ctime>
 
 using namespace std;
 
@@ -50,6 +51,8 @@ class User {
     double setCryptoAmount();
 
     void generateUserTransactionsList();
+    string getCurrentDate();
+    void insertTransactionToTransactionsList(string cryptoName, double cryptoAmount, double cryptoPrice, int valueCent, string type);
 
     double returnPriceOfCrypto(string crypto);
     int getCryptoId(string cryptoName);
@@ -68,6 +71,8 @@ class User {
     void buyCrypto(string crypto);
 
     void displayWallet();
+
+    void displayTransactionsList();
 
 };
 
