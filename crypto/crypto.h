@@ -21,6 +21,7 @@ class Crypto {
     string PATHTOCRYPTOAPIIDS = "crypto/listOfCryptoApiIds.txt";
 
   public:
+    int numberOfCrypto = 0;
     Crypto();
     Crypto(string PATHTOCRYPTONAMES, string PATHTOCRYPTOAPIIDS);
 

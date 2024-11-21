@@ -1,2 +1,15 @@
+# all:
+# 	g++ main.cpp -o main.exe crypto/crypto.cpp memory/memory.cpp user/user.cpp handleUser/handleUser.cpp -LC:/CryptoScraper/curlLib/lib -I C:/CryptoScraper/curlLib/include -lcurl -lsqlite3 
+# 		g++ main.cpp -o main.exe sudokuHelperFunctions/sudoku.cpp imgui/*.cpp -I imgui -ld3d9 -ldwmapi -lgdi32
+
 all:
-	g++ main.cpp -o main.exe crypto/crypto.cpp memory/memory.cpp user/user.cpp handleUser/handleUser.cpp -LC:/CryptoScraper/curlLib/lib -IC:/CryptoScraper/curlLib/include -lcurl -lsqlite3
+	g++ main.cpp -o main.exe \
+		crypto/crypto.cpp \
+		memory/memory.cpp \
+		user/user.cpp \
+		handleUser/handleUser.cpp \
+		imgui/*.cpp \
+		-LC:/CryptoScraper/curlLib/lib \
+		-I C:/CryptoScraper/curlLib/include \
+		-I imgui -ld3d9 -ldwmapi -lgdi32 \
+		-lcurl -lsqlite3

@@ -32,6 +32,8 @@ Crypto::Crypto() {
     fileNames.close();
     fileApiIds.close();
   }
+
+  numberOfCrypto = cryptoNameVector.size();
 }
 
 Crypto::Crypto(string PATHTOCRYPTONAMES, string PATHTOCRYPTOAPIIDS) {
@@ -61,6 +63,8 @@ Crypto::Crypto(string PATHTOCRYPTONAMES, string PATHTOCRYPTOAPIIDS) {
     fileNames.close();
     fileApiIds.close();
   }
+
+  numberOfCrypto = cryptoNameVector.size();
 }
 
 map<string, string> Crypto::getCryptoApiIdAndNameMap() {
