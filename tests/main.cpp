@@ -92,11 +92,11 @@ int main() {
 
   // TEST 7 USER returnPriceOfCrypto() //////////////////////////////////////////////////////////////////////////////////
 
-  User user;
-  cout << "TEST1 Expected price \t"; user.buyCrypto("bitcoin");
-  cout << "TEST2 Expected price \t"; user.buyCrypto("dogecoin");
-  cout << "TEST3 Expected noprc \t"; user.buyCrypto("etherem");
-  cout << "TEST3 Expected price \t"; user.buyCrypto("xrp");
+  // User user;
+  // cout << "TEST1 Expected price \t"; user.buyCrypto("bitcoin");
+  // cout << "TEST2 Expected price \t"; user.buyCrypto("dogecoin");
+  // cout << "TEST3 Expected noprc \t"; user.buyCrypto("etherem");
+  // cout << "TEST3 Expected price \t"; user.buyCrypto("xrp");
 
 
   return 0;

@@ -73,6 +73,7 @@ int main() {
     cout << "[4] Check current balance" << endl;
     cout << "[5] Display wallet" << endl;
     cout << "[6] Display transactions list" << endl;
+    cout << "[7] Sell a crypto" << endl;
     cout << "[9] Quit" << endl;
     cout << "Input: ";
     cin >> input;
@@ -97,6 +98,8 @@ int main() {
       user.displayWallet();
     } else if (input == "6") {
       user.displayTransactionsList();
+    } else if (input == "7") {
+      user.sellCrypto();
     } else if (input == "9") {
       cout << "Wait for close the application. This can take max 60 seconds." << endl;
       keep_running = false;

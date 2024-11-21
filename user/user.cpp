@@ -725,8 +725,38 @@ void User::setCryptoToWallet(string cryptoName, double cryptoAmount) {
 
 }
 
+void User::decreaseCryptoAmountInWallet(string cryptoName, double cryptoAmount) {
+  int cryptoId = getCryptoId(cryptoName);
+  if (cryptoId == -1) return;
+
+  // Init
+  sqlite3 *db;
+  char *errMsg = nullptr;
+
+  // Connect to databse
+  if (sqlite3_open("sqlite/database.db", &db)) {
+    cerr << "Nie udało się otworzyć bazy danych: " << sqlite3_errmsg(db) << endl;
+    return;
+  }
+
+  // Create a sql request
+  ostringstream sql;
+  sql << "UPDATE wallet_" << this->userId
+      << " SET amount = amount - " << cryptoAmount
+      << " WHERE crypto_id = " << cryptoId << ";";
+
+  // Make a sql request
+  if (sqlite3_exec(db, sql.str().c_str(), nullptr, nullptr, &errMsg) != SQLITE_OK) {
+    cerr << "Błąd podczas wykonywania zapytania: " << errMsg << endl;
+    sqlite3_free(errMsg);
+  }
+
+  // Close
+  sqlite3_close(db);
+
+}
+
 void User::buyCrypto() {
-  cout << getCurrentDate() << endl;
   string cryptoName = setCryptoName();
 
   double cryptoPrice = returnPriceOfCrypto(cryptoName);
@@ -759,16 +789,6 @@ void User::buyCrypto() {
 
 }
 
-void User::buyCrypto(string crypto) {
-  // string crypto;
-  // cout << "Enter crypto which you are like to buy: ";
-  // cin >> crypto;
-  // cin.ignore(1000, '\n');
-
-  double price = returnPriceOfCrypto(crypto);
-
-  cout << crypto << " price: " << (price > 0.0 ? to_string(price) : "doesn't exist") << endl;
-}
 
 void User::walletUpdatePrice() {
   // Init
@@ -900,3 +920,114 @@ void User::displayTransactionsList() {
   sqlite3_close(db); 
 }
 
+void User::deleteCryptoFromWallet(int cryptoId) {
+  // Init
+  sqlite3 *db;
+  char *errMsg = nullptr;
+
+  // Connect to databse
+  if (sqlite3_open("sqlite/database.db", &db)) {
+    cerr << "Nie udało się otworzyć bazy danych: " << sqlite3_errmsg(db) << endl;
+    return;
+  }
+
+  // Create q sql request
+  ostringstream sql;
+  sql << "DELETE FROM wallet_" << this->userId << " WHERE crypto_id = " << cryptoId << ";";
+
+  // Make a sql request
+  if (sqlite3_exec(db, sql.str().c_str(), nullptr, nullptr, &errMsg) != SQLITE_OK) {
+    cerr << "Błąd podczas wykonywania zapytania: " << errMsg << endl;
+    sqlite3_free(errMsg);
+  }
+
+  // Close
+  sqlite3_close(db);
+}
+
+double User::getAmountOfCryptoInWallet(int cryptoId) {
+  // Init
+  sqlite3 *db;
+  char *errMsg = nullptr;
+
+  // Connect to database
+  if (sqlite3_open("sqlite/database.db", &db) != SQLITE_OK) {
+    cerr << "Can not open database: " << sqlite3_errmsg(db) << endl;
+    return -1;
+  }
+
+  // Create a sql request
+  ostringstream sql;
+  sql << "SELECT amount FROM wallet_" << this->userId << " WHERE crypto_id = '" << cryptoId << "';";
+
+  auto callback = [](void *data, int argc, char **argv, char **azColName) -> int {
+    string *result = static_cast<string *>(data);
+    for (int i = 0; i < argc; i++) {
+      *result += string(argv[i]);
+    }
+    
+    return 0;
+  };
+  
+  // Make a sql reuqest
+  string result;
+  if (sqlite3_exec(db, sql.str().c_str(), callback, &result, &errMsg) != SQLITE_OK) {
+    cerr << "Error in making db request: " << errMsg << endl;
+    sqlite3_free(errMsg);
+  }
+
+  // Close
+  sqlite3_close(db);
+
+  return stod(result);
+}
+
+void User::sellCrypto() {
+  string cryptoName;
+  cout << "Enter crypto which you are like to sell: ";
+  cin >> cryptoName;
+  cin.ignore(1000, '\n');
+
+  if (doesCryptoExistInWallet(cryptoName) == false) {
+    cout << "You don't have this cyrpto in your waller" << endl;
+    return;
+  }
+
+  int cryptoId = getCryptoId(cryptoName);
+
+  double cryptoPrice = returnPriceOfCrypto(cryptoName);
+  if (cryptoPrice == 0.0) return;
+
+  string s_cryptoAmount;
+  cout << "Enter how much you want to sell: ";
+  cin >> s_cryptoAmount;
+  cin.ignore(1000, '\n'); 
+  double cryptoAmountToSell = stod(s_cryptoAmount);
+
+  
+  double amountInWallet = getAmountOfCryptoInWallet(cryptoId);
+
+  if (cryptoAmountToSell > amountInWallet) {
+    cout << "MORE THAN YOU HAVE. YOU CANT SELL IT!" << endl;
+    return;
+  }
+
+  int moneyToWithdrawInCent = cryptoPrice * cryptoAmountToSell * 100 - 1;
+
+  
+  if (cryptoAmountToSell == amountInWallet) {
+    deleteCryptoFromWallet(cryptoId);
+    cout << "ALL CRYPTO SOLD" << endl;
+  } else {
+    decreaseCryptoAmountInWallet(cryptoName, cryptoAmountToSell);
+    walletUpdatePrice();
+    cout << "PART OF CRYPTO SOLD" << endl;
+  }
+
+  insertTransactionToTransactionsList(cryptoName, cryptoAmountToSell, cryptoPrice, moneyToWithdrawInCent, "sell");
+  
+  
+  balanceInCents += moneyToWithdrawInCent;
+  setBalanceInDb();
+
+}

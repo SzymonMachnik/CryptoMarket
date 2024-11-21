@@ -48,6 +48,9 @@ class User {
     void walletUpdatePrice();
     string setCryptoName();
     double setCryptoAmount();
+    double getAmountOfCryptoInWallet(int cryptoId);
+    void decreaseCryptoAmountInWallet(string cryptoName, double cryptoAmount);
+    void deleteCryptoFromWallet(int cryptoId);
 
     // Transaction list
     void generateUserTransactionsList();
@@ -73,7 +76,7 @@ class User {
 
     // Crypto
     void buyCrypto();
-    void buyCrypto(string crypto);
+    void sellCrypto();
 
     // Displaying
     void displayWallet();
