@@ -46,11 +46,15 @@ class User {
     void insertCryptoToWallet(string cryptoName, double cryptoAmount, double cryptoPrice, int valueCent);
     void setCryptoToWallet(string cryptoName, double cryptoAmount);
     void walletUpdatePrice();
-    string setCryptoName();
-    double setCryptoAmount();
     double getAmountOfCryptoInWallet(int cryptoId);
     void decreaseCryptoAmountInWallet(string cryptoName, double cryptoAmount);
     void deleteCryptoFromWallet(int cryptoId);
+
+    // Crypto buy-sell setters
+    string setCryptoNameToBuy();
+    double setCryptoAmountToBuy();
+    string setCryptoNameToSell();
+    double setCryptoAmountToSell();
 
     // Transaction list
     void generateUserTransactionsList();

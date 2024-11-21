@@ -114,44 +114,10 @@ int main() {
   //   messageThread.join();
   // }
 
-  // Czyszczenie zasobów CURL
+  // Close
   curl_easy_cleanup(curl);
 
   cout << "Finished succesful." << endl;
 
   return 0;
 }
-
-
-
-
-// void User::insertCryptoToWallet(string cryptoName, double cryptoAmount) {
-//   int cryptoId = getCryptoId(cryptoName);
-//   if (cryptoId == -1) return;
-
-//   // Init
-//   sqlite3 *db;
-//   char *errMsg = nullptr;
-
-//   // Connect to databse
-//   if (sqlite3_open("sqlite/database.db", &db)) {
-//     cerr << "Nie udało się otworzyć bazy danych: " << sqlite3_errmsg(db) << endl;
-//     return;
-//   }
-
-//   // Create a sql request
-//   ostringstream sql;
-//   sql << "UPDATE wallet_" << this->userId <<
-//       << " WHERE crypto_id = " << cryptoId
-//       << " SET amount = amount + " << cryptoAmount << "'; '";
-
-//   // Make a sql request
-//   if (sqlite3_exec(db, sql.str().c_str(), nullptr, nullptr, &errMsg) != SQLITE_OK) {
-//     cerr << "Błąd podczas wykonywania zapytania: " << errMsg << endl;
-//     sqlite3_free(errMsg);
-//   }
-
-//   // Close
-//   sqlite3_close(db);
-
-// }

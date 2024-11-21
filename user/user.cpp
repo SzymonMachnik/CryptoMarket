@@ -22,7 +22,7 @@ void User::insertUserIntoDb() {
   char *errMsg = nullptr;
 
   // Connect to databse
-  if (sqlite3_open("sqlite/database.db", &db)) {
+  if (sqlite3_open("sqlite/database.db", &db) != SQLITE_OK) {
     cerr << "Nie udało się otworzyć bazy danych: " << sqlite3_errmsg(db) << endl;
     return;
   }
@@ -445,7 +445,7 @@ void User::setBalanceInDb() {
   char *errMsg = nullptr;
 
   // Connect to databse
-  if (sqlite3_open("sqlite/database.db", &db)) {
+  if (sqlite3_open("sqlite/database.db", &db) != SQLITE_OK) {
     cerr << "Nie udało się otworzyć bazy danych: " << sqlite3_errmsg(db) << endl;
     return;
   }
@@ -542,7 +542,7 @@ void User::insertTransactionToTransactionsList(string cryptoName, double cryptoA
   char *errMsg = nullptr;
 
   // Connect to databse
-  if (sqlite3_open("sqlite/database.db", &db)) {
+  if (sqlite3_open("sqlite/database.db", &db) != SQLITE_OK) {
     cerr << "Nie udało się otworzyć bazy danych: " << sqlite3_errmsg(db) << endl;
     return;
   }
@@ -614,7 +614,7 @@ void User::insertCryptoToWallet(string cryptoName, double cryptoAmount, double c
   char *errMsg = nullptr;
 
   // Connect to databse
-  if (sqlite3_open("sqlite/database.db", &db)) {
+  if (sqlite3_open("sqlite/database.db", &db) != SQLITE_OK) {
     cerr << "Nie udało się otworzyć bazy danych: " << sqlite3_errmsg(db) << endl;
     return;
   }
@@ -635,7 +635,7 @@ void User::insertCryptoToWallet(string cryptoName, double cryptoAmount, double c
 
 }
 
-string User::setCryptoName() {
+string User::setCryptoNameToBuy() {
   string cryptoName;
   cout << "Enter crypto which you are like to buy: ";
   cin >> cryptoName;
@@ -644,7 +644,7 @@ string User::setCryptoName() {
   return cryptoName;
 }
 
-double User::setCryptoAmount() {
+double User::setCryptoAmountToBuy() {
   string s_cryptoAmount;
   cout << "Enter how much you want to buy: ";
   cin >> s_cryptoAmount;
@@ -654,6 +654,24 @@ double User::setCryptoAmount() {
   return d_cryptoAmount;
 }
 
+string User::setCryptoNameToSell() {
+  string cryptoName;
+  cout << "Enter crypto which you are like to sell: ";
+  cin >> cryptoName;
+  cin.ignore(1000, '\n');
+
+  return cryptoName;
+}
+
+double User::setCryptoAmountToSell() {
+  string s_cryptoAmount;
+  cout << "Enter how much you want to sell: ";
+  cin >> s_cryptoAmount;
+  cin.ignore(1000, '\n'); 
+  double d_cryptoAmount = stod(s_cryptoAmount);
+
+  return d_cryptoAmount;
+}
 
 bool User::doesCryptoExistInWallet(string cryptoName) {
   // Init
@@ -703,7 +721,7 @@ void User::setCryptoToWallet(string cryptoName, double cryptoAmount) {
   char *errMsg = nullptr;
 
   // Connect to databse
-  if (sqlite3_open("sqlite/database.db", &db)) {
+  if (sqlite3_open("sqlite/database.db", &db) != SQLITE_OK) {
     cerr << "Nie udało się otworzyć bazy danych: " << sqlite3_errmsg(db) << endl;
     return;
   }
@@ -734,7 +752,7 @@ void User::decreaseCryptoAmountInWallet(string cryptoName, double cryptoAmount) 
   char *errMsg = nullptr;
 
   // Connect to databse
-  if (sqlite3_open("sqlite/database.db", &db)) {
+  if (sqlite3_open("sqlite/database.db", &db) != SQLITE_OK) {
     cerr << "Nie udało się otworzyć bazy danych: " << sqlite3_errmsg(db) << endl;
     return;
   }
@@ -757,12 +775,12 @@ void User::decreaseCryptoAmountInWallet(string cryptoName, double cryptoAmount) 
 }
 
 void User::buyCrypto() {
-  string cryptoName = setCryptoName();
+  string cryptoName = setCryptoNameToBuy();
 
   double cryptoPrice = returnPriceOfCrypto(cryptoName);
   if (cryptoPrice == 0.0) return;
 
-  double cryptoAmount = setCryptoAmount();
+  double cryptoAmount = setCryptoAmountToBuy();
 
   int moneyToSpendInCent = cryptoPrice * cryptoAmount * 100 + 1;
   cout << "Amount to spend (cents): " << moneyToSpendInCent << endl;
@@ -788,7 +806,6 @@ void User::buyCrypto() {
   cout << "Bought succesful" << endl;
 
 }
-
 
 void User::walletUpdatePrice() {
   // Init
@@ -926,7 +943,7 @@ void User::deleteCryptoFromWallet(int cryptoId) {
   char *errMsg = nullptr;
 
   // Connect to databse
-  if (sqlite3_open("sqlite/database.db", &db)) {
+  if (sqlite3_open("sqlite/database.db", &db) != SQLITE_OK) {
     cerr << "Nie udało się otworzyć bazy danych: " << sqlite3_errmsg(db) << endl;
     return;
   }
@@ -983,10 +1000,7 @@ double User::getAmountOfCryptoInWallet(int cryptoId) {
 }
 
 void User::sellCrypto() {
-  string cryptoName;
-  cout << "Enter crypto which you are like to sell: ";
-  cin >> cryptoName;
-  cin.ignore(1000, '\n');
+  string cryptoName = setCryptoNameToSell();
 
   if (doesCryptoExistInWallet(cryptoName) == false) {
     cout << "You don't have this cyrpto in your waller" << endl;
@@ -998,12 +1012,7 @@ void User::sellCrypto() {
   double cryptoPrice = returnPriceOfCrypto(cryptoName);
   if (cryptoPrice == 0.0) return;
 
-  string s_cryptoAmount;
-  cout << "Enter how much you want to sell: ";
-  cin >> s_cryptoAmount;
-  cin.ignore(1000, '\n'); 
-  double cryptoAmountToSell = stod(s_cryptoAmount);
-
+  double cryptoAmountToSell = setCryptoAmountToSell();
   
   double amountInWallet = getAmountOfCryptoInWallet(cryptoId);
 
