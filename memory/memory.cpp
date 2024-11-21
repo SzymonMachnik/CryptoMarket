@@ -43,8 +43,6 @@ void Memory::makeRequestAndWriteMemory(const vector<string> apiId, CURL* curl, C
 
 }
 
-
-
 void Memory::updateCryptoPriceIntoDB(string name, double price) {
   sqlite3 *db;
   char *errMsg = nullptr;
@@ -69,7 +67,6 @@ void Memory::updateCryptoPriceIntoDB(string name, double price) {
   // Close
   sqlite3_close(db);
 }
-
 
 void Memory::formatStringReceivedFromApiRequestAndSaveIntoDb(string &data) {
 

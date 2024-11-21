@@ -56,7 +56,7 @@ class User {
     string setCryptoNameToSell();
     double setCryptoAmountToSell();
 
-    // Transaction list
+    // Transactions list
     void generateUserTransactionsList();
     string getCurrentDate();
     void insertTransactionToTransactionsList(string cryptoName, double cryptoAmount, double cryptoPrice, int valueCent, string type);
