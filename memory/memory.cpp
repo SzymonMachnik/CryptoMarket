@@ -60,7 +60,7 @@ void Memory::updateCryptoPriceIntoDB(string name, double price) {
 
   // Make a request
   if (sqlite3_exec(db, sql.str().c_str(), nullptr, nullptr, &errMsg) != SQLITE_OK) {
-    cerr << "Błąd podczas wykonywania zapytania: " << errMsg << endl;
+    cerr << "TESTBłąd podczas wykonywania zapytania: " << errMsg << endl;
     sqlite3_free(errMsg);
   }
 
