@@ -116,10 +116,12 @@ int User::getBalanceInCents() {
 
 // Crypto
 void User::buyCrypto() {
+  Crypto crypto;
   string cryptoName = setCryptoNameToBuy();
 
-  double cryptoPrice = returnPriceOfCrypto(cryptoName);
-  if (cryptoPrice == 0.0) return;
+  string s_cryptoPrice = crypto.getCryptoPrice(cryptoName);
+  if (s_cryptoPrice == "") return;
+  double cryptoPrice = stod(s_cryptoPrice);
 
   double cryptoAmount = setCryptoAmountToBuy();
 
@@ -149,6 +151,7 @@ void User::buyCrypto() {
 }
 
 void User::sellCrypto() {
+  Crypto crypto;
   string cryptoName = setCryptoNameToSell();
 
   if (doesCryptoExistInWallet(cryptoName) == false) {
@@ -156,9 +159,9 @@ void User::sellCrypto() {
     return;
   }
 
-  int cryptoId = getCryptoId(cryptoName);
+  int cryptoId = crypto.getCryptoId(cryptoName);
 
-  double cryptoPrice = returnPriceOfCrypto(cryptoName);
+  double cryptoPrice = stod(crypto.getCryptoPrice(cryptoName));
   if (cryptoPrice == 0.0) return;
 
   double cryptoAmountToSell = setCryptoAmountToSell();
@@ -668,7 +671,8 @@ bool User::doesCryptoExistInWallet(string cryptoName) {
 }
 
 void User::insertCryptoToWallet(string cryptoName, double cryptoAmount, double cryptoPrice, int valueCent) {
-  int cryptoId = getCryptoId(cryptoName);
+  Crypto crypto;
+  int cryptoId = crypto.getCryptoId(cryptoName);
   if (cryptoId == -1) return;
 
   // Init
@@ -698,7 +702,8 @@ void User::insertCryptoToWallet(string cryptoName, double cryptoAmount, double c
 }
 
 void User::setCryptoToWallet(string cryptoName, double cryptoAmount) {
-  int cryptoId = getCryptoId(cryptoName);
+  Crypto crypto;
+  int cryptoId = crypto.getCryptoId(cryptoName);
   if (cryptoId == -1) return;
 
   // Init
@@ -808,7 +813,8 @@ double User::getAmountOfCryptoInWallet(int cryptoId) {
 }
 
 void User::decreaseCryptoAmountInWallet(string cryptoName, double cryptoAmount) {
-  int cryptoId = getCryptoId(cryptoName);
+  Crypto crypto;
+  int cryptoId = crypto.getCryptoId(cryptoName);
   if (cryptoId == -1) return;
 
   // Init
@@ -952,7 +958,8 @@ string User::getCurrentDate() {
 }
 
 void User::insertTransactionToTransactionsList(string cryptoName, double cryptoAmount, double cryptoPrice, int valueCent, string type) {
-  int cryptoId = getCryptoId(cryptoName);
+  Crypto crypto;
+  int cryptoId = crypto.getCryptoId(cryptoName);
   if (cryptoId == -1) return;
 
   string date = getCurrentDate();
@@ -980,82 +987,4 @@ void User::insertTransactionToTransactionsList(string cryptoName, double cryptoA
 
   // Close
   sqlite3_close(db);
-}
-
-
-// Crypto info
-double User::returnPriceOfCrypto(string crypto) {
-  // Init
-  sqlite3 *db;
-  char *errMsg = nullptr;
-
-  // Connect to database
-  if (sqlite3_open("sqlite/database.db", &db) != SQLITE_OK) {
-    cerr << "Nie można otworzyć bazy danych: " << sqlite3_errmsg(db) << endl;
-    return -1.0;
-  }
-
-  // Create a sql request
-  ostringstream sql;
-  sql << "SELECT price FROM crypto_price WHERE name = '" << crypto << "';";
-
-
-  // Callback as lambda
-  double cryptoPrice = 0.0;
-  auto callback = [](void *data, int argc, char **argv, char **azColName) -> int {
-    if (argc > 0 && argv[0]) {
-      *static_cast<double *>(data) = stod(argv[0]);
-    }
-    return 0;
-  };
-
-  // Make a sql request
-  if (sqlite3_exec(db, sql.str().c_str(), callback, &cryptoPrice, &errMsg) != SQLITE_OK) {
-    cerr << "Błąd w zapytaniu SQL: " << errMsg << endl;
-    sqlite3_free(errMsg);
-    sqlite3_close(db);
-    return -1.0;
-  }
-
-  // Close
-  sqlite3_close(db);
-
-  return cryptoPrice;
-}
-
-int User::getCryptoId(string cryptoName) {
-  // Init
-  sqlite3 *db;
-  char *errMsg = nullptr;
-
-  // Connect to database
-  if (sqlite3_open("sqlite/database.db", &db) != SQLITE_OK) {
-    cerr << "Can not open database: " << sqlite3_errmsg(db) << endl;
-    return -1;
-  }
-
-  // Create a sql request
-  ostringstream sql;
-  sql << "SELECT crypto_id FROM crypto_price WHERE name = '" << cryptoName << "';";
-
-  auto callback = [](void *data, int argc, char **argv, char **azColName) -> int {
-    string *result = static_cast<string *>(data);
-    for (int i = 0; i < argc; i++) {
-      *result += string(argv[i]);
-    }
-    
-    return 0;
-  };
-  
-  // Make a sql reuqest
-  string result;
-  if (sqlite3_exec(db, sql.str().c_str(), callback, &result, &errMsg) != SQLITE_OK) {
-    cerr << "Error in making db request: " << errMsg << endl;
-    sqlite3_free(errMsg);
-  }
-
-  // Close
-  sqlite3_close(db);
-
-  return stoi(result);
 }

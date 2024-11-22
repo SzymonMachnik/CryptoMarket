@@ -3,10 +3,12 @@
 #ifndef CRYPTO_H
 #define CRYPTO_H
 
+#include <sqlite3.h>
 #include <iostream>
 #include <string>
 #include <map>
 #include <vector>
+#include <sstream>
 
 using namespace std;
 
@@ -28,6 +30,12 @@ class Crypto {
     map<string, string> getCryptoApiIdAndNameMap();
     vector<string> getCryptoNameVector();
     vector<string> getCryptoApiIdVector();
+
+    string getCryptoName(int cryptoId);
+    string getCryptoPrice(int cryptoId);
+
+    string getCryptoPrice(string cryptoName);
+    int getCryptoId(string cryptoName);
 };
 
 #endif

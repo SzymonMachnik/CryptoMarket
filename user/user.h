@@ -9,6 +9,7 @@
 #include <sqlite3.h>
 #include <sstream>
 #include <ctime>
+#include "../crypto/crypto.h"
 
 using namespace std;
 
@@ -62,8 +63,8 @@ class User {
     void insertTransactionToTransactionsList(string cryptoName, double cryptoAmount, double cryptoPrice, int valueCent, string type);
 
     // Crypto info
-    double returnPriceOfCrypto(string crypto);
-    int getCryptoId(string cryptoName);
+    // string getCryptoPrice(string crypto);
+    // int getCryptoId(string cryptoName);
         
   public:
     // Constructor
