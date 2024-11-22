@@ -28,23 +28,19 @@ Memory memory;
 Crypto crypto;  
 User user;
 
-
 mutex db_mutex;
 
-atomic<bool> keep_running(true); // Flag to stop thread
 
+atomic<bool> keep_running(true); // Flag to stop thread
 void refreshAndPrintPriceEvery60s() {
   while (keep_running) {
     {
         std::lock_guard<std::mutex> lock(db_mutex);
         memory.makeRequestAndWriteMemory(crypto.getCryptoApiIdVector(), curl, res);
     }
-    //cout << "Crypto price updated" << endl;
     this_thread::sleep_for(chrono::seconds(61)); // Wait 60s for price refresh
   } 
 }
-
-// cout << "TEST1" << endl;
 
 // Data
 static LPDIRECT3D9              g_pD3D = nullptr;
@@ -169,7 +165,7 @@ int main(int, char**)
         ImGui::Begin("Lista kryptowalut", nullptr, ImGuiWindowFlags_AlwaysVerticalScrollbar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar);
         ImGui::SetWindowSize(ImVec2(containerWidth, containerHeight));
 
-        for (int i = 0; i < crypto.numberOfCrypto; ++i)
+        for (int i = 0; i < crypto.numberOfCrypto; i++)
         {
             // Wymiary rzędu kryptowaluty
             ImVec2 rowSize(containerWidth, 100.0f);
