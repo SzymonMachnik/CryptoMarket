@@ -156,20 +156,28 @@ int main(int, char**)
         ImGui::NewFrame();
 
 /////////////////////////
-        //cout << user.getUserLoginStatus() << endl;
-        ImGui::SetNextWindowSize(ImVec2(500, 500));
+        ImGui::SetNextWindowPos(ImVec2(660, 290));
+        ImGui::SetNextWindowSize(ImVec2(600, 400));
         if (user.getUserLoginStatus() == false) {
-            ImGui::Begin("Login", nullptr, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar);                          // Create a window called "Hello, world!" and append into it.
+            ImGui::Begin("Login", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar);                          // Create a window called "Hello, world!" and append into it.
 
+            ImGui::SetCursorPos(ImVec2(20, 20));
             ImGui::Text("Login:");
+            
+            ImGui::SetCursorPos(ImVec2(20, 80));
+            ImGui::SetNextItemWidth(560);
             ImGui::InputText("##logininput", inputLogin, CHAR_MAX);
+            
+            ImGui::SetCursorPos(ImVec2(20, 150));
             ImGui::Text("Password:");
+
+            ImGui::SetCursorPos(ImVec2(20, 210));
+            ImGui::SetNextItemWidth(560);
             ImGui::InputText("##passwordinput", inputPassword, CHAR_MAX);
 
-            if (ImGui::Button("Login")) {
-                cout << "CLICKED" << endl;
-                cout << inputLogin << endl;
-                cout << inputPassword << endl;
+            ImGui::SetCursorPos(ImVec2(200, 300));
+            // ImGui::SetNextItemWidth(200);
+            if (ImGui::Button("Login", ImVec2(200, 60))) {
                 user.loginUser(inputLogin, inputPassword);
             }
 
