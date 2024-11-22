@@ -73,6 +73,7 @@ class User {
     // Registration and login
     bool getUserLoginStatus();
     void loginUser();
+    void loginUser(string tempLogin, string tempPassword);
     void registerUser();
 
     // Balance

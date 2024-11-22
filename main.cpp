@@ -110,8 +110,10 @@ int main(int, char**)
     
     thread messageThread(refreshAndPrintPriceEvery60s);
     // Main loop
-    bool done = false;
+    char inputLogin[255] = {}; 
+    char inputPassword[255] = {};
     
+    bool done = false;
     while (!done)
     {
         MSG msg;
@@ -154,46 +156,68 @@ int main(int, char**)
         ImGui::NewFrame();
 
 /////////////////////////
+        //cout << user.getUserLoginStatus() << endl;
+        ImGui::SetNextWindowSize(ImVec2(500, 500));
+        if (user.getUserLoginStatus() == false) {
+            ImGui::Begin("Login", nullptr, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar);                          // Create a window called "Hello, world!" and append into it.
 
-        ImGui::SetNextWindowPos(ImVec2(0, 0));
-        ImGui::SetNextWindowSize(ImVec2(1280, 1080));
+            ImGui::Text("Login:");
+            ImGui::InputText("##logininput", inputLogin, CHAR_MAX);
+            ImGui::Text("Password:");
+            ImGui::InputText("##passwordinput", inputPassword, CHAR_MAX);
 
-        const float containerWidth = 1280.0f;
-        const float containerHeight = 1080.0f;
-
-        // Okno główne z możliwością przewijania
-        ImGui::Begin("Lista kryptowalut", nullptr, ImGuiWindowFlags_AlwaysVerticalScrollbar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar);
-        ImGui::SetWindowSize(ImVec2(containerWidth, containerHeight));
-
-        for (int i = 0; i < crypto.numberOfCrypto; i++)
-        {
-            // Wymiary rzędu kryptowaluty
-            ImVec2 rowSize(containerWidth, 100.0f);
-
-            // Tło rzędu (opcjonalne)
-            ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.1f, 0.1f, 0.1f, 1.0f));
-            ImGui::BeginChild(std::string("CryptoRow_" + std::to_string(i)).c_str(), rowSize, false, ImGuiWindowFlags_NoScrollbar);
-
-            // Wyświetlanie nazwy i ceny
-            string cryptoName, cryptoPrice;
-            {
-                std::lock_guard<std::mutex> lock(db_mutex);
-                cryptoName = crypto.getCryptoName(i + 1);
-                cryptoPrice = crypto.getCryptoPrice(i + 1);
+            if (ImGui::Button("Login")) {
+                cout << "CLICKED" << endl;
+                cout << inputLogin << endl;
+                cout << inputPassword << endl;
+                user.loginUser(inputLogin, inputPassword);
             }
 
-            ImGui::Text(cryptoName.c_str());
-            ImGui::SameLine(500); // Ustawiamy tekst w połowie szerokości
-            ImGui::Text("%s $", cryptoPrice.c_str());
-
-            ImGui::EndChild();
-            ImGui::PopStyleColor();
-
-            // Dodanie odstępu między rzędami
-            ImGui::Spacing();
+            ImGui::End();
         }
 
-        ImGui::End();
+        if (user.getUserLoginStatus() == true) {
+            ImGui::SetNextWindowPos(ImVec2(0, 0));
+            ImGui::SetNextWindowSize(ImVec2(1280, 1080));
+
+            const float containerWidth = 1280.0f;
+            const float containerHeight = 1080.0f;
+
+            // Okno główne z możliwością przewijania
+            ImGui::Begin("Lista kryptowalut", nullptr, ImGuiWindowFlags_AlwaysVerticalScrollbar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar);
+            ImGui::SetWindowSize(ImVec2(containerWidth, containerHeight));
+
+            for (int i = 0; i < crypto.numberOfCrypto; i++)
+            {
+                // Wymiary rzędu kryptowaluty
+                ImVec2 rowSize(containerWidth, 100.0f);
+
+                // Tło rzędu (opcjonalne)
+                ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.1f, 0.1f, 0.1f, 1.0f));
+                ImGui::BeginChild(std::string("CryptoRow_" + std::to_string(i)).c_str(), rowSize, false, ImGuiWindowFlags_NoScrollbar);
+
+                // Wyświetlanie nazwy i ceny
+                string cryptoName, cryptoPrice;
+                {
+                    std::lock_guard<std::mutex> lock(db_mutex);
+                    cryptoName = crypto.getCryptoName(i + 1);
+                    cryptoPrice = crypto.getCryptoPrice(i + 1);
+                }
+
+                ImGui::Text(cryptoName.c_str());
+                ImGui::SameLine(500); // Ustawiamy tekst w połowie szerokości
+                ImGui::Text("%s $", cryptoPrice.c_str());
+
+                ImGui::EndChild();
+                ImGui::PopStyleColor();
+
+                // Dodanie odstępu między rzędami
+                ImGui::Spacing();
+            }
+
+            ImGui::End();
+        }
+
 
         // Rendering
         ImGui::EndFrame();
@@ -217,8 +241,7 @@ int main(int, char**)
         }
 
         HRESULT result = g_pd3dDevice->Present(nullptr, nullptr, nullptr, nullptr);
-        if (result == D3DERR_DEVICELOST)
-            g_DeviceLost = true;
+        if (result == D3DERR_DEVICELOST) g_DeviceLost = true;
     }
 
     // Cleanup
