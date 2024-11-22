@@ -173,12 +173,16 @@ int main(int, char**)
 
             ImGui::SetCursorPos(ImVec2(20, 210));
             ImGui::SetNextItemWidth(560);
-            ImGui::InputText("##passwordinput", inputPassword, CHAR_MAX);
+            ImGui::InputText("##passwordinput", inputPassword, CHAR_MAX, ImGuiInputTextFlags_Password);
 
             ImGui::SetCursorPos(ImVec2(200, 300));
             // ImGui::SetNextItemWidth(200);
             if (ImGui::Button("Login", ImVec2(200, 60))) {
                 user.loginUser(inputLogin, inputPassword);
+                if (user.getUserLoginStatus() == false) {
+                    inputLogin[0] = '\0'; 
+                    inputPassword[0] = '\0';
+                }
             }
 
             ImGui::End();
