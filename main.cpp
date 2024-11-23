@@ -44,6 +44,7 @@ void refreshAndPrintPriceEvery60s() {
 void renderRegisterWindow(char inputLogin[255], char inputPassword[255], char inputFirstName[255], char inputLastName[255],
                           string &inputLoginError, string &inputPasswordError, string &inputFirstNameError, string &inputLastNameError,
                           ImFont* errorFont);
+void renderLoginWindow(char inputLogin[255], char inputPassword[255]);
 
 // Data
 static LPDIRECT3D9              g_pD3D = nullptr;
@@ -167,45 +168,17 @@ int main(int, char**)
 
 /////////////////////////
     // Register window
-    ImGui::SetNextWindowPos(ImVec2(660, 190));
-    ImGui::SetNextWindowSize(ImVec2(600, 650));
-    if (user.getUserLoginStatus() == false) {
-      renderRegisterWindow(inputLogin, inputPassword, inputFirstName, inputLastName,
-                            inputLoginError, inputPasswordError, inputFirstNameError, inputLastNameError,
-                            errorFont);
-    }
-    // Login window
-    // ImGui::SetNextWindowPos(ImVec2(660, 290));
-    // ImGui::SetNextWindowSize(ImVec2(600, 400));
     // if (user.getUserLoginStatus() == false) {
-    //     ImGui::Begin("Login", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar);                          // Create a window called "Hello, world!" and append into it.
-
-    //     ImGui::SetCursorPos(ImVec2(20, 20));
-    //     ImGui::Text("Login:");
-        
-    //     ImGui::SetCursorPos(ImVec2(20, 80));
-    //     ImGui::SetNextItemWidth(560);
-    //     ImGui::InputText("##logininput", inputLogin, CHAR_MAX);
-        
-    //     ImGui::SetCursorPos(ImVec2(20, 150));
-    //     ImGui::Text("Password:");
-
-    //     ImGui::SetCursorPos(ImVec2(20, 210));
-    //     ImGui::SetNextItemWidth(560);
-    //     ImGui::InputText("##passwordinput", inputPassword, CHAR_MAX, ImGuiInputTextFlags_Password);
-
-    //     ImGui::SetCursorPos(ImVec2(200, 300));
-    //     // ImGui::SetNextItemWidth(200);
-    //     if (ImGui::Button("Login", ImVec2(200, 60))) {
-    //         user.loginUser(inputLogin, inputPassword);
-    //         if (user.getUserLoginStatus() == false) {
-    //             inputLogin[0] = '\0'; 
-    //             inputPassword[0] = '\0';
-    //         }
-    //     }
-
-    //     ImGui::End();
+    //   renderRegisterWindow(inputLogin, inputPassword, inputFirstName, inputLastName,
+    //                         inputLoginError, inputPasswordError, inputFirstNameError, inputLastNameError,
+    //                         errorFont);
     // }
+    // Login window
+    if (user.getUserLoginStatus() == false) {
+      renderLoginWindow(inputLogin, inputPassword);
+    }
+
+
 
     if (user.getUserLoginStatus() == true) {
       ImGui::SetNextWindowPos(ImVec2(0, 0));
@@ -371,101 +344,139 @@ LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 void renderRegisterWindow(char inputLogin[255], char inputPassword[255], char inputFirstName[255], char inputLastName[255],
                           string &inputLoginError, string &inputPasswordError, string &inputFirstNameError, string &inputLastNameError,
                           ImFont* errorFont) {
-    ImGui::Begin("Register", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar);                          // Create a window called "Hello, world!" and append into it.
+  ImGui::SetNextWindowPos(ImVec2(660, 190));
+  ImGui::SetNextWindowSize(ImVec2(600, 650));
+
+  ImGui::Begin("Register", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar);                          // Create a window called "Hello, world!" and append into it.
+
+  ImGui::SetCursorPos(ImVec2(20, 20));
+  ImGui::Text("Login:");
+
+  ImGui::SetCursorPos(ImVec2(20, 70));
+  ImGui::SetNextItemWidth(560);
+  ImGui::InputText("##logininput", inputLogin, CHAR_MAX);
+
+  if (inputLoginError != "") {
+    ImGui::PushFont(errorFont);
+    ImGui::SetCursorPos(ImVec2(30, 125));
+    ImGui::Text(inputLoginError.c_str());
+    ImGui::PopFont();
+  } 
+
+
+  ImGui::SetCursorPos(ImVec2(20, 150));
+  ImGui::Text("Password:");
+
+  ImGui::SetCursorPos(ImVec2(20, 200));
+  ImGui::SetNextItemWidth(560);
+  ImGui::InputText("##passwordinput", inputPassword, CHAR_MAX, ImGuiInputTextFlags_Password);
+
+  if (inputPasswordError != "") {
+    ImGui::PushFont(errorFont);
+    ImGui::SetCursorPos(ImVec2(30, 255));
+    ImGui::Text(inputPasswordError.c_str());
+    ImGui::PopFont();
+  } 
+
+
+  ImGui::SetCursorPos(ImVec2(20, 300));
+  ImGui::Text("First name:");
+
+  ImGui::SetCursorPos(ImVec2(20, 350));
+  ImGui::SetNextItemWidth(560);
+  ImGui::InputText("##firstnameinput", inputFirstName, CHAR_MAX);
+
+  if (inputFirstNameError != "") {
+    ImGui::PushFont(errorFont);
+    ImGui::SetCursorPos(ImVec2(30, 405));
+    ImGui::Text(inputFirstNameError.c_str());
+    ImGui::PopFont();
+  } 
+
+
+  ImGui::SetCursorPos(ImVec2(20, 430));
+  ImGui::Text("Last name:");
+
+  ImGui::SetCursorPos(ImVec2(20, 480));
+  ImGui::SetNextItemWidth(560);
+  ImGui::InputText("##lastnameinput", inputLastName, CHAR_MAX);
+
+  if (inputLastNameError != "") {
+    ImGui::PushFont(errorFont);
+    ImGui::SetCursorPos(ImVec2(30, 535));
+    ImGui::Text(inputLastNameError.c_str());
+    ImGui::PopFont();
+  } 
+
+
+  ImGui::SetCursorPos(ImVec2(200, 570));
+  if (ImGui::Button("Register", ImVec2(200, 60))) {
+    int errorCode = user.registerUser(inputLogin, inputPassword, inputFirstName, inputLastName);
+    inputLoginError = "";
+    inputPasswordError = "";
+    inputFirstNameError = "";
+    inputLastNameError = "";
+
+    if (errorCode != 0) {
+      if (errorCode < 10) {
+        if (errorCode == 1) inputLoginError = "Login must be between 8 and 32 characters.";
+        else if (errorCode == 2) inputLoginError = "Login must contain only letters.";
+        else if (errorCode == 3) inputLoginError = "Account with this login already exists.";
+        else inputLoginError = "Wrong login.";
+        inputLogin[0] = '\0'; 
+
+      } else if (errorCode < 100) {
+        errorCode %= 10;
+        if (errorCode == 1) inputPasswordError = "Password must be between 8 and 32 characters.";
+        else if (errorCode == 2) inputPasswordError = "Password must contain only lower, capital letters,\ndigits and special characters.";
+        else if (errorCode == 3) inputPasswordError = "Password must contain at least 4 lower letters, 1 capital letter,\n2 digits and 1 special character.";
+        else inputPasswordError = "Wrong password.";
+        inputPassword[0] = '\0';
+      } else if (errorCode < 1000) {
+        inputFirstNameError = "Enter first name.";
+        inputFirstName[0] = '\0'; 
+
+      } else {
+        inputLastNameError = "Enter last name.";
+        inputLastName[0] = '\0';
+      }
+    }
+  }
+
+  ImGui::End();
+}
+
+
+void renderLoginWindow(char inputLogin[255], char inputPassword[255]) {
+  ImGui::SetNextWindowPos(ImVec2(660, 290));
+  ImGui::SetNextWindowSize(ImVec2(600, 400));
+  if (user.getUserLoginStatus() == false) {
+    ImGui::Begin("Login", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar);                          // Create a window called "Hello, world!" and append into it.
 
     ImGui::SetCursorPos(ImVec2(20, 20));
     ImGui::Text("Login:");
     
-    ImGui::SetCursorPos(ImVec2(20, 70));
+    ImGui::SetCursorPos(ImVec2(20, 80));
     ImGui::SetNextItemWidth(560);
     ImGui::InputText("##logininput", inputLogin, CHAR_MAX);
-
-    if (inputLoginError != "") {
-      ImGui::PushFont(errorFont);
-      ImGui::SetCursorPos(ImVec2(30, 125));
-      ImGui::Text(inputLoginError.c_str());
-      ImGui::PopFont();
-    } 
     
-
     ImGui::SetCursorPos(ImVec2(20, 150));
     ImGui::Text("Password:");
 
-    ImGui::SetCursorPos(ImVec2(20, 200));
+    ImGui::SetCursorPos(ImVec2(20, 210));
     ImGui::SetNextItemWidth(560);
     ImGui::InputText("##passwordinput", inputPassword, CHAR_MAX, ImGuiInputTextFlags_Password);
 
-    if (inputPasswordError != "") {
-      ImGui::PushFont(errorFont);
-      ImGui::SetCursorPos(ImVec2(30, 255));
-      ImGui::Text(inputPasswordError.c_str());
-      ImGui::PopFont();
-    } 
-
-
-    ImGui::SetCursorPos(ImVec2(20, 300));
-    ImGui::Text("First name:");
-
-    ImGui::SetCursorPos(ImVec2(20, 350));
-    ImGui::SetNextItemWidth(560);
-    ImGui::InputText("##firstnameinput", inputFirstName, CHAR_MAX);
-
-    if (inputFirstNameError != "") {
-      ImGui::PushFont(errorFont);
-      ImGui::SetCursorPos(ImVec2(30, 405));
-      ImGui::Text(inputFirstNameError.c_str());
-      ImGui::PopFont();
-    } 
-
-
-    ImGui::SetCursorPos(ImVec2(20, 430));
-    ImGui::Text("Last name:");
-
-    ImGui::SetCursorPos(ImVec2(20, 480));
-    ImGui::SetNextItemWidth(560);
-    ImGui::InputText("##lastnameinput", inputLastName, CHAR_MAX);
-
-    if (inputLastNameError != "") {
-      ImGui::PushFont(errorFont);
-      ImGui::SetCursorPos(ImVec2(30, 535));
-      ImGui::Text(inputLastNameError.c_str());
-      ImGui::PopFont();
-    } 
-
-
-    ImGui::SetCursorPos(ImVec2(200, 570));
-    if (ImGui::Button("Register", ImVec2(200, 60))) {
-      int errorCode = user.registerUser(inputLogin, inputPassword, inputFirstName, inputLastName);
-      inputLoginError = "";
-      inputPasswordError = "";
-      inputFirstNameError = "";
-      inputLastNameError = "";
-
-      if (errorCode != 0) {
-        if (errorCode < 10) {
-          if (errorCode == 1) inputLoginError = "Login must be between 8 and 32 characters.";
-          else if (errorCode == 2) inputLoginError = "Login must contain only letters.";
-          else if (errorCode == 3) inputLoginError = "Account with this login already exists.";
-          else inputLoginError = "Wrong login.";
-          inputLogin[0] = '\0'; 
-
-        } else if (errorCode < 100) {
-          errorCode %= 10;
-          if (errorCode == 1) inputPasswordError = "Password must be between 8 and 32 characters.";
-          else if (errorCode == 2) inputPasswordError = "Password must contain only lower, capital letters,\ndigits and special characters.";
-          else if (errorCode == 3) inputPasswordError = "Password must contain at least 4 lower letters, 1 capital letter,\n2 digits and 1 special character.";
-          else inputPasswordError = "Wrong password.";
-          inputPassword[0] = '\0';
-        } else if (errorCode < 1000) {
-          inputFirstNameError = "Enter first name.";
-          inputFirstName[0] = '\0'; 
-
-        } else {
-          inputLastNameError = "Enter last name.";
-          inputLastName[0] = '\0';
-        }
+    ImGui::SetCursorPos(ImVec2(200, 300));
+    // ImGui::SetNextItemWidth(200);
+    if (ImGui::Button("Login", ImVec2(200, 60))) {
+      user.loginUser(inputLogin, inputPassword);
+      if (user.getUserLoginStatus() == false) {
+        inputLogin[0] = '\0'; 
+        inputPassword[0] = '\0';
       }
     }
 
     ImGui::End();
+  }
 }
