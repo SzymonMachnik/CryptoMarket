@@ -44,8 +44,10 @@ void refreshAndPrintPriceEvery60s() {
 void renderChooseRegsterOrLoginWindow(string &action);
 void renderRegisterWindow(char inputLogin[255], char inputPassword[255], char inputFirstName[255], char inputLastName[255],
                           string &inputLoginError, string &inputPasswordError, string &inputFirstNameError, string &inputLastNameError,
-                          ImFont* errorFont);
-void renderLoginWindow(char inputLogin[255], char inputPassword[255]);
+                          ImFont* errorFont,
+                          string &action);
+void renderLoginWindow(char inputLogin[255], char inputPassword[255],
+                       string &action);
 
 // Data
 static LPDIRECT3D9              g_pD3D = nullptr;
@@ -179,11 +181,11 @@ int main(int, char**)
     if (user.getUserLoginStatus() == false && action == "register") {
       renderRegisterWindow(inputLogin, inputPassword, inputFirstName, inputLastName,
                             inputLoginError, inputPasswordError, inputFirstNameError, inputLastNameError,
-                            errorFont);
+                            errorFont, action);
     }
     // Login window
     if (user.getUserLoginStatus() == false && action == "login") {
-      renderLoginWindow(inputLogin, inputPassword);
+      renderLoginWindow(inputLogin, inputPassword, action);
     }
 
 
@@ -370,11 +372,17 @@ void renderChooseRegsterOrLoginWindow(string &action) {
 
 void renderRegisterWindow(char inputLogin[255], char inputPassword[255], char inputFirstName[255], char inputLastName[255],
                           string &inputLoginError, string &inputPasswordError, string &inputFirstNameError, string &inputLastNameError,
-                          ImFont* errorFont) {
+                          ImFont* errorFont,
+                          string &action) {
   ImGui::SetNextWindowPos(ImVec2(660, 190));
   ImGui::SetNextWindowSize(ImVec2(600, 650));
 
   ImGui::Begin("Register", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar);                          // Create a window called "Hello, world!" and append into it.
+
+  ImGui::SetCursorPos(ImVec2(540, 0));
+  if (ImGui::Button("X", ImVec2(60, 60))) {
+    action = "chooseLoginOrRegister";
+  }
 
   ImGui::SetCursorPos(ImVec2(20, 20));
   ImGui::Text("Login:");
@@ -474,36 +482,43 @@ void renderRegisterWindow(char inputLogin[255], char inputPassword[255], char in
 }
 
 
-void renderLoginWindow(char inputLogin[255], char inputPassword[255]) {
+void renderLoginWindow(char inputLogin[255], char inputPassword[255],
+                       string &action) {
   ImGui::SetNextWindowPos(ImVec2(660, 290));
   ImGui::SetNextWindowSize(ImVec2(600, 400));
-  if (user.getUserLoginStatus() == false) {
-    ImGui::Begin("Login", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar);                          // Create a window called "Hello, world!" and append into it.
 
-    ImGui::SetCursorPos(ImVec2(20, 20));
-    ImGui::Text("Login:");
-    
-    ImGui::SetCursorPos(ImVec2(20, 80));
-    ImGui::SetNextItemWidth(560);
-    ImGui::InputText("##logininput", inputLogin, CHAR_MAX);
-    
-    ImGui::SetCursorPos(ImVec2(20, 150));
-    ImGui::Text("Password:");
+  ImGui::Begin("Login", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar);                          // Create a window called "Hello, world!" and append into it.
 
-    ImGui::SetCursorPos(ImVec2(20, 210));
-    ImGui::SetNextItemWidth(560);
-    ImGui::InputText("##passwordinput", inputPassword, CHAR_MAX, ImGuiInputTextFlags_Password);
-
-    ImGui::SetCursorPos(ImVec2(200, 300));
-    // ImGui::SetNextItemWidth(200);
-    if (ImGui::Button("Login", ImVec2(200, 60))) {
-      user.loginUser(inputLogin, inputPassword);
-      if (user.getUserLoginStatus() == false) {
-        inputLogin[0] = '\0'; 
-        inputPassword[0] = '\0';
-      }
-    }
-
-    ImGui::End();
+  ImGui::SetCursorPos(ImVec2(540, 0));
+  if (ImGui::Button("X", ImVec2(60, 60))) {
+    action = "chooseLoginOrRegister";
   }
+
+
+  ImGui::SetCursorPos(ImVec2(20, 20));
+  ImGui::Text("Login:");
+  
+  ImGui::SetCursorPos(ImVec2(20, 80));
+  ImGui::SetNextItemWidth(560);
+  ImGui::InputText("##logininput", inputLogin, CHAR_MAX);
+  
+  ImGui::SetCursorPos(ImVec2(20, 150));
+  ImGui::Text("Password:");
+
+  ImGui::SetCursorPos(ImVec2(20, 210));
+  ImGui::SetNextItemWidth(560);
+  ImGui::InputText("##passwordinput", inputPassword, CHAR_MAX, ImGuiInputTextFlags_Password);
+
+  ImGui::SetCursorPos(ImVec2(200, 300));
+  // ImGui::SetNextItemWidth(200);
+  if (ImGui::Button("Login", ImVec2(200, 60))) {
+    user.loginUser(inputLogin, inputPassword);
+    if (user.getUserLoginStatus() == false) {
+      inputLogin[0] = '\0'; 
+      inputPassword[0] = '\0';
+    }
+  }
+
+  ImGui::End();
+  
 }
