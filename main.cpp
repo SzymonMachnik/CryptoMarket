@@ -41,6 +41,7 @@ void refreshAndPrintPriceEvery60s() {
     this_thread::sleep_for(chrono::seconds(61)); // Wait 60s for price refresh
   } 
 }
+void renderChooseRegsterOrLoginWindow(string &action);
 void renderRegisterWindow(char inputLogin[255], char inputPassword[255], char inputFirstName[255], char inputLastName[255],
                           string &inputLoginError, string &inputPasswordError, string &inputFirstNameError, string &inputLastNameError,
                           ImFont* errorFont);
@@ -124,6 +125,8 @@ int main(int, char**)
   string inputPasswordError;
   string inputFirstNameError;
   string inputLastNameError;
+
+  string action = "chooseLoginOrRegister";
   
   bool done = false;
   while (!done)
@@ -167,19 +170,24 @@ int main(int, char**)
     ImGui::NewFrame();
 
 /////////////////////////
+    // ChooseRegsterOrLogin Window
+    if (user.getUserLoginStatus() == false && action == "chooseLoginOrRegister") {
+      renderChooseRegsterOrLoginWindow(action);
+    }
+
     // Register window
-    // if (user.getUserLoginStatus() == false) {
-    //   renderRegisterWindow(inputLogin, inputPassword, inputFirstName, inputLastName,
-    //                         inputLoginError, inputPasswordError, inputFirstNameError, inputLastNameError,
-    //                         errorFont);
-    // }
+    if (user.getUserLoginStatus() == false && action == "register") {
+      renderRegisterWindow(inputLogin, inputPassword, inputFirstName, inputLastName,
+                            inputLoginError, inputPasswordError, inputFirstNameError, inputLastNameError,
+                            errorFont);
+    }
     // Login window
-    if (user.getUserLoginStatus() == false) {
+    if (user.getUserLoginStatus() == false && action == "login") {
       renderLoginWindow(inputLogin, inputPassword);
     }
 
 
-
+    // Render main window
     if (user.getUserLoginStatus() == true) {
       ImGui::SetNextWindowPos(ImVec2(0, 0));
       ImGui::SetNextWindowSize(ImVec2(1280, 1080));
@@ -341,6 +349,25 @@ LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 
 
+void renderChooseRegsterOrLoginWindow(string &action) {
+  ImGui::SetNextWindowPos(ImVec2(660, 340));
+  ImGui::SetNextWindowSize(ImVec2(600, 400));
+  ImGui::Begin("ChooseOptionLoginOrRegister", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar);                          // Create a window called "Hello, world!" and append into it.    
+  
+  ImGui::SetCursorPos(ImVec2(200, 100));
+  if (ImGui::Button("Login", ImVec2(200, 80))) {
+    action = "login";
+  }
+  
+  ImGui::SetCursorPos(ImVec2(200, 220));
+  if (ImGui::Button("Sign in", ImVec2(200, 80))) {
+    action = "register";
+  }
+
+  ImGui::End();
+}
+
+
 void renderRegisterWindow(char inputLogin[255], char inputPassword[255], char inputFirstName[255], char inputLastName[255],
                           string &inputLoginError, string &inputPasswordError, string &inputFirstNameError, string &inputLastNameError,
                           ImFont* errorFont) {
@@ -410,7 +437,7 @@ void renderRegisterWindow(char inputLogin[255], char inputPassword[255], char in
 
 
   ImGui::SetCursorPos(ImVec2(200, 570));
-  if (ImGui::Button("Register", ImVec2(200, 60))) {
+  if (ImGui::Button("Sign in", ImVec2(200, 60))) {
     int errorCode = user.registerUser(inputLogin, inputPassword, inputFirstName, inputLastName);
     inputLoginError = "";
     inputPasswordError = "";
