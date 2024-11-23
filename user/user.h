@@ -30,9 +30,13 @@ class User {
 
     // Manage user data
     void setUserLogin();
+    int setUserLogin(string tempLogin);
     void setUserPassword();
+    int setUserPassword(string tempPassword);
     void setFirstName();
+    int setFirstName(string tempFirstName);
     void setLastName();
+    int setLastName(string tempLastName); 
     void setUserId();
     void setUserDataDuringLogin();
 
@@ -75,6 +79,7 @@ class User {
     void loginUser();
     void loginUser(string tempLogin, string tempPassword);
     void registerUser();
+    int registerUser(string tempLogin, string tempPassword, string tempFirstName, string tempLastName);
 
     // Balance
     void deposit(int moneyInCents);

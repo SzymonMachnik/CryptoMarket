@@ -112,6 +112,13 @@ int main(int, char**)
     // Main loop
     char inputLogin[255] = {}; 
     char inputPassword[255] = {};
+    char inputFirstName[255] = {}; 
+    char inputLastName[255] = {};
+
+    string inputLoginError;
+    string inputPasswordError;
+    string inputFirstNameError;
+    string inputLastNameError;
     
     bool done = false;
     while (!done)
@@ -156,37 +163,106 @@ int main(int, char**)
         ImGui::NewFrame();
 
 /////////////////////////
-        ImGui::SetNextWindowPos(ImVec2(660, 290));
-        ImGui::SetNextWindowSize(ImVec2(600, 400));
+        // Register window
+        ImGui::SetNextWindowPos(ImVec2(660, 190));
+        ImGui::SetNextWindowSize(ImVec2(600, 650));
         if (user.getUserLoginStatus() == false) {
-            ImGui::Begin("Login", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar);                          // Create a window called "Hello, world!" and append into it.
+            ImGui::Begin("Register", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar);                          // Create a window called "Hello, world!" and append into it.
 
             ImGui::SetCursorPos(ImVec2(20, 20));
             ImGui::Text("Login:");
             
-            ImGui::SetCursorPos(ImVec2(20, 80));
+            ImGui::SetCursorPos(ImVec2(20, 70));
             ImGui::SetNextItemWidth(560);
             ImGui::InputText("##logininput", inputLogin, CHAR_MAX);
             
             ImGui::SetCursorPos(ImVec2(20, 150));
             ImGui::Text("Password:");
 
-            ImGui::SetCursorPos(ImVec2(20, 210));
+            ImGui::SetCursorPos(ImVec2(20, 200));
             ImGui::SetNextItemWidth(560);
             ImGui::InputText("##passwordinput", inputPassword, CHAR_MAX, ImGuiInputTextFlags_Password);
 
-            ImGui::SetCursorPos(ImVec2(200, 300));
+            ImGui::SetCursorPos(ImVec2(20, 280));
+            ImGui::Text("First name:");
+
+            ImGui::SetCursorPos(ImVec2(20, 330));
+            ImGui::SetNextItemWidth(560);
+            ImGui::InputText("##firstnameinput", inputFirstName, CHAR_MAX);
+
+            ImGui::SetCursorPos(ImVec2(20, 410));
+            ImGui::Text("Last name:");
+
+            ImGui::SetCursorPos(ImVec2(20, 460));
+            ImGui::SetNextItemWidth(560);
+            ImGui::InputText("##lastnameinput", inputLastName, CHAR_MAX);
+
+            ImGui::SetCursorPos(ImVec2(200, 550));
             // ImGui::SetNextItemWidth(200);
-            if (ImGui::Button("Login", ImVec2(200, 60))) {
-                user.loginUser(inputLogin, inputPassword);
+            if (ImGui::Button("Register", ImVec2(200, 60))) {
+                int errorCode = user.registerUser(inputLogin, inputPassword, inputFirstName, inputLastName);
+                inputLoginError = "";
+                inputPasswordError = "";
+                inputFirstNameError = "";
+                inputLastNameError = "";
+
+                if (errorCode != 0) {
+                    if (errorCode < 10) {
+                        inputLoginError = "WRONG LOGIN";
+                    } else if (errorCode < 100) {
+                        inputPasswordError = "WRONG PASSWORD";
+                    } else if (errorCode < 1000) {
+                        inputFirstNameError = "WRONG FIRST NAME";
+                    } else {
+                        inputLastNameError = "WRONG LAST NAME";
+                    }
+                }
                 if (user.getUserLoginStatus() == false) {
                     inputLogin[0] = '\0'; 
                     inputPassword[0] = '\0';
+                    inputFirstName[0] = '\0'; 
+                    inputLastName[0] = '\0';
                 }
+                cout << inputLoginError << endl;
+                cout << inputPasswordError << endl;
+                cout << inputFirstNameError << endl;
+                cout << inputLastNameError << endl;
             }
 
             ImGui::End();
         }
+        // Login window
+        // ImGui::SetNextWindowPos(ImVec2(660, 290));
+        // ImGui::SetNextWindowSize(ImVec2(600, 400));
+        // if (user.getUserLoginStatus() == false) {
+        //     ImGui::Begin("Login", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar);                          // Create a window called "Hello, world!" and append into it.
+
+        //     ImGui::SetCursorPos(ImVec2(20, 20));
+        //     ImGui::Text("Login:");
+            
+        //     ImGui::SetCursorPos(ImVec2(20, 80));
+        //     ImGui::SetNextItemWidth(560);
+        //     ImGui::InputText("##logininput", inputLogin, CHAR_MAX);
+            
+        //     ImGui::SetCursorPos(ImVec2(20, 150));
+        //     ImGui::Text("Password:");
+
+        //     ImGui::SetCursorPos(ImVec2(20, 210));
+        //     ImGui::SetNextItemWidth(560);
+        //     ImGui::InputText("##passwordinput", inputPassword, CHAR_MAX, ImGuiInputTextFlags_Password);
+
+        //     ImGui::SetCursorPos(ImVec2(200, 300));
+        //     // ImGui::SetNextItemWidth(200);
+        //     if (ImGui::Button("Login", ImVec2(200, 60))) {
+        //         user.loginUser(inputLogin, inputPassword);
+        //         if (user.getUserLoginStatus() == false) {
+        //             inputLogin[0] = '\0'; 
+        //             inputPassword[0] = '\0';
+        //         }
+        //     }
+
+        //     ImGui::End();
+        // }
 
         if (user.getUserLoginStatus() == true) {
             ImGui::SetNextWindowPos(ImVec2(0, 0));

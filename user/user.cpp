@@ -140,6 +140,34 @@ void User::registerUser() {
   cout << "Welcome " << firstName << " " << lastName << "!" << endl;
 }
 
+int User::registerUser(string tempLogin, string tempPassword, string tempFirstName, string tempLastName) {
+  int const USER_OK = 0;
+  int errorCode;
+
+  errorCode = setUserLogin(tempLogin);
+  if (errorCode != USER_OK) return errorCode;
+
+  errorCode = setUserPassword(tempPassword);
+  if (errorCode != USER_OK) return errorCode * 10;
+
+  errorCode = setFirstName(tempFirstName);
+  if (errorCode != USER_OK) return errorCode * 100;
+
+  errorCode = setLastName(tempLastName);
+  if (errorCode != USER_OK) return errorCode * 1000;
+
+  this->isUserLoged = true;
+  this->balanceInCents = 0;
+
+  insertUserIntoDb();
+  setUserId();
+
+  generateUserWallet();
+  generateUserTransactionsList();
+
+  cout << "Welcome " << firstName << " " << lastName << "!" << endl;
+  return 0;
+}
 
 // Balance
 void User::deposit(int moneyToDepositInCents) {
@@ -371,6 +399,36 @@ void User::setUserLogin() {
   this->login = login;
 }
 
+int User::setUserLogin(string tempLogin) {
+  bool correctLogin = false;
+
+  // min 10 characters
+  // only small letters
+  correctLogin = true;
+  if (tempLogin.size() < 10 || 32 < tempLogin.size()) {
+    cout << "Login size must to be beteen 10 and 32 characters." << endl;
+    correctLogin = false;
+    return 1;
+  } else {
+    for (char c : tempLogin) {
+      if (!(0 <= c - 'a' && c - 'a' <= 25)) {
+        correctLogin = false;
+        cout << "Login must contain only letters." << endl;
+        return 1;
+      }
+    }
+  }
+
+  if (correctLogin == true && doesLoginExistInDb(tempLogin) == true) {
+    correctLogin = false;
+    cout << "The login you provided is already in use." << endl; 
+    return 1;
+  }    
+
+  this->login = tempLogin;
+  return 0;
+}
+
 void User::setUserPassword() {
   string password;
     
@@ -432,6 +490,61 @@ void User::setUserPassword() {
     this->password = password;
 }
 
+int User::setUserPassword(string tempPassword) {    
+  bool correctPassword = false;
+
+  correctPassword = true;
+  int lowerLetterCounter = 0;
+  int capitalLetterCounter = 0;
+  int digitCounter = 0;
+  int specialCharacterCounter = 0;
+
+  int minLowerLetter = 4;
+  int minCapitalLetter = 1;
+  int minDigit = 2;
+  int minSpecialCharacter = 1;
+
+  if (tempPassword.size() < 8 || 32 < tempPassword.size()) {
+    cout << "Password size must to be beteen 8 and 32 characters." << endl;
+    correctPassword = false;
+    return 1;
+  } else {
+    for (char c : tempPassword) {
+      if (0 <= c - 'a' && c - 'a' <= 25) {
+        lowerLetterCounter++;
+      } else if (0 <= c - 'A' && c - 'A' <= 25) {
+        capitalLetterCounter++;
+      } else if (0 <= c - '0' && c - '0' <= 9) {
+        digitCounter++;
+      } else if (33 <= c && c <= 125) {
+        specialCharacterCounter++;
+      } else {
+        correctPassword = false;
+        return 1;
+      }
+    }
+  }
+  if (correctPassword == true) {
+    if (!(lowerLetterCounter >= minLowerLetter
+        && capitalLetterCounter >= minCapitalLetter
+        && digitCounter >= minDigit
+        && specialCharacterCounter >= minSpecialCharacter)) {
+
+      cout << "Password has to contain at least:" << endl;
+      cout << minLowerLetter << " small letters" << " Contains: " << lowerLetterCounter << endl;
+      cout << minCapitalLetter << " capital letter" << " Contains: " << capitalLetterCounter << endl;
+      cout << minDigit << " digits" << " Includes: " << digitCounter << endl;
+      cout << minSpecialCharacter << " special character" << " Contains: " << specialCharacterCounter << endl;
+
+      correctPassword = false;
+      return 1;
+    }
+  }
+    
+  this->password = tempPassword;
+  return 0;
+}
+
 void User::setFirstName() {
   string firstName;
 
@@ -449,6 +562,13 @@ void User::setFirstName() {
   this->firstName = firstName;
 }
 
+int User::setFirstName(string tempFirstName) {
+  if (tempFirstName.size() == 0) return 1;
+
+  this->firstName = tempFirstName;
+  return 0;
+}
+
 void User::setLastName() {
   string lastName;
 
@@ -464,6 +584,13 @@ void User::setLastName() {
   } while (lastName.size() == 0);
 
   this->lastName = lastName;
+}
+
+int User::setLastName(string tempLastName) {
+  if (tempLastName.size() == 0) return 1;
+
+  this->lastName = tempLastName;
+  return 0;
 }
 
 void User::setUserId() {
