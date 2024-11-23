@@ -148,13 +148,13 @@ int User::registerUser(string tempLogin, string tempPassword, string tempFirstNa
   if (errorCode != USER_OK) return errorCode;
 
   errorCode = setUserPassword(tempPassword);
-  if (errorCode != USER_OK) return errorCode * 10;
+  if (errorCode != USER_OK) return errorCode + 10;
 
   errorCode = setFirstName(tempFirstName);
-  if (errorCode != USER_OK) return errorCode * 100;
+  if (errorCode != USER_OK) return errorCode + 100;
 
   errorCode = setLastName(tempLastName);
-  if (errorCode != USER_OK) return errorCode * 1000;
+  if (errorCode != USER_OK) return errorCode + 1000;
 
   this->isUserLoged = true;
   this->balanceInCents = 0;
@@ -414,7 +414,7 @@ int User::setUserLogin(string tempLogin) {
       if (!(0 <= c - 'a' && c - 'a' <= 25)) {
         correctLogin = false;
         cout << "Login must contain only letters." << endl;
-        return 1;
+        return 2;
       }
     }
   }
@@ -422,7 +422,7 @@ int User::setUserLogin(string tempLogin) {
   if (correctLogin == true && doesLoginExistInDb(tempLogin) == true) {
     correctLogin = false;
     cout << "The login you provided is already in use." << endl; 
-    return 1;
+    return 3;
   }    
 
   this->login = tempLogin;
@@ -520,7 +520,7 @@ int User::setUserPassword(string tempPassword) {
         specialCharacterCounter++;
       } else {
         correctPassword = false;
-        return 1;
+        return 2;
       }
     }
   }
@@ -537,7 +537,7 @@ int User::setUserPassword(string tempPassword) {
       cout << minSpecialCharacter << " special character" << " Contains: " << specialCharacterCounter << endl;
 
       correctPassword = false;
-      return 1;
+      return 3;
     }
   }
     
