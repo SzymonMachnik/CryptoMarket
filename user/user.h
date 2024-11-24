@@ -6,6 +6,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <algorithm>
 #include <sqlite3.h>
 #include <sstream>
 #include <ctime>
@@ -89,9 +90,12 @@ class User {
     void buyCrypto();
     void sellCrypto();
 
-    // Displaying
+    // Wallet
     void displayWallet();
+
+    // Transactions
     void displayTransactionsList();
+    vector<vector<string>> returnAllTransactions();
 
 };
 

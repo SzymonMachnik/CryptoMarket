@@ -73,7 +73,8 @@
     "xloctime": "cpp",
     "xmemory": "cpp",
     "xtr1common": "cpp",
-    "xutility": "cpp"
+    "xutility": "cpp",
+    "mutex": "cpp"
   },
   "cmake.sourceDirectory": "C:/CryptoScraper/vcpkg/ports/7zip",
   "C_Cpp.errorSquiggles": "disabled"

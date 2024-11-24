@@ -315,6 +315,8 @@ void User::displayWallet() {
   sqlite3_close(db);
 }
 
+
+// Transactions
 void User::displayTransactionsList() {
   // Init
   sqlite3 *db;
@@ -356,6 +358,43 @@ void User::displayTransactionsList() {
   sqlite3_close(db); 
 }
 
+vector<vector<string>> User::returnAllTransactions() {
+  // CONVERSION FROM ID TO CRYPTO NAME DOESNT WORK
+  vector<vector<string>> result;
+    sqlite3* db;
+    if (sqlite3_open("sqlite/database.db", &db) != SQLITE_OK) {
+      cerr << "Can not open database: " << sqlite3_errmsg(db) << endl;
+      return result;
+    }
+    ostringstream sql;
+    sql << "SELECT transaction_id, date, cp.name, crypto_amount, crypto_price, value_cent, type FROM transactions_"
+        << this->userId << " t"
+        << " JOIN crypto_price cp"
+        << " ON t.crypto_id = cp.crypto_id;";
+    sqlite3_stmt* stmt;
+    sqlite3_prepare_v2(db, sql.str().c_str(), -1, &stmt, nullptr);
+
+    // select transaction_id, date, cp.name, crypto_amount, crypto_price, value_cent, type FROM transactions_1 JOIN crypto_price cp ON transactions_1.crypto_id = cp.crypto_id;
+    // select transaction_id, date, cp.name, crypto_amount, crypto_price, value_cent, type FROM transactions_1 JOIN crypto_price cp ON crypto_id = crypto_id;
+
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
+        std::vector<std::string> row;
+        row.push_back(std::to_string(sqlite3_column_int(stmt, 0)));        // transaction_id
+        row.push_back(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1))); // date
+        row.push_back(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2)));        // crypto_id
+        row.push_back(std::to_string(sqlite3_column_double(stmt, 3)));     // crypto_amount
+        row.push_back(std::to_string(sqlite3_column_double(stmt, 4)));     // crypto_price
+        row.push_back(std::to_string(sqlite3_column_int(stmt, 5)));        // value_cent
+        row.push_back(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 6))); // type
+        result.push_back(row);
+    }
+
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+    std::reverse(result.begin(), result.end());
+    return result;
+
+}
 
 
 // PRIVATE FUNCTIONS
