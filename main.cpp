@@ -234,7 +234,7 @@ int main(int, char**)
     ///////////////////////
 
       containerWidth = 640.0f;
-      containerHeight = 540.0f;
+      containerHeight = 489.0f;
 
       ImGui::SetNextWindowPos(ImVec2(1280, 0));
       ImGui::SetNextWindowSize(ImVec2(containerWidth, containerHeight));
@@ -250,10 +250,33 @@ int main(int, char**)
         wallet = user.returnAllRecordsFromWallet();
       }
 
+      ImVec2 rowSize(containerWidth, 40.0f);
+      ImGui::BeginChild("WalletHeader", rowSize, false, ImGuiWindowFlags_NoScrollbar);
+      ImGui::SetCursorPos(ImVec2(264, 0));
+      ImGui::Text("Wallet");
+      ImGui::EndChild();
+      ImGui::Spacing();
+
+      //ImVec2 rowSize(containerWidth, 40.0f);
+      ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.1f, 0.1f, 0.1f, 1.0f));
+      ImGui::PushFont(transactionsListFont);
+      ImGui::BeginChild("WalletMainInfo", ImVec2(containerWidth, 80.0f), false, ImGuiWindowFlags_NoScrollbar);
+      ImGui::SetCursorPos(ImVec2(10, 6));
+      ImGui::SetCursorPos(ImVec2(10, 6));
+      std::ostringstream streamValue1;
+      streamValue1 << std::fixed << std::setprecision(2) << user.getBalanceInCents() / 100.;
+      ImGui::Text(("Fiat balance: " + streamValue1.str() + "$").c_str()); // Fiat balance
+      ImGui::SetCursorPos(ImVec2(10, 6 + 33));
+      ImGui::Text("Wallet value: 12345.67$");  // Wallet value in $
+      ImGui::PopFont();
+      ImGui::PopStyleColor();
+      ImGui::EndChild();
+      ImGui::Spacing();
+
       for (auto record : wallet)
       {
         // Wymiary rzędu kryptowaluty
-        ImVec2 rowSize(containerWidth, 110.0f);
+        ImVec2 rowSize(containerWidth, 80.0f);
 
         // Tło rzędu (opcjonalne)
         ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.1f, 0.1f, 0.1f, 1.0f));
@@ -295,9 +318,9 @@ int main(int, char**)
     ///////////////////
 
       containerWidth = 640.0f;
-      containerHeight = 540.0f;
+      containerHeight = 591.0f;
 
-      ImGui::SetNextWindowPos(ImVec2(1280, 540));
+      ImGui::SetNextWindowPos(ImVec2(1280, 489));
       ImGui::SetNextWindowSize(ImVec2(containerWidth, containerHeight));
 
 
@@ -310,6 +333,13 @@ int main(int, char**)
         std::lock_guard<std::mutex> lock(db_mutex);
         transactionsList = user.returnAllTransactions();
       }
+
+      //ImVec2 rowSize(containerWidth, 40.0f);
+      ImGui::SetCursorPos(ImVec2(133, 5));
+      ImGui::BeginChild("TransactionsHistory", rowSize, false, ImGuiWindowFlags_NoScrollbar);
+      ImGui::Text("Transactions History");
+      ImGui::EndChild();
+      ImGui::Spacing();
 
       for (auto transaction : transactionsList)
       {
@@ -509,11 +539,6 @@ void renderRegisterWindow(char inputLogin[255], char inputPassword[255], char in
 
   ImGui::Begin("Register", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar);                          // Create a window called "Hello, world!" and append into it.
 
-  ImGui::SetCursorPos(ImVec2(540, 0));
-  if (ImGui::Button("X", ImVec2(60, 60))) {
-    action = "chooseLoginOrRegister";
-  }
-
   ImGui::SetCursorPos(ImVec2(20, 20));
   ImGui::Text("Login:");
 
@@ -608,6 +633,11 @@ void renderRegisterWindow(char inputLogin[255], char inputPassword[255], char in
     }
   }
 
+  ImGui::SetCursorPos(ImVec2(540, 0));
+  if (ImGui::Button("X", ImVec2(60, 60))) {
+    action = "chooseLoginOrRegister";
+  }
+
   ImGui::End();
 }
 
@@ -618,12 +648,6 @@ void renderLoginWindow(char inputLogin[255], char inputPassword[255],
   ImGui::SetNextWindowSize(ImVec2(600, 400));
 
   ImGui::Begin("Login", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar);                          // Create a window called "Hello, world!" and append into it.
-
-  ImGui::SetCursorPos(ImVec2(540, 0));
-  if (ImGui::Button("X", ImVec2(60, 60))) {
-    action = "chooseLoginOrRegister";
-  }
-
 
   ImGui::SetCursorPos(ImVec2(20, 20));
   ImGui::Text("Login:");
@@ -648,6 +672,12 @@ void renderLoginWindow(char inputLogin[255], char inputPassword[255],
       inputPassword[0] = '\0';
     }
   }
+
+  ImGui::SetCursorPos(ImVec2(540, 0));
+  if (ImGui::Button("X", ImVec2(60, 60))) {
+    action = "chooseLoginOrRegister";
+  }
+
 
   ImGui::End();
   
