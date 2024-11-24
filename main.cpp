@@ -199,7 +199,7 @@ int main(int, char**)
       ImGui::SetNextWindowSize(ImVec2(containerWidth, containerHeight));
 
       // Okno główne z możliwością przewijania
-      ImGui::Begin("Lista kryptowalut", nullptr, ImGuiWindowFlags_AlwaysVerticalScrollbar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar);
+      ImGui::Begin("Crypto list", nullptr, ImGuiWindowFlags_AlwaysVerticalScrollbar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar);
 
       for (int i = 0; i < crypto.numberOfCrypto; i++)
       {
@@ -231,7 +231,68 @@ int main(int, char**)
 
       ImGui::End();
 
+    ///////////////////////
+
+      containerWidth = 640.0f;
+      containerHeight = 540.0f;
+
+      ImGui::SetNextWindowPos(ImVec2(1280, 0));
+      ImGui::SetNextWindowSize(ImVec2(containerWidth, containerHeight));
+
+
+
+      ImGui::Begin("Wallet", nullptr, ImGuiWindowFlags_AlwaysVerticalScrollbar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar);
+      ImGui::SetWindowSize(ImVec2(containerWidth, containerHeight));
+
+      vector<vector<string>> wallet;
+      {
+        std::lock_guard<std::mutex> lock(db_mutex);
+        wallet = user.returnAllRecordsFromWallet();
+      }
+
+      for (auto record : wallet)
+      {
+        // Wymiary rzędu kryptowaluty
+        ImVec2 rowSize(containerWidth, 110.0f);
+
+        // Tło rzędu (opcjonalne)
+        ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.1f, 0.1f, 0.1f, 1.0f));
+        ImGui::BeginChild((std::string("Transaction_") + std::string(record[0])).c_str(), rowSize, false, ImGuiWindowFlags_NoScrollbar);
+        ImGui::PushFont(transactionsListFont);
+
+        std::ostringstream streamValue;
+        streamValue << std::fixed << std::setprecision(2) << stoi(record[2]) / 100.0;
+
+        float textLineSize = 33.0f;
+        float textColumnSize = 310.0f;
+
+        auto firstLetterToUpperCase = [](string text) -> string {
+          text[0] -= 32;
+          return text;
+        };
+
+        ImGui::SetCursorPos(ImVec2(10, 6));
+        ImGui::Text((firstLetterToUpperCase(record[1])).c_str()); // Crypto name
+        ImGui::SetCursorPos(ImVec2(10, 6 + textLineSize));
+        ImGui::Text(("Amount: " + record[3]).c_str()); // Amount
+
+        ImGui::SetCursorPos(ImVec2(10 + textColumnSize, 6));
+        ImGui::Text(("Value: " + streamValue.str() + "$").c_str());  // Value in $
+        ImGui::SetCursorPos(ImVec2(10 + textColumnSize, 6 + textLineSize));
+        ImGui::Text(("Price: " + record[4] + "$").c_str());  // Price of crypto
+        ImGui::PopFont();
+        ImGui::EndChild();
+        ImGui::PopStyleColor();
+
+        // Dodanie odstępu między rzędami
+        ImGui::Spacing();
+      }
+
+      ImGui::End();
+
+
     
+    ///////////////////
 
       containerWidth = 640.0f;
       containerHeight = 540.0f;
@@ -241,7 +302,7 @@ int main(int, char**)
 
 
 
-      ImGui::Begin("Lista transakcji", nullptr, ImGuiWindowFlags_AlwaysVerticalScrollbar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar);
+      ImGui::Begin("Transactions list", nullptr, ImGuiWindowFlags_AlwaysVerticalScrollbar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar);
       ImGui::SetWindowSize(ImVec2(containerWidth, containerHeight));
 
       vector<vector<string>> transactionsList;

@@ -92,6 +92,7 @@ class User {
 
     // Wallet
     void displayWallet();
+    vector<vector<string>> returnAllRecordsFromWallet();
 
     // Transactions
     void displayTransactionsList();
