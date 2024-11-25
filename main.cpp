@@ -131,6 +131,7 @@ int main(int, char**)
   string inputLastNameError;
 
   string action = "chooseLoginOrRegister";
+  string buyCrypto;
   
   bool done = false;
   while (!done)
@@ -191,7 +192,6 @@ int main(int, char**)
     }
 
 
-    // Render main window
     if (user.getUserLoginStatus() == true) {
       float containerWidth = 1280.0f;
       float containerHeight = 1080.0f;
@@ -221,6 +221,16 @@ int main(int, char**)
         ImGui::Text(cryptoName.c_str());
         ImGui::SameLine(500); // Ustawiamy tekst w połowie szerokości
         ImGui::Text("%s $", cryptoPrice.c_str());
+
+        ImGui::SameLine(750); 
+        if (ImGui::Button("BUY", ImVec2(200, 60))) {
+          cout << "Buy " << cryptoName << endl;
+          buyCrypto = cryptoName;
+        }
+        ImGui::SameLine(970); 
+        if (ImGui::Button("SELL", ImVec2(200, 60))) {
+          cout << "Sell " << cryptoName << endl;
+        }
 
         ImGui::EndChild();
         ImGui::PopStyleColor();
@@ -267,7 +277,15 @@ int main(int, char**)
       streamValue1 << std::fixed << std::setprecision(2) << user.getBalanceInCents() / 100.;
       ImGui::Text(("Fiat balance: " + streamValue1.str() + "$").c_str()); // Fiat balance
       ImGui::SetCursorPos(ImVec2(10, 6 + 33));
-      ImGui::Text("Wallet value: 12345.67$");  // Wallet value in $
+
+      int totalValueCent = 0;
+      for (auto v : wallet) {
+        totalValueCent += stod(v[2]);
+      }
+      totalValueCent += user.getBalanceInCents();
+      std::ostringstream streamValue2;
+      streamValue2 << std::fixed << std::setprecision(2) << totalValueCent / 100.;
+      ImGui::Text(("Wallet value: " + streamValue2.str() + "$").c_str());  // Wallet value in $
       ImGui::PopFont();
       ImGui::PopStyleColor();
       ImGui::EndChild();
@@ -388,7 +406,25 @@ int main(int, char**)
       }
 
       ImGui::End();
+      cout << buyCrypto << endl;
+      if (buyCrypto != "") {
+          containerWidth = 600.0f;
+          containerHeight = 300.0f;
 
+          ImGui::SetNextWindowPos(ImVec2(1920 / 2 - 300, 1080 / 2 - 150));
+          ImGui::SetNextWindowSize(ImVec2(containerWidth, containerHeight));
+          ImGui::SetWindowSize(ImVec2(containerWidth, containerHeight)); 
+          ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.15f, 0.15f, 0.15f, 1.0f));
+          ImGui::SetNextWindowFocus();
+          ImGui::Begin("BuyCrypto", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar);
+          ImGui::Text(("Buy " + buyCrypto).c_str());
+          ImGui::SetCursorPos(ImVec2(540, 0));
+          if (ImGui::Button("X", ImVec2(60, 60))) {
+            buyCrypto = "";
+          }
+          ImGui::PopStyleColor();
+          ImGui::End();
+      }
 
     }
 

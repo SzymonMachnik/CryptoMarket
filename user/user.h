@@ -88,7 +88,9 @@ class User {
 
     // Crypto
     void buyCrypto();
+    //void buyCrypto(string cryptoName);
     void sellCrypto();
+    //void sellCrypto(string cryptoName);
 
     // Wallet
     void displayWallet();

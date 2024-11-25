@@ -220,8 +220,42 @@ void User::buyCrypto() {
   balanceInCents -= moneyToSpendInCent;
   setBalanceInDb();
   cout << "Bought succesful" << endl;
-
 }
+
+// void User::buyCrypto() {
+//   Crypto crypto;
+//   string cryptoName = setCryptoNameToBuy();
+
+//   string s_cryptoPrice = crypto.getCryptoPrice(cryptoName);
+//   if (s_cryptoPrice == "") return;
+//   double cryptoPrice = stod(s_cryptoPrice);
+
+//   double cryptoAmount = setCryptoAmountToBuy();
+
+//   int moneyToSpendInCent = cryptoPrice * cryptoAmount * 100 + 1;
+//   cout << "Amount to spend (cents): " << moneyToSpendInCent << endl;
+//   cout << "Balance (cents): " << balanceInCents << endl;
+  
+//   if (moneyToSpendInCent > this->balanceInCents) {
+//     cout << "You can't afford it." << endl;
+//     return;
+//   }
+  
+//   if (doesCryptoExistInWallet(cryptoName) == false) {
+//     insertCryptoToWallet(cryptoName, cryptoAmount, cryptoPrice, moneyToSpendInCent);
+//   } else {
+//     setCryptoToWallet(cryptoName, cryptoAmount);
+//     walletUpdatePrice();
+//   }
+
+//   insertTransactionToTransactionsList(cryptoName, cryptoAmount, cryptoPrice, moneyToSpendInCent, "buy");
+  
+  
+//   balanceInCents -= moneyToSpendInCent;
+//   setBalanceInDb();
+//   cout << "Bought succesful" << endl;
+
+// }
 
 void User::sellCrypto() {
   Crypto crypto;
