@@ -222,40 +222,32 @@ void User::buyCrypto() {
   cout << "Bought succesful" << endl;
 }
 
-// void User::buyCrypto() {
-//   Crypto crypto;
-//   string cryptoName = setCryptoNameToBuy();
+int User::buyCrypto(int cryptoId, float f_cryptoAmountToBuy, int moneyToSpendInCent) {
+  Crypto crypto;
+  double cryptoAmountToBuy = f_cryptoAmountToBuy;
+  cout << "CryptoBought: " << crypto.getCryptoName(cryptoId) << " " << cryptoAmountToBuy << " " << moneyToSpendInCent << endl;
+  if (moneyToSpendInCent > balanceInCents) return 1;
+  if (cryptoAmountToBuy == 0) return 2;
 
-//   string s_cryptoPrice = crypto.getCryptoPrice(cryptoName);
-//   if (s_cryptoPrice == "") return;
-//   double cryptoPrice = stod(s_cryptoPrice);
+  string cryptoName = crypto.getCryptoName(cryptoId);
+  double cryptoPrice = stod(crypto.getCryptoPrice(cryptoName));
 
-//   double cryptoAmount = setCryptoAmountToBuy();
+  if (doesCryptoExistInWallet(cryptoName) == false) {
+    insertCryptoToWallet(cryptoName, cryptoAmountToBuy, cryptoPrice, moneyToSpendInCent);
+  } else {
+    setCryptoToWallet(cryptoName, cryptoAmountToBuy);
+  }
+  walletUpdatePrice();
 
-//   int moneyToSpendInCent = cryptoPrice * cryptoAmount * 100 + 1;
-//   cout << "Amount to spend (cents): " << moneyToSpendInCent << endl;
-//   cout << "Balance (cents): " << balanceInCents << endl;
-  
-//   if (moneyToSpendInCent > this->balanceInCents) {
-//     cout << "You can't afford it." << endl;
-//     return;
-//   }
-  
-//   if (doesCryptoExistInWallet(cryptoName) == false) {
-//     insertCryptoToWallet(cryptoName, cryptoAmount, cryptoPrice, moneyToSpendInCent);
-//   } else {
-//     setCryptoToWallet(cryptoName, cryptoAmount);
-//     walletUpdatePrice();
-//   }
-
-//   insertTransactionToTransactionsList(cryptoName, cryptoAmount, cryptoPrice, moneyToSpendInCent, "buy");
+  insertTransactionToTransactionsList(cryptoName, cryptoAmountToBuy, cryptoPrice, moneyToSpendInCent, "buy");
   
   
-//   balanceInCents -= moneyToSpendInCent;
-//   setBalanceInDb();
-//   cout << "Bought succesful" << endl;
+  balanceInCents -= moneyToSpendInCent;
+  setBalanceInDb();
+  cout << "Bought succesful" << endl;
 
-// }
+  return 0;
+}
 
 void User::sellCrypto() {
   Crypto crypto;

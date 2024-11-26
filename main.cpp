@@ -132,6 +132,7 @@ int main(int, char**)
 
   string action = "chooseLoginOrRegister";
   string buyCrypto;
+  float cryptoAmountToBuy = 0;
   
   bool done = false;
   while (!done)
@@ -406,7 +407,7 @@ int main(int, char**)
       }
 
       ImGui::End();
-      cout << buyCrypto << endl;
+
       if (buyCrypto != "") {
           containerWidth = 600.0f;
           containerHeight = 300.0f;
@@ -421,6 +422,32 @@ int main(int, char**)
           ImGui::SetCursorPos(ImVec2(540, 0));
           if (ImGui::Button("X", ImVec2(60, 60))) {
             buyCrypto = "";
+            cryptoAmountToBuy = 0;
+          }
+          ImGui::Spacing();
+          ImGui::InputFloat("##AmountToSpend", &cryptoAmountToBuy, 0.1f, 1.0f, "%.4f");
+          cryptoAmountToBuy = std::max(0.0f, cryptoAmountToBuy);
+          int valueCent = 0;
+          if (crypto.getCryptoPrice(buyCrypto).empty() == false) {
+            valueCent = cryptoAmountToBuy * 100 * stod(crypto.getCryptoPrice(buyCrypto)) + 1;
+          }
+          std::ostringstream ss_valueDolars;
+          if (cryptoAmountToBuy != 0) {
+            ss_valueDolars << std::fixed << std::setprecision(2) << valueCent / 100.;
+          } else {
+            ss_valueDolars << 0;
+          }
+          // double valueDolars = valueCent / 100.;
+          ImGui::Text(("Value " + (ss_valueDolars).str() + "$").c_str());
+
+          if (ImGui::Button("BUY", ImVec2(200, 80))) {
+            if (user.buyCrypto(crypto.getCryptoId(buyCrypto), cryptoAmountToBuy, valueCent) == 0) {
+              buyCrypto = "";
+              cryptoAmountToBuy = 0;
+            } else {
+              cout << "Error occured" << endl;
+            }
+
           }
           ImGui::PopStyleColor();
           ImGui::End();

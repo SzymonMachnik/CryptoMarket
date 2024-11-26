@@ -66,10 +66,6 @@ class User {
     void generateUserTransactionsList();
     string getCurrentDate();
     void insertTransactionToTransactionsList(string cryptoName, double cryptoAmount, double cryptoPrice, int valueCent, string type);
-
-    // Crypto info
-    // string getCryptoPrice(string crypto);
-    // int getCryptoId(string cryptoName);
         
   public:
     // Constructor
@@ -88,7 +84,7 @@ class User {
 
     // Crypto
     void buyCrypto();
-    //void buyCrypto(string cryptoName);
+    int buyCrypto(int cryptoId, float f_cryptoAmountToBuy, int valueCent);
     void sellCrypto();
     //void sellCrypto(string cryptoName);
 

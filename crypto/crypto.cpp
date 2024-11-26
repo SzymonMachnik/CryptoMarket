@@ -185,7 +185,7 @@ string Crypto::getCryptoPrice(string cryptoName) {
 
   // Close
   sqlite3_close(db);
-  cout << cryptoPrice << endl;
+  // cout << cryptoPrice << endl;
 
   return cryptoPrice;
 }
