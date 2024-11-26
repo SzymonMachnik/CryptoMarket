@@ -132,6 +132,8 @@ int main(int, char**)
 
   string action = "chooseLoginOrRegister";
   string buyCrypto;
+  int buyCryptoError;
+  string buyCryptoErrorMsg = "";
   float cryptoAmountToBuy = 0;
   
   bool done = false;
@@ -437,15 +439,23 @@ int main(int, char**)
           } else {
             ss_valueDolars << 0;
           }
-          // double valueDolars = valueCent / 100.;
+          
           ImGui::Text(("Value " + (ss_valueDolars).str() + "$").c_str());
-
+          ImGui::PushFont(errorFont);
+          ImGui::Text((buyCryptoErrorMsg).c_str());
+          ImGui::PopFont();
           if (ImGui::Button("BUY", ImVec2(200, 80))) {
-            if (user.buyCrypto(crypto.getCryptoId(buyCrypto), cryptoAmountToBuy, valueCent) == 0) {
+            buyCryptoError = user.buyCrypto(crypto.getCryptoId(buyCrypto), cryptoAmountToBuy, valueCent);
+            if (buyCryptoError == 0) {
               buyCrypto = "";
               cryptoAmountToBuy = 0;
+              buyCryptoErrorMsg = "";
+            } else if (buyCryptoError == 1) {
+              buyCryptoErrorMsg = "You can't afford it.";
+            } else if (buyCryptoError == 2) {
+              buyCryptoErrorMsg = "Enter amount of crypto.";
             } else {
-              cout << "Error occured" << endl;
+              buyCryptoErrorMsg = "Undefined error.";
             }
 
           }
