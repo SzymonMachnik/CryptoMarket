@@ -1,2 +1,2 @@
 all:
-	g++ main.cpp -o main.exe ../crypto/crypto.cpp ../memory/memory.cpp ../user/user.cpp ../handleUser/handleUser.cpp -LC:/CryptoScraper/curlLib/lib -IC:/CryptoScraper/curlLib/include -lcurl -lsqlite3
+	g++ main.cpp -o main.exe ../crypto/crypto.cpp ../memory/memory.cpp ../user/user.cpp -LC:/CryptoScraper/curlLib/lib -IC:/CryptoScraper/curlLib/include -lcurl -lsqlite3
