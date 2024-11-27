@@ -8,6 +8,6 @@
 
 using namespace std;
 
-int formatStringToMoneyInCentsToDeposit(string moneyToFormat);
+// int formatStringToMoneyInCentsToDeposit(string moneyToFormat);
 
 #endif

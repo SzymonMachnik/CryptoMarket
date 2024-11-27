@@ -12,7 +12,7 @@ using namespace std;
 //Constructor
 User::User() {
   this->isUserLoged = false;
-  this->balanceAboveWhichUserCantDepositInCents = 500000000; // 5 000 000 . 00
+  this->balanceAboveWhichUserCantDepositInCents = 100000000; // 5 000 000 . 00
 }
 
 
@@ -169,17 +169,22 @@ int User::registerUser(string tempLogin, string tempPassword, string tempFirstNa
   return 0;
 }
 
+
 // Balance
-void User::deposit(int moneyToDepositInCents) {
+int User::deposit(int moneyToDepositInCents) {
   if (balanceInCents > balanceAboveWhichUserCantDepositInCents) {
-    // do nothing
+    return 1;
+  } else if (moneyToDepositInCents <= 0) {
+    return 3;
   } else if (balanceInCents + moneyToDepositInCents > balanceAboveWhichUserCantDepositInCents) {
     balanceInCents = balanceAboveWhichUserCantDepositInCents;
     setBalanceInDb();
+    return 2;
   } else {
     balanceInCents += moneyToDepositInCents;
     setBalanceInDb();
   }
+  return 0;
 }
 
 int User::getBalanceInCents() {
@@ -222,10 +227,9 @@ void User::buyCrypto() {
   cout << "Bought succesful" << endl;
 }
 
-int User::buyCrypto(int cryptoId, float f_cryptoAmountToBuy, int moneyToSpendInCent) {
+int User::buyCrypto(int cryptoId, double cryptoAmountToBuy, int moneyToSpendInCent) {
   Crypto crypto;
-  double cryptoAmountToBuy = f_cryptoAmountToBuy;
-  cout << "CryptoBought: " << crypto.getCryptoName(cryptoId) << " " << cryptoAmountToBuy << " " << moneyToSpendInCent << endl;
+  
   if (moneyToSpendInCent > balanceInCents) return 1;
   if (cryptoAmountToBuy == 0) return 2;
 
@@ -244,7 +248,6 @@ int User::buyCrypto(int cryptoId, float f_cryptoAmountToBuy, int moneyToSpendInC
   
   balanceInCents -= moneyToSpendInCent;
   setBalanceInDb();
-  cout << "Bought succesful" << endl;
 
   return 0;
 }
@@ -290,6 +293,29 @@ void User::sellCrypto() {
   balanceInCents += moneyToWithdrawInCent;
   setBalanceInDb();
 
+}
+
+int User::sellCrypto(int cryptoId, double cryptoAmountToSell, int moneyToWithdrawInCent) {
+  if (cryptoAmountToSell <= 0.0 || moneyToWithdrawInCent <= 0) return 1;
+  Crypto crypto;
+  double cryptoAmountInWallet = getAmountOfCryptoInWallet(cryptoId);
+  if (cryptoAmountInWallet == -1. || cryptoAmountToSell > cryptoAmountInWallet) return 2;
+
+  string cryptoName = crypto.getCryptoName(cryptoId);
+  double cryptoPrice = stod(crypto.getCryptoPrice(cryptoName));
+
+  if (cryptoAmountToSell == cryptoAmountInWallet) {
+    deleteCryptoFromWallet(cryptoId);
+  } else {
+    decreaseCryptoAmountInWallet(cryptoName, cryptoAmountToSell);
+  }
+  walletUpdatePrice();
+  insertTransactionToTransactionsList(cryptoName, cryptoAmountToSell, cryptoPrice, moneyToWithdrawInCent, "sell");
+  
+  balanceInCents += moneyToWithdrawInCent;
+  setBalanceInDb();
+
+  return 0;
 }
 
 
@@ -1052,7 +1078,7 @@ double User::getAmountOfCryptoInWallet(int cryptoId) {
   // Connect to database
   if (sqlite3_open("sqlite/database.db", &db) != SQLITE_OK) {
     cerr << "Can not open database: " << sqlite3_errmsg(db) << endl;
-    return -1;
+    return -1.;
   }
 
   // Create a sql request
@@ -1077,7 +1103,7 @@ double User::getAmountOfCryptoInWallet(int cryptoId) {
 
   // Close
   sqlite3_close(db);
-
+  if (result == "") return -1.;
   return stod(result);
 }
 

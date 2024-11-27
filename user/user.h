@@ -79,13 +79,15 @@ class User {
     int registerUser(string tempLogin, string tempPassword, string tempFirstName, string tempLastName);
 
     // Balance
-    void deposit(int moneyInCents);
+    //void deposit(int moneyInCents);
+    int deposit(int moneyToDepositInCents);
     int getBalanceInCents();
 
     // Crypto
     void buyCrypto();
-    int buyCrypto(int cryptoId, float f_cryptoAmountToBuy, int valueCent);
+    int buyCrypto(int cryptoId, double cryptoAmountToBuy, int valueCent);
     void sellCrypto();
+    int sellCrypto(int cryptoId, double cryptoAmountToSell, int moneyToWithdrawInCent);
     //void sellCrypto(string cryptoName);
 
     // Wallet

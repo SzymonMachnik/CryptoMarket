@@ -36,6 +36,8 @@ class Crypto {
 
     string getCryptoPrice(string cryptoName);
     int getCryptoId(string cryptoName);
+
+    
 };
 
 #endif
