@@ -11,7 +11,6 @@
 #include "crypto/crypto.h"
 #include "memory/memory.h"
 #include "user/user.h"
-#include "handleUser/handleUser.h"
 
 #include "imgui.h"
 #include "imgui_impl_dx9.h"
@@ -144,6 +143,8 @@ int main(int, char**)
 
   bool depositMoney = false;
   int fiatToDeposit = 0;
+  int depositMoneyError = 0;
+  string depositMoneyErrorMsg = "";
   
   bool done = false;
   while (!done)
@@ -554,32 +555,30 @@ int main(int, char**)
           ImGui::Spacing();
           ImGui::InputInt("##InputMoneyToDeposit", &fiatToDeposit, 100, 1000);
 
-          // ImGui::PushFont(errorFont);
-          // ImGui::Text((sellCryptoErrorMsg).c_str());
-          // ImGui::PopFont();
+          ImGui::PushFont(errorFont);
+          ImGui::Text((depositMoneyErrorMsg).c_str());
+          ImGui::PopFont();
+
           if (ImGui::Button("DEPOSIT", ImVec2(200, 80))) {
-            // sellCryptoError = user.sellCrypto(crypto.getCryptoId(sellCrypto), cryptoAmountToSell, valueCent);
-            // if (sellCryptoError == 0) {
-            //   sellCrypto = "";
-            //   cryptoAmountToSell = 0;
-            //   sellCryptoErrorMsg = "";
-            // } else if (sellCryptoError == 1) {
-            //   sellCryptoErrorMsg = "You don't have enough crypto.";
-            // } else if (sellCryptoError == 2) {
-            //   sellCryptoErrorMsg = "Enter amount of crypto.";
-            // } else {
-            //   sellCryptoErrorMsg = "Undefined error.";
-            // }
+            fiatToDeposit = std::max(0, fiatToDeposit);
             int fiatToDepositCent = fiatToDeposit * 100;
-            user.deposit(fiatToDepositCent);
-            depositMoney = false;
+            
+            depositMoneyError = user.deposit(fiatToDepositCent);
+            
+            if (depositMoneyError == 0) {
+              depositMoneyErrorMsg = "";
+              depositMoney = false;
+            } else if (depositMoneyError == 1 || depositMoneyError == 3) {
+              depositMoneyErrorMsg = "Max fiat balance is 1 000 000$.";
+            } else if (depositMoneyError == 2) {
+              depositMoneyErrorMsg = "Enter value from 1 - 1 000 000$.";
+            }
             fiatToDeposit = 0;
 
           }
           ImGui::PopStyleColor();
           ImGui::End();
       }
-
     }
 
 

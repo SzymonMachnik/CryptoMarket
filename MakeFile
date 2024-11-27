@@ -7,7 +7,6 @@ all:
 		crypto/crypto.cpp \
 		memory/memory.cpp \
 		user/user.cpp \
-		handleUser/handleUser.cpp \
 		imgui/*.cpp \
 		-LC:/CryptoScraper/curlLib/lib \
 		-I C:/CryptoScraper/curlLib/include \

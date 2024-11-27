@@ -175,11 +175,11 @@ int User::deposit(int moneyToDepositInCents) {
   if (balanceInCents > balanceAboveWhichUserCantDepositInCents) {
     return 1;
   } else if (moneyToDepositInCents <= 0) {
-    return 3;
+    return 2;
   } else if (balanceInCents + moneyToDepositInCents > balanceAboveWhichUserCantDepositInCents) {
     balanceInCents = balanceAboveWhichUserCantDepositInCents;
     setBalanceInDb();
-    return 2;
+    return 3;
   } else {
     balanceInCents += moneyToDepositInCents;
     setBalanceInDb();
