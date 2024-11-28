@@ -11,6 +11,7 @@
 #include "crypto/crypto.h"
 #include "memory/memory.h"
 #include "user/user.h"
+#include "handleGui/handlegui.h"
 
 #include "imgui.h"
 #include "imgui_impl_dx9.h"
@@ -41,7 +42,7 @@ void refreshAndPrintPriceEvery60s() {
     this_thread::sleep_for(chrono::seconds(61)); // Wait 60s for price refresh
   } 
 }
-void renderChooseRegsterOrLoginWindow(string &action);
+// void renderChooseRegsterOrLoginWindow(string &action);
 void renderRegisterWindow(char inputLogin[255], char inputPassword[255], char inputFirstName[255], char inputLastName[255],
                           string &inputLoginError, string &inputPasswordError, string &inputFirstNameError, string &inputLastNameError,
                           ImFont* errorFont,
@@ -58,7 +59,7 @@ void renderDepositMoneyWindow(bool &depositMoney, int &fiatToDeposit, string &de
                            ImFont* errorFont);
 void renderWalletSection(ImFont* walletFont, bool &depositMoney);
 
-void renderCryptoListSection(string &buyCrypto, string &sellCrypto, Crypto &crypto);
+// void renderCryptoListSection(string &buyCrypto, string &sellCrypto, Crypto &crypto);
 
 
 // Data
@@ -202,7 +203,7 @@ int main(int, char**)
 /////////////////////////
     // ChooseRegsterOrLogin Window
     if (user.getUserLoginStatus() == false && action == "chooseLoginOrRegister") {
-      renderChooseRegsterOrLoginWindow(action);
+      HandleGui::renderChooseRegsterOrLoginWindow(action);
     }
 
     // Register window
@@ -218,7 +219,7 @@ int main(int, char**)
 
     // Render main window
     if (user.getUserLoginStatus() == true) {
-      renderCryptoListSection(buyCrypto, sellCrypto, crypto);
+      HandleGui::renderCryptoListSection(buyCrypto, sellCrypto, crypto);
       renderWalletSection(transactionsListFont, depositMoney);
       renderTransactionsListSection(transactionsListFont);
 
@@ -354,23 +355,23 @@ LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 
 
-void renderChooseRegsterOrLoginWindow(string &action) {
-  ImGui::SetNextWindowPos(ImVec2(660, 340));
-  ImGui::SetNextWindowSize(ImVec2(600, 400));
-  ImGui::Begin("ChooseOptionLoginOrRegister", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar);                          // Create a window called "Hello, world!" and append into it.    
+// void renderChooseRegsterOrLoginWindow(string &action) {
+//   ImGui::SetNextWindowPos(ImVec2(660, 340));
+//   ImGui::SetNextWindowSize(ImVec2(600, 400));
+//   ImGui::Begin("ChooseOptionLoginOrRegister", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar);                          // Create a window called "Hello, world!" and append into it.    
   
-  ImGui::SetCursorPos(ImVec2(200, 100));
-  if (ImGui::Button("Login", ImVec2(200, 80))) {
-    action = "login";
-  }
+//   ImGui::SetCursorPos(ImVec2(200, 100));
+//   if (ImGui::Button("Login", ImVec2(200, 80))) {
+//     action = "login";
+//   }
   
-  ImGui::SetCursorPos(ImVec2(200, 220));
-  if (ImGui::Button("Sign in", ImVec2(200, 80))) {
-    action = "register";
-  }
+//   ImGui::SetCursorPos(ImVec2(200, 220));
+//   if (ImGui::Button("Sign in", ImVec2(200, 80))) {
+//     action = "register";
+//   }
 
-  ImGui::End();
-}
+//   ImGui::End();
+// }
 
 
 void renderRegisterWindow(char inputLogin[255], char inputPassword[255], char inputFirstName[255], char inputLastName[255],
@@ -527,55 +528,7 @@ void renderLoginWindow(char inputLogin[255], char inputPassword[255],
 }
 
 
-void renderCryptoListSection(string &buyCrypto, string &sellCrypto, Crypto &crypto) {
 
-  const int containerWidth = 1280;
-  const int containerHeight = 1080;
-  ImGui::SetNextWindowPos(ImVec2(0, 0));
-  ImGui::SetNextWindowSize(ImVec2(containerWidth, containerHeight));
-
-  // Okno główne z możliwością przewijania
-  ImGui::Begin("Crypto list", nullptr, ImGuiWindowFlags_AlwaysVerticalScrollbar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar);
-
-  for (int i = 0; i < crypto.numberOfCrypto; i++)
-  {
-    // Wymiary rzędu kryptowaluty
-    ImVec2 rowSize(containerWidth, 100);
-
-    // Tło rzędu (opcjonalne)
-    ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.1f, 0.1f, 0.1f, 1.0f));
-    ImGui::BeginChild(std::string("CryptoRow_" + std::to_string(i)).c_str(), rowSize, false, ImGuiWindowFlags_NoScrollbar);
-
-    // Wyświetlanie nazwy i ceny
-    string cryptoName, cryptoPrice;
-    {
-      std::lock_guard<std::mutex> lock(db_mutex);
-      cryptoName = crypto.getCryptoName(i + 1);
-      cryptoPrice = crypto.getCryptoPrice(i + 1);
-    }
-
-    ImGui::Text(cryptoName.c_str());
-    ImGui::SameLine(500); // Ustawiamy tekst w połowie szerokości
-    ImGui::Text("%s $", cryptoPrice.c_str());
-
-    ImGui::SameLine(750); 
-    if (ImGui::Button("BUY", ImVec2(200, 60))) {
-      buyCrypto = cryptoName;
-    }
-    ImGui::SameLine(970); 
-    if (ImGui::Button("SELL", ImVec2(200, 60))) {
-      sellCrypto = cryptoName;
-    }
-
-    ImGui::EndChild();
-    ImGui::PopStyleColor();
-
-    // Dodanie odstępu między rzędami
-    ImGui::Spacing();
-  }
-
-  ImGui::End();
-}
 
 void renderTransactionsListSection(ImFont* transactionsListFont) {
 
