@@ -26,63 +26,11 @@ void HandleGui::renderChooseRegsterOrLoginWindow(string &action) {
   ImGui::End();
 }
 
-void HandleGui::renderCryptoListSection(string &buyCrypto, string &sellCrypto, Crypto &crypto) {
-  mutex db_mutex;
-
-  const int containerWidth = 1280;
-  const int containerHeight = 1080;
-  ImGui::SetNextWindowPos(ImVec2(0, 0));
-  ImGui::SetNextWindowSize(ImVec2(containerWidth, containerHeight));
-
-  // Okno główne z możliwością przewijania
-  ImGui::Begin("Crypto list", nullptr, ImGuiWindowFlags_AlwaysVerticalScrollbar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar);
-
-  for (int i = 0; i < crypto.numberOfCrypto; i++)
-  {
-    // Wymiary rzędu kryptowaluty
-    ImVec2 rowSize(containerWidth, 100);
-
-    // Tło rzędu (opcjonalne)
-    ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.1f, 0.1f, 0.1f, 1.0f));
-    ImGui::BeginChild(std::string("CryptoRow_" + std::to_string(i)).c_str(), rowSize, false, ImGuiWindowFlags_NoScrollbar);
-
-    // Wyświetlanie nazwy i ceny
-    string cryptoName, cryptoPrice;
-    {
-      std::lock_guard<std::mutex> lock(db_mutex);
-      cryptoName = crypto.getCryptoName(i + 1);
-      cryptoPrice = crypto.getCryptoPrice(i + 1);
-    }
-
-    ImGui::Text(cryptoName.c_str());
-    ImGui::SameLine(500); // Ustawiamy tekst w połowie szerokości
-    ImGui::Text("%s $", cryptoPrice.c_str());
-
-    ImGui::SameLine(750); 
-    if (ImGui::Button("BUY", ImVec2(200, 60))) {
-      buyCrypto = cryptoName;
-    }
-    ImGui::SameLine(970); 
-    if (ImGui::Button("SELL", ImVec2(200, 60))) {
-      sellCrypto = cryptoName;
-    }
-
-    ImGui::EndChild();
-    ImGui::PopStyleColor();
-
-    // Dodanie odstępu między rzędami
-    ImGui::Spacing();
-  }
-
-  ImGui::End();
-}
-
 void HandleGui::renderRegisterWindow(char inputLogin[255], char inputPassword[255], char inputFirstName[255], char inputLastName[255],
                           string &inputLoginError, string &inputPasswordError, string &inputFirstNameError, string &inputLastNameError,
                           ImFont* errorFont, string &action, User &user) {
   ImGui::SetNextWindowPos(ImVec2(660, 190));
   ImGui::SetNextWindowSize(ImVec2(600, 650));
-
   ImGui::Begin("Register", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar);                          // Create a window called "Hello, world!" and append into it.
 
   ImGui::SetCursorPos(ImVec2(20, 20));
@@ -191,7 +139,6 @@ void HandleGui::renderLoginWindow(char inputLogin[255], char inputPassword[255],
                        string &action, User &user) {
   ImGui::SetNextWindowPos(ImVec2(660, 290));
   ImGui::SetNextWindowSize(ImVec2(600, 400));
-
   ImGui::Begin("Login", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar);                          // Create a window called "Hello, world!" and append into it.
 
   ImGui::SetCursorPos(ImVec2(20, 20));
@@ -201,6 +148,7 @@ void HandleGui::renderLoginWindow(char inputLogin[255], char inputPassword[255],
   ImGui::SetNextItemWidth(560);
   ImGui::InputText("##logininput", inputLogin, CHAR_MAX);
   
+
   ImGui::SetCursorPos(ImVec2(20, 150));
   ImGui::Text("Password:");
 
@@ -209,7 +157,6 @@ void HandleGui::renderLoginWindow(char inputLogin[255], char inputPassword[255],
   ImGui::InputText("##passwordinput", inputPassword, CHAR_MAX, ImGuiInputTextFlags_Password);
 
   ImGui::SetCursorPos(ImVec2(200, 300));
-  // ImGui::SetNextItemWidth(200);
   if (ImGui::Button("Login", ImVec2(200, 60))) {
     user.loginUser(inputLogin, inputPassword);
     if (user.getUserLoginStatus() == false) {
@@ -228,6 +175,52 @@ void HandleGui::renderLoginWindow(char inputLogin[255], char inputPassword[255],
   
 }
 
+void HandleGui::renderCryptoListSection(string &buyCrypto, string &sellCrypto, Crypto &crypto) {
+  mutex db_mutex;
+
+  const int containerWidth = 1280;
+  const int containerHeight = 1080;
+  ImGui::SetNextWindowPos(ImVec2(0, 0));
+  ImGui::SetNextWindowSize(ImVec2(containerWidth, containerHeight));
+
+  ImGui::Begin("Crypto list", nullptr, ImGuiWindowFlags_AlwaysVerticalScrollbar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar);
+
+  for (int i = 0; i < crypto.numberOfCrypto; i++)
+  {
+    ImVec2 rowSize(containerWidth, 100);
+
+    ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.1f, 0.1f, 0.1f, 1.0f));
+    ImGui::BeginChild(std::string("CryptoRow_" + std::to_string(i)).c_str(), rowSize, false, ImGuiWindowFlags_NoScrollbar);
+
+    string cryptoName, cryptoPrice;
+    {
+      std::lock_guard<std::mutex> lock(db_mutex);
+      cryptoName = crypto.getCryptoName(i + 1);
+      cryptoPrice = crypto.getCryptoPrice(i + 1);
+    }
+
+    ImGui::Text(cryptoName.c_str());
+    ImGui::SameLine(500);
+    ImGui::Text("%s $", cryptoPrice.c_str());
+
+    ImGui::SameLine(750); 
+    if (ImGui::Button("BUY", ImVec2(200, 60))) {
+      buyCrypto = cryptoName;
+    }
+    ImGui::SameLine(970); 
+    if (ImGui::Button("SELL", ImVec2(200, 60))) {
+      sellCrypto = cryptoName;
+    }
+
+    ImGui::EndChild();
+    ImGui::PopStyleColor();
+
+    ImGui::Spacing();
+  }
+
+  ImGui::End();
+}
+
 
 void HandleGui::renderTransactionsListSection(ImFont* transactionsListFont, User &user) {
   mutex db_mutex;
@@ -238,10 +231,7 @@ void HandleGui::renderTransactionsListSection(ImFont* transactionsListFont, User
   ImGui::SetNextWindowPos(ImVec2(1280, 489));
   ImGui::SetNextWindowSize(ImVec2(containerWidth, containerHeight));
 
-
-
   ImGui::Begin("Transactions list", nullptr, ImGuiWindowFlags_AlwaysVerticalScrollbar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar);
-  ImGui::SetWindowSize(ImVec2(containerWidth, containerHeight));
 
   vector<vector<string>> transactionsList;
   {
@@ -258,10 +248,8 @@ void HandleGui::renderTransactionsListSection(ImFont* transactionsListFont, User
 
   for (auto transaction : transactionsList)
   {
-    // Wymiary rzędu kryptowaluty
     ImVec2 rowSize(containerWidth, 110.0f);
 
-    // Tło rzędu (opcjonalne)
     ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.1f, 0.1f, 0.1f, 1.0f));
     ImGui::BeginChild((std::string("Transaction_") + std::string(transaction[0])).c_str(), rowSize, false, ImGuiWindowFlags_NoScrollbar);
     ImGui::PushFont(transactionsListFont);
@@ -298,7 +286,6 @@ void HandleGui::renderTransactionsListSection(ImFont* transactionsListFont, User
     ImGui::EndChild();
     ImGui::PopStyleColor();
 
-    // Dodanie odstępu między rzędami
     ImGui::Spacing();
   }
 
@@ -314,10 +301,7 @@ void HandleGui::renderWalletSection(ImFont* walletFont, bool &depositMoney, User
   ImGui::SetNextWindowPos(ImVec2(1280, 0));
   ImGui::SetNextWindowSize(ImVec2(containerWidth, containerHeight));
 
-
-
   ImGui::Begin("Wallet", nullptr, ImGuiWindowFlags_AlwaysVerticalScrollbar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar);
-  ImGui::SetWindowSize(ImVec2(containerWidth, containerHeight));
 
   vector<vector<string>> wallet;
   {
@@ -336,10 +320,11 @@ void HandleGui::renderWalletSection(ImFont* walletFont, bool &depositMoney, User
   ImGui::PushFont(walletFont);
   ImGui::BeginChild("WalletMainInfo", ImVec2(containerWidth, 80.0f), false, ImGuiWindowFlags_NoScrollbar);
   ImGui::SetCursorPos(ImVec2(10, 6));
-  ImGui::SetCursorPos(ImVec2(10, 6));
-  std::ostringstream streamValue1;
-  streamValue1 << std::fixed << std::setprecision(2) << user.getBalanceInCents() / 100.;
-  ImGui::Text(("Fiat balance: " + streamValue1.str() + "$").c_str()); // Fiat balance
+
+  std::ostringstream streamBalanceCents;
+  streamBalanceCents << std::fixed << std::setprecision(2) << user.getBalanceInCents() / 100.;
+
+  ImGui::Text(("Fiat balance: " + streamBalanceCents.str() + "$").c_str()); // Fiat balance
   ImGui::SetCursorPos(ImVec2(10, 6 + 33));
 
   int totalValueCent = 0;
@@ -347,9 +332,11 @@ void HandleGui::renderWalletSection(ImFont* walletFont, bool &depositMoney, User
     totalValueCent += stod(v[2]);
   }
   totalValueCent += user.getBalanceInCents();
-  std::ostringstream streamValue2;
-  streamValue2 << std::fixed << std::setprecision(2) << totalValueCent / 100.;
-  ImGui::Text(("Wallet value: " + streamValue2.str() + "$").c_str());  // Wallet value in $
+
+  std::ostringstream streamValueCents;
+  streamValueCents << std::fixed << std::setprecision(2) << totalValueCent / 100.;
+
+  ImGui::Text(("Wallet value: " + streamValueCents.str() + "$").c_str());  // Wallet value in $
   ImGui::PopFont();
   ImGui::PopStyleColor();
 
@@ -359,23 +346,20 @@ void HandleGui::renderWalletSection(ImFont* walletFont, bool &depositMoney, User
     depositMoney = true;
   }
   ImGui::PopFont();
-  
 
   ImGui::EndChild();
   ImGui::Spacing();
 
   for (auto record : wallet)
   {
-    // Wymiary rzędu kryptowaluty
     ImVec2 rowSize(containerWidth, 80.0f);
 
-    // Tło rzędu (opcjonalne)
     ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.1f, 0.1f, 0.1f, 1.0f));
     ImGui::BeginChild((std::string("Transaction_") + std::string(record[0])).c_str(), rowSize, false, ImGuiWindowFlags_NoScrollbar);
     ImGui::PushFont(walletFont);
 
-    std::ostringstream streamValue;
-    streamValue << std::fixed << std::setprecision(2) << stoi(record[2]) / 100.0;
+    std::ostringstream streamValueDolars;
+    streamValueDolars << std::fixed << std::setprecision(2) << stoi(record[2]) / 100.0;
 
     float textLineSize = 33.0f;
     float textColumnSize = 310.0f;
@@ -391,14 +375,13 @@ void HandleGui::renderWalletSection(ImFont* walletFont, bool &depositMoney, User
     ImGui::Text(("Amount: " + record[3]).c_str()); // Amount
 
     ImGui::SetCursorPos(ImVec2(10 + textColumnSize, 6));
-    ImGui::Text(("Value: " + streamValue.str() + "$").c_str());  // Value in $
+    ImGui::Text(("Value: " + streamValueDolars.str() + "$").c_str());  // Value in $
     ImGui::SetCursorPos(ImVec2(10 + textColumnSize, 6 + textLineSize));
     ImGui::Text(("Price: " + record[4] + "$").c_str());  // Price of crypto
     ImGui::PopFont();
     ImGui::EndChild();
     ImGui::PopStyleColor();
 
-    // Dodanie odstępu między rzędami
     ImGui::Spacing();
   }
 
