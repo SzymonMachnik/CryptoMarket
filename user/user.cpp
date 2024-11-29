@@ -137,8 +137,6 @@ void User::registerUser() {
 
   generateUserWallet();
   generateUserTransactionsList();
-
-  cout << "Welcome " << firstName << " " << lastName << "!" << endl;
 }
 
 int User::registerUser(string tempLogin, string tempPassword, string tempFirstName, string tempLastName) {
