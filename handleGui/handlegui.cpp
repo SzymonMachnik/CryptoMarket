@@ -545,4 +545,3 @@ void HandleGui::renderDepositMoneyWindow(bool &depositMoney, int &fiatToDeposit,
   ImGui::PopStyleColor();
   ImGui::End();
 }
-

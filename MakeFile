@@ -7,9 +7,9 @@ all:
 		crypto/crypto.cpp \
 		memory/memory.cpp \
 		user/user.cpp \
-		imgui/*.cpp \
+		imguiLib/*.cpp \
 		handleGui/handlegui.cpp \
 		-LC:/CryptoScraper/curlLib/lib \
 		-I C:/CryptoScraper/curlLib/include \
-		-I imgui -ld3d9 -ldwmapi -lgdi32 \
+		-I imguiLib -ld3d9 -ldwmapi -lgdi32 \
 		-lcurl -lsqlite3
