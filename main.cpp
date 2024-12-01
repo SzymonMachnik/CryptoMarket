@@ -115,16 +115,6 @@ int main(int, char**)
   
   thread messageThread(refreshAndPrintPriceEvery60s);
   // Main loop
-  // char inputLogin[255] = {}; 
-  // char inputPassword[255] = {};
-  // char inputFirstName[255] = {}; 
-  // char inputLastName[255] = {};
-
-  // string inputLoginError;
-  // string inputPasswordError;
-  // string inputFirstNameError;
-  // string inputLastNameError;
-
   string action = "chooseLoginOrRegister";
 
   string buyCrypto;
@@ -175,6 +165,8 @@ int main(int, char**)
     ImGui::NewFrame();
 
 /////////////////////////
+    {
+      std::lock_guard<std::mutex> lock(db_mutex);
     // ChooseRegsterOrLogin Window
     if (user.getUserLoginStatus() == false && action == "chooseLoginOrRegister") {
       handleGui.renderChooseRegsterOrLoginWindow(action);
@@ -206,6 +198,7 @@ int main(int, char**)
       if (depositMoney == true) {
         handleGui.renderDepositMoneyWindow(depositMoney,  errorFont, user);
       }
+    }
     }
 /////////////////////////
 

@@ -371,34 +371,40 @@ vector<vector<string>> User::returnAllRecordsFromWallet() {
   walletUpdatePrice();
   
   vector<vector<string>> result;
-    sqlite3* db;
-    if (sqlite3_open("sqlite/database.db", &db) != SQLITE_OK) {
-      cerr << "Can not open database: " << sqlite3_errmsg(db) << endl;
-      return result;
-    }
-    ostringstream sql;
-    sql << "SELECT crypto_id, name, value_cent, amount, price FROM wallet_"
-        << this->userId << " ORDER BY value_cent DESC";
 
-    sqlite3_stmt* stmt;
-    sqlite3_prepare_v2(db, sql.str().c_str(), -1, &stmt, nullptr);
+  // Init
+  sqlite3 *db;
 
-
-    while (sqlite3_step(stmt) == SQLITE_ROW) {
-        std::vector<std::string> row;
-        row.push_back(std::to_string(sqlite3_column_int(stmt, 0))); // crypto_id
-        row.push_back(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1)));        // name
-        row.push_back(std::to_string(sqlite3_column_int(stmt, 2))); // value_cent
-        row.push_back(std::to_string(sqlite3_column_double(stmt, 3)));        // amount
-        row.push_back(std::to_string(sqlite3_column_double(stmt, 4)));     // price
-        result.push_back(row);
-    }
-
-    sqlite3_finalize(stmt);
-    sqlite3_close(db);
-    //std::reverse(result.begin(), result.end());
+  // Connect to database
+  if (sqlite3_open("sqlite/database.db", &db) != SQLITE_OK) {
+    cerr << "Can not open database: " << sqlite3_errmsg(db) << endl;
     return result;
+  }
 
+  // Create a sql request
+  ostringstream sql;
+  sql << "SELECT crypto_id, name, value_cent, amount, price FROM wallet_"
+      << this->userId << " ORDER BY value_cent DESC";
+
+
+  // Make a sql request
+  sqlite3_stmt* stmt;
+  sqlite3_prepare_v2(db, sql.str().c_str(), -1, &stmt, nullptr);
+
+  while (sqlite3_step(stmt) == SQLITE_ROW) {
+      std::vector<std::string> row;
+      row.push_back(std::to_string(sqlite3_column_int(stmt, 0))); // crypto_id
+      row.push_back(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1)));        // name
+      row.push_back(std::to_string(sqlite3_column_int(stmt, 2))); // value_cent
+      row.push_back(std::to_string(sqlite3_column_double(stmt, 3)));        // amount
+      row.push_back(std::to_string(sqlite3_column_double(stmt, 4)));     // price
+      result.push_back(row);
+  }
+
+  sqlite3_finalize(stmt);
+  sqlite3_close(db);
+
+  return result;
 }
 
 // Transactions
@@ -413,7 +419,6 @@ void User::displayTransactionsList() {
     return;
   }
 
-
   // Create a sql request
   ostringstream sql;
   sql << "SELECT transaction_id, cp.name, crypto_amount, crypto_price, value_cent, type FROM transactions_" << this->userId << " t"
@@ -422,12 +427,12 @@ void User::displayTransactionsList() {
       << " ORDER BY transaction_id DESC";
 
   auto callback = [](void *data, int argc, char **argv, char **azColName) -> int {
-      string *result = static_cast<string *>(data);
-      for (int i = 0; i < argc; i++) {
-        *result += string(argv[i]) + "\t";
-      }
-      *result += "\n";
-      return 0;
+    string *result = static_cast<string *>(data);
+    for (int i = 0; i < argc; i++) {
+      *result += string(argv[i]) + "\t";
+    }
+    *result += "\n";
+    return 0;
   };
   
   // Make a sql request
@@ -445,11 +450,12 @@ void User::displayTransactionsList() {
 
 vector<vector<string>> User::returnAllTransactions() {
   vector<vector<string>> result;
-    sqlite3* db;
+    sqlite3 *db;
     if (sqlite3_open("sqlite/database.db", &db) != SQLITE_OK) {
       cerr << "Can not open database: " << sqlite3_errmsg(db) << endl;
       return result;
     }
+
     ostringstream sql;
     sql << "SELECT transaction_id, date, cp.name, crypto_amount, crypto_price, value_cent, type FROM transactions_"
         << this->userId << " t"
@@ -461,15 +467,15 @@ vector<vector<string>> User::returnAllTransactions() {
     // select transaction_id, date, cp.name, crypto_amount, crypto_price, value_cent, type FROM transactions_1 JOIN crypto_price cp ON transactions_1.crypto_id = cp.crypto_id;
 
     while (sqlite3_step(stmt) == SQLITE_ROW) {
-        std::vector<std::string> row;
-        row.push_back(std::to_string(sqlite3_column_int(stmt, 0)));        // transaction_id
-        row.push_back(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1))); // date
-        row.push_back(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2)));        // crypto_id
-        row.push_back(std::to_string(sqlite3_column_double(stmt, 3)));     // crypto_amount
-        row.push_back(std::to_string(sqlite3_column_double(stmt, 4)));     // crypto_price
-        row.push_back(std::to_string(sqlite3_column_int(stmt, 5)));        // value_cent
-        row.push_back(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 6))); // type
-        result.push_back(row);
+      std::vector<std::string> row;
+      row.push_back(std::to_string(sqlite3_column_int(stmt, 0)));        // transaction_id
+      row.push_back(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1))); // date
+      row.push_back(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2)));        // crypto_id
+      row.push_back(std::to_string(sqlite3_column_double(stmt, 3)));     // crypto_amount
+      row.push_back(std::to_string(sqlite3_column_double(stmt, 4)));     // crypto_price
+      row.push_back(std::to_string(sqlite3_column_int(stmt, 5)));        // value_cent
+      row.push_back(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 6))); // type
+      result.push_back(row);
     }
 
     sqlite3_finalize(stmt);
@@ -760,7 +766,7 @@ void User::setUserId() {
 
 void User::setUserDataDuringLogin() {
   // Init
-  sqlite3* db;
+  sqlite3 *db;
 
   // Connect to databse
   if (sqlite3_open("sqlite/database.db", &db) != SQLITE_OK) {
@@ -776,6 +782,7 @@ void User::setUserDataDuringLogin() {
     
   if (sqlite3_prepare_v2(db, sql.str().c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
     cout << "ERROR setUserDataDuringLogin: Failed to prepare statement: " << sqlite3_errmsg(db) << endl;
+    sqlite3_close(db);
     return;
   }
 
@@ -811,7 +818,7 @@ void User::setBalanceInDb() {
     cerr << "Nie udało się otworzyć bazy danych: " << sqlite3_errmsg(db) << endl;
     return;
   }
-
+  
   // Create a sql request
   ostringstream sql;
   sql << "UPDATE users SET balance_cent = " << this->balanceInCents <<
@@ -896,7 +903,7 @@ void User::insertUserIntoDb() {
 // Wallet
 void User::generateUserWallet() {
   // Init
-  sqlite3* db;
+  sqlite3 *db;
   char* errorMessage = 0;
 
   // Connect to database
@@ -1207,7 +1214,7 @@ double User::setCryptoAmountToSell() {
 // Transactions list
 void User::generateUserTransactionsList() {
   // Init
-  sqlite3* db;
+  sqlite3 *db;
   char* errorMessage = 0;
 
   // Connect to database

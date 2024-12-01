@@ -20,7 +20,7 @@ class Memory {
     void formatStringReceivedFromApiRequestAndSaveIntoDb(string &data);
 
   public:
-    void makeRequestAndWriteMemory(const vector<string> apiId, CURL* curl, CURLcode &result);
+    void makeRequestAndWriteMemory(const vector<string> &apiId, CURL* curl, CURLcode &result);
     static size_t WriteCallback(void* contents, size_t size, size_t nmemb, void* userp);
     void updateCryptoPriceIntoDB(string name, double price);
     void printCryptoNameAndPriceDb();

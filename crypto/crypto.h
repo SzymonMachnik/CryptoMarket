@@ -9,6 +9,7 @@
 #include <map>
 #include <vector>
 #include <sstream>
+#include <mutex>
 
 using namespace std;
 
@@ -21,6 +22,8 @@ class Crypto {
     vector<string> cryptoApiIdVector;
     string PATHTOCRYPTONAMES = "crypto/listOfCryptoNames.txt";
     string PATHTOCRYPTOAPIIDS = "crypto/listOfCryptoApiIds.txt";
+
+    mutex db_mutex;
 
   public:
     int numberOfCrypto = 0;

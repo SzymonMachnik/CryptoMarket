@@ -10,6 +10,7 @@
 #include <sqlite3.h>
 #include <sstream>
 #include <ctime>
+#include <mutex>
 #include "../crypto/crypto.h"
 
 using namespace std;
@@ -28,6 +29,8 @@ class User {
     // Balance and limits
     int balanceInCents;
     int balanceAboveWhichUserCantDepositInCents;
+
+    mutex db_mutex;
 
     // Manage user data
     void setUserLogin();

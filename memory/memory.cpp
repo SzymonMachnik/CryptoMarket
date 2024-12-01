@@ -16,7 +16,7 @@ size_t Memory::WriteCallback(void* contents, size_t size, size_t nmemb, void* us
   return realsize;
 }
 
-void Memory::makeRequestAndWriteMemory(const vector<string> apiId, CURL* curl, CURLcode &result) {
+void Memory::makeRequestAndWriteMemory(const vector<string> &apiId, CURL* curl, CURLcode &result) {
   // Create url request
   string url = "https://api.coingecko.com/api/v3/simple/price?ids=";
   for (string a : apiId) {

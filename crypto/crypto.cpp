@@ -80,6 +80,7 @@ vector<string> Crypto::getCryptoApiIdVector() {
 }
 
 string Crypto::getCryptoName(int cryptoId) {
+
   // Init
   sqlite3 *db;
   char *errMsg = nullptr;
@@ -117,6 +118,7 @@ string Crypto::getCryptoName(int cryptoId) {
 }
 
 string Crypto::getCryptoPrice(int cryptoId) {
+  
   // Init
   sqlite3 *db;
   char *errMsg = nullptr;
@@ -154,6 +156,7 @@ string Crypto::getCryptoPrice(int cryptoId) {
 }
 
 string Crypto::getCryptoPrice(string cryptoName) {
+  
   // Init
   sqlite3 *db;
   char *errMsg = nullptr;
@@ -191,6 +194,7 @@ string Crypto::getCryptoPrice(string cryptoName) {
 }
 
 int Crypto::getCryptoId(string cryptoName) {
+  
   // Init
   sqlite3 *db;
   char *errMsg = nullptr;
