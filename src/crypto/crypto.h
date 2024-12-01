@@ -20,8 +20,8 @@ class Crypto {
 
     vector<string> cryptoNameVector;
     vector<string> cryptoApiIdVector;
-    string PATHTOCRYPTONAMES = "crypto/listOfCryptoNames.txt";
-    string PATHTOCRYPTOAPIIDS = "crypto/listOfCryptoApiIds.txt";
+    string PATHTOCRYPTONAMES = "src/crypto/listOfCryptoNames.txt";
+    string PATHTOCRYPTOAPIIDS = "src/crypto/listOfCryptoApiIds.txt";
 
     mutex db_mutex;
 

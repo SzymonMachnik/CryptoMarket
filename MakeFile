@@ -3,12 +3,12 @@
 # 		g++ main.cpp -o main.exe sudokuHelperFunctions/sudoku.cpp imgui/*.cpp -I imgui -ld3d9 -ldwmapi -lgdi32
 
 all:
-	g++ main.cpp -o main.exe \
-		crypto/crypto.cpp \
-		memory/memory.cpp \
-		user/user.cpp \
+	g++ src/main.cpp -o main.exe \
+		src/crypto/crypto.cpp \
+		src/memory/memory.cpp \
+		src/user/user.cpp \
 		imguiLib/*.cpp \
-		handleGui/handlegui.cpp \
+		src/handleGui/handlegui.cpp \
 		-LC:/CryptoScraper/curlLib/lib \
 		-I C:/CryptoScraper/curlLib/include \
 		-I imguiLib -ld3d9 -ldwmapi -lgdi32 \
