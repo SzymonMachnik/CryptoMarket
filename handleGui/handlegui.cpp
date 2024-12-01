@@ -26,9 +26,7 @@ void HandleGui::renderChooseRegsterOrLoginWindow(string &action) {
   ImGui::End();
 }
 
-void HandleGui::renderRegisterWindow(char inputLogin[255], char inputPassword[255], char inputFirstName[255], char inputLastName[255],
-                          string &inputLoginError, string &inputPasswordError, string &inputFirstNameError, string &inputLastNameError,
-                          ImFont* errorFont, string &action, User &user) {
+void HandleGui::renderRegisterWindow( ImFont* errorFont, string &action, User &user) {
   ImGui::SetNextWindowPos(ImVec2(660, 190));
   ImGui::SetNextWindowSize(ImVec2(600, 650));
   ImGui::Begin("Register", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar);                          // Create a window called "Hello, world!" and append into it.
@@ -135,8 +133,7 @@ void HandleGui::renderRegisterWindow(char inputLogin[255], char inputPassword[25
   ImGui::End();
 }
 
-void HandleGui::renderLoginWindow(char inputLogin[255], char inputPassword[255],
-                       string &action, User &user) {
+void HandleGui::renderLoginWindow(string &action, User &user) {
   ImGui::SetNextWindowPos(ImVec2(660, 290));
   ImGui::SetNextWindowSize(ImVec2(600, 400));
   ImGui::Begin("Login", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar);                          // Create a window called "Hello, world!" and append into it.
@@ -389,7 +386,7 @@ void HandleGui::renderWalletSection(ImFont* walletFont, bool &depositMoney, User
 }
 
 
-void HandleGui::renderBuyCryptoWindow(string &buyCrypto, double &cryptoAmountToBuy, string &buyCryptoErrorMsg,
+void HandleGui::renderBuyCryptoWindow(string &buyCrypto,
                            ImFont* errorFont, Crypto &crypto, User &user) {
   const int containerWidth = 600.0f;
   const int containerHeight = 300.0f;
@@ -445,8 +442,7 @@ void HandleGui::renderBuyCryptoWindow(string &buyCrypto, double &cryptoAmountToB
   ImGui::End();
 }
 
-void HandleGui::renderSellCryptoWindow(string &sellCrypto, double &cryptoAmountToSell, string &sellCryptoErrorMsg,
-                           ImFont* errorFont, Crypto &crypto, User &user) {
+void HandleGui::renderSellCryptoWindow(string &sellCrypto, ImFont* errorFont, Crypto &crypto, User &user) {
   const int containerWidth = 600.0f;
   const int containerHeight = 300.0f;
 
@@ -500,8 +496,7 @@ void HandleGui::renderSellCryptoWindow(string &sellCrypto, double &cryptoAmountT
   ImGui::End();
 }
 
-void HandleGui::renderDepositMoneyWindow(bool &depositMoney, int &fiatToDeposit, string &depositMoneyErrorMsg,
-                           ImFont* errorFont, User &user) {
+void HandleGui::renderDepositMoneyWindow(bool &depositMoney,  ImFont* errorFont, User &user) {
   const int containerWidth = 600.0f;
   const int containerHeight = 300.0f;
 

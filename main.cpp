@@ -28,6 +28,7 @@ CURLcode res;
 Memory memory;
 Crypto crypto;  
 User user;
+HandleGui handleGui;
 
 mutex db_mutex;
 
@@ -114,32 +115,23 @@ int main(int, char**)
   
   thread messageThread(refreshAndPrintPriceEvery60s);
   // Main loop
-  char inputLogin[255] = {}; 
-  char inputPassword[255] = {};
-  char inputFirstName[255] = {}; 
-  char inputLastName[255] = {};
+  // char inputLogin[255] = {}; 
+  // char inputPassword[255] = {};
+  // char inputFirstName[255] = {}; 
+  // char inputLastName[255] = {};
 
-  string inputLoginError;
-  string inputPasswordError;
-  string inputFirstNameError;
-  string inputLastNameError;
+  // string inputLoginError;
+  // string inputPasswordError;
+  // string inputFirstNameError;
+  // string inputLastNameError;
 
   string action = "chooseLoginOrRegister";
 
   string buyCrypto;
-  int buyCryptoError;
-  string buyCryptoErrorMsg = "";
-  double cryptoAmountToBuy = 0;
 
   string sellCrypto;
-  int sellCryptoError;
-  string sellCryptoErrorMsg = "";
-  double cryptoAmountToSell = 0;
 
   bool depositMoney = false;
-  int fiatToDeposit = 0;
-  int depositMoneyError = 0;
-  string depositMoneyErrorMsg = "";
   
   bool done = false;
   while (!done)
@@ -185,36 +177,34 @@ int main(int, char**)
 /////////////////////////
     // ChooseRegsterOrLogin Window
     if (user.getUserLoginStatus() == false && action == "chooseLoginOrRegister") {
-      HandleGui::renderChooseRegsterOrLoginWindow(action);
+      handleGui.renderChooseRegsterOrLoginWindow(action);
     }
 
     // Register window
     if (user.getUserLoginStatus() == false && action == "register") {
-      HandleGui::renderRegisterWindow(inputLogin, inputPassword, inputFirstName, inputLastName,
-                            inputLoginError, inputPasswordError, inputFirstNameError, inputLastNameError,
-                            errorFont, action, user);
+      handleGui.renderRegisterWindow(errorFont, action, user);
     }
     // Login window
     if (user.getUserLoginStatus() == false && action == "login") {
-      HandleGui::renderLoginWindow(inputLogin, inputPassword, action, user);
+      handleGui.renderLoginWindow(action, user);
     }
 
     // Render main window
     if (user.getUserLoginStatus() == true) {
-      HandleGui::renderCryptoListSection(buyCrypto, sellCrypto, crypto);
-      HandleGui::renderWalletSection(transactionsListFont, depositMoney, user);
-      HandleGui::renderTransactionsListSection(transactionsListFont, user);
+      handleGui.renderCryptoListSection(buyCrypto, sellCrypto, crypto);
+      handleGui.renderWalletSection(transactionsListFont, depositMoney, user);
+      handleGui.renderTransactionsListSection(transactionsListFont, user);
 
       if (buyCrypto != "") {
-        HandleGui::renderBuyCryptoWindow(buyCrypto, cryptoAmountToBuy, buyCryptoErrorMsg, errorFont, crypto, user);
+        handleGui.renderBuyCryptoWindow(buyCrypto, errorFont, crypto, user);
       }
 
       if (sellCrypto != "") {
-        HandleGui::renderSellCryptoWindow(sellCrypto, cryptoAmountToSell, sellCryptoErrorMsg, errorFont, crypto, user);
+        handleGui.renderSellCryptoWindow(sellCrypto, errorFont, crypto, user);
       }
 
       if (depositMoney == true) {
-        HandleGui::renderDepositMoneyWindow(depositMoney, fiatToDeposit, depositMoneyErrorMsg, errorFont, user);
+        handleGui.renderDepositMoneyWindow(depositMoney,  errorFont, user);
       }
     }
 /////////////////////////
