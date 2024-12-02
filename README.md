@@ -1,15 +1,26 @@
-# `🚀` Crypto Trader
-## `📃` Brief description
+# 🚀 Crypto Trader
+## 📃 Brief description
 Crypto Trader & Wallet Manager to aplikacja konsolowa napisana w C++, która umożliwia użytkownikom kupowanie, sprzedawanie, deponowanie i zarządzanie kryptowalutami w portfelu. Dzięki integracji z bazą danych SQLite, aplikacja bezpiecznie przechowuje dane użytkowników, historię transakcji oraz informacje o portfelu.
 
-## `🛠️` Funkcjonalności
+## 🛠️ Funkcjonalności
 ### Rejestracja i logowanie użytkowników
-Użytkownik może założyć konto oraz logować się do istniejącego konta z wykorzystaniem loginu i hasła.
+  - Użytkownik może założyć konto oraz logować się do istniejącego konta z wykorzystaniem loginu i hasła.
 ### Zarządzanie portfelem
-Wyświetlanie posiadanych kryptowalut.
-Aktualizacja cen kryptowalut w czasie rzeczywistym.
-Kupno i sprzedaż kryptowalut.
+  - Wyświetlanie posiadanych kryptowalut.
+  - Aktualizacja cen kryptowalut w czasie rzeczywistym.
+  - Kupno i sprzedaż kryptowalut.
 ### Lista transakcji
-Przegląd historii transakcji zawierającej daty, kwoty oraz typy operacji (kupno/sprzedaż).
+  - Przegląd historii transakcji zawierającej daty, kwoty oraz typy operacji (kupno/sprzedaż).
 ### Depozyty i zarządzanie saldem
-Użytkownik może dokonywać depozytów i sprawdzać swoje saldo.
+  - Użytkownik może dokonywać depozytów i sprawdzać swoje saldo.
+
+## 💻 Tech Stack
+### Język programowania:
+  - C++.
+### Baza danych:
+  - SQLite3 – lekka baza danych wbudowana w aplikację.
+## 📚 Biblioteki
+### Curl:
+  - Używana do pobierania danych o cenach kryptowalut z API.
+### ImGui:
+  - Biblioteka do tworzenia interfejsów graficznych, umożliwiająca potencjalne rozszerzenie aplikacji o interfejs graficzny.
