@@ -1,7 +1,3 @@
-# all:
-#			g++ maincopy.cpp -o maincopy.exe crypto/crypto.cpp memory/memory.cpp user/user.cpp handleGui/handlegui.cpp -LC:/CryptoScraper/curlLib/lib -I C:/CryptoScraper/curlLib/include -lcurl -lsqlite3 
-# 		g++ main.cpp -o main.exe sudokuHelperFunctions/sudoku.cpp imgui/*.cpp -I imgui -ld3d9 -ldwmapi -lgdi32
-
 all:
 	g++ src/main.cpp -o main.exe \
 		src/crypto/crypto.cpp \
@@ -9,7 +5,7 @@ all:
 		src/user/user.cpp \
 		libs/imgui/*.cpp \
 		src/handleGui/handlegui.cpp \
-		-L curl/lib \
-		-I curl/include \
+		-L libs/curl/lib \
+		-I libs/curl/include \
 		-I libs/imgui -ld3d9 -ldwmapi -lgdi32 \
 		-lcurl -lsqlite3
