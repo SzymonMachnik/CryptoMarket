@@ -9,7 +9,7 @@ Użytkownik może założyć konto oraz logować się do istniejącego konta z w
 Wyświetlanie posiadanych kryptowalut.
 Aktualizacja cen kryptowalut w czasie rzeczywistym.
 Kupno i sprzedaż kryptowalut.
-#Lista transakcji
+# Lista transakcji
 Przegląd historii transakcji zawierającej daty, kwoty oraz typy operacji (kupno/sprzedaż).
-#Depozyty i zarządzanie saldem
+# Depozyty i zarządzanie saldem
 Użytkownik może dokonywać depozytów i sprawdzać swoje saldo.
