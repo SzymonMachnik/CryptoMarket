@@ -1,0 +1,80 @@
+[
+{
+  "directory": "C:/CryptoScraper/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles/CryptoScraper.dir/includes_CXX.rsp -g -std=gnu++11 -o CMakeFiles\\CryptoScraper.dir\\libs\\imgui\\imgui.cpp.obj -c C:\\CryptoScraper\\libs\\imgui\\imgui.cpp",
+  "file": "C:/CryptoScraper/libs/imgui/imgui.cpp",
+  "output": "CMakeFiles/CryptoScraper.dir/libs/imgui/imgui.cpp.obj"
+},
+{
+  "directory": "C:/CryptoScraper/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles/CryptoScraper.dir/includes_CXX.rsp -g -std=gnu++11 -o CMakeFiles\\CryptoScraper.dir\\libs\\imgui\\imgui_demo.cpp.obj -c C:\\CryptoScraper\\libs\\imgui\\imgui_demo.cpp",
+  "file": "C:/CryptoScraper/libs/imgui/imgui_demo.cpp",
+  "output": "CMakeFiles/CryptoScraper.dir/libs/imgui/imgui_demo.cpp.obj"
+},
+{
+  "directory": "C:/CryptoScraper/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles/CryptoScraper.dir/includes_CXX.rsp -g -std=gnu++11 -o CMakeFiles\\CryptoScraper.dir\\libs\\imgui\\imgui_draw.cpp.obj -c C:\\CryptoScraper\\libs\\imgui\\imgui_draw.cpp",
+  "file": "C:/CryptoScraper/libs/imgui/imgui_draw.cpp",
+  "output": "CMakeFiles/CryptoScraper.dir/libs/imgui/imgui_draw.cpp.obj"
+},
+{
+  "directory": "C:/CryptoScraper/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles/CryptoScraper.dir/includes_CXX.rsp -g -std=gnu++11 -o CMakeFiles\\CryptoScraper.dir\\libs\\imgui\\imgui_impl_dx9.cpp.obj -c C:\\CryptoScraper\\libs\\imgui\\imgui_impl_dx9.cpp",
+  "file": "C:/CryptoScraper/libs/imgui/imgui_impl_dx9.cpp",
+  "output": "CMakeFiles/CryptoScraper.dir/libs/imgui/imgui_impl_dx9.cpp.obj"
+},
+{
+  "directory": "C:/CryptoScraper/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles/CryptoScraper.dir/includes_CXX.rsp -g -std=gnu++11 -o CMakeFiles\\CryptoScraper.dir\\libs\\imgui\\imgui_impl_win32.cpp.obj -c C:\\CryptoScraper\\libs\\imgui\\imgui_impl_win32.cpp",
+  "file": "C:/CryptoScraper/libs/imgui/imgui_impl_win32.cpp",
+  "output": "CMakeFiles/CryptoScraper.dir/libs/imgui/imgui_impl_win32.cpp.obj"
+},
+{
+  "directory": "C:/CryptoScraper/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles/CryptoScraper.dir/includes_CXX.rsp -g -std=gnu++11 -o CMakeFiles\\CryptoScraper.dir\\libs\\imgui\\imgui_tables.cpp.obj -c C:\\CryptoScraper\\libs\\imgui\\imgui_tables.cpp",
+  "file": "C:/CryptoScraper/libs/imgui/imgui_tables.cpp",
+  "output": "CMakeFiles/CryptoScraper.dir/libs/imgui/imgui_tables.cpp.obj"
+},
+{
+  "directory": "C:/CryptoScraper/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles/CryptoScraper.dir/includes_CXX.rsp -g -std=gnu++11 -o CMakeFiles\\CryptoScraper.dir\\libs\\imgui\\imgui_widgets.cpp.obj -c C:\\CryptoScraper\\libs\\imgui\\imgui_widgets.cpp",
+  "file": "C:/CryptoScraper/libs/imgui/imgui_widgets.cpp",
+  "output": "CMakeFiles/CryptoScraper.dir/libs/imgui/imgui_widgets.cpp.obj"
+},
+{
+  "directory": "C:/CryptoScraper/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\gcc.exe  @CMakeFiles/CryptoScraper.dir/includes_C.rsp -g -o CMakeFiles\\CryptoScraper.dir\\libs\\sqliteLib\\sqlite3.c.obj -c C:\\CryptoScraper\\libs\\sqliteLib\\sqlite3.c",
+  "file": "C:/CryptoScraper/libs/sqliteLib/sqlite3.c",
+  "output": "CMakeFiles/CryptoScraper.dir/libs/sqliteLib/sqlite3.c.obj"
+},
+{
+  "directory": "C:/CryptoScraper/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles/CryptoScraper.dir/includes_CXX.rsp -g -std=gnu++11 -o CMakeFiles\\CryptoScraper.dir\\src\\crypto\\crypto.cpp.obj -c C:\\CryptoScraper\\src\\crypto\\crypto.cpp",
+  "file": "C:/CryptoScraper/src/crypto/crypto.cpp",
+  "output": "CMakeFiles/CryptoScraper.dir/src/crypto/crypto.cpp.obj"
+},
+{
+  "directory": "C:/CryptoScraper/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles/CryptoScraper.dir/includes_CXX.rsp -g -std=gnu++11 -o CMakeFiles\\CryptoScraper.dir\\src\\handleGui\\handlegui.cpp.obj -c C:\\CryptoScraper\\src\\handleGui\\handlegui.cpp",
+  "file": "C:/CryptoScraper/src/handleGui/handlegui.cpp",
+  "output": "CMakeFiles/CryptoScraper.dir/src/handleGui/handlegui.cpp.obj"
+},
+{
+  "directory": "C:/CryptoScraper/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles/CryptoScraper.dir/includes_CXX.rsp -g -std=gnu++11 -o CMakeFiles\\CryptoScraper.dir\\src\\main.cpp.obj -c C:\\CryptoScraper\\src\\main.cpp",
+  "file": "C:/CryptoScraper/src/main.cpp",
+  "output": "CMakeFiles/CryptoScraper.dir/src/main.cpp.obj"
+},
+{
+  "directory": "C:/CryptoScraper/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles/CryptoScraper.dir/includes_CXX.rsp -g -std=gnu++11 -o CMakeFiles\\CryptoScraper.dir\\src\\memory\\memory.cpp.obj -c C:\\CryptoScraper\\src\\memory\\memory.cpp",
+  "file": "C:/CryptoScraper/src/memory/memory.cpp",
+  "output": "CMakeFiles/CryptoScraper.dir/src/memory/memory.cpp.obj"
+},
+{
+  "directory": "C:/CryptoScraper/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles/CryptoScraper.dir/includes_CXX.rsp -g -std=gnu++11 -o CMakeFiles\\CryptoScraper.dir\\src\\user\\user.cpp.obj -c C:\\CryptoScraper\\src\\user\\user.cpp",
+  "file": "C:/CryptoScraper/src/user/user.cpp",
+  "output": "CMakeFiles/CryptoScraper.dir/src/user/user.cpp.obj"
+}
+]

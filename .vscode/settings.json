@@ -76,7 +76,7 @@
     "xutility": "cpp",
     "mutex": "cpp"
   },
-  "cmake.sourceDirectory": "C:/CryptoScraper/vcpkg/ports/7zip",
+  "cmake.sourceDirectory": "C:/CryptoScraper",
   "C_Cpp.errorSquiggles": "disabled"
 }
 

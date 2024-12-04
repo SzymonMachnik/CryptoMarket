@@ -17,6 +17,7 @@
 
 using namespace std;
 
+
 class HandleGui {
 private:
   char inputLogin[255] = {}; 

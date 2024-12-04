@@ -1,5 +1,5 @@
 #include <iostream>
-#include <curl/curl.h>
+#include <curl.h>
 #include <sqlite3.h>
 #include <string>
 #include <thread>

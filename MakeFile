@@ -6,6 +6,6 @@ all:
 		libs/imgui/*.cpp \
 		src/handleGui/handlegui.cpp \
 		-L libs/curl/lib \
-		-I libs/curl/include \
+		-I libs/curl/include/curl \
 		-I libs/imgui -ld3d9 -ldwmapi -lgdi32 \
 		-lcurl -lsqlite3
