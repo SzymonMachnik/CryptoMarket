@@ -1,1 +1,1 @@
--IC:/CryptoScraper/src -IC:/CryptoScraper/libs/curl/include -IC:/CryptoScraper/libs/imgui -IC:/CryptoScraper/libs/sqliteLib
+-IC:/CryptoScraper/src -IC:/CryptoScraper/libs/imgui -IC:/CryptoScraper/libs/curl/include -IC:/CryptoScraper/libs/sqliteLib

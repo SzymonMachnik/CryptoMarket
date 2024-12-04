@@ -1,3 +1,0 @@
-"C:\Program Files\CMake\bin\cmake.exe" -E rm -f CMakeFiles\CryptoScraper.dir/objects.a
-C:\msys64\ucrt64\bin\ar.exe qc CMakeFiles\CryptoScraper.dir/objects.a @CMakeFiles\CryptoScraper.dir\objects1.rsp
-C:\msys64\ucrt64\bin\g++.exe -g -Wl,--whole-archive CMakeFiles\CryptoScraper.dir/objects.a -Wl,--no-whole-archive -o CryptoScraper.exe -Wl,--out-implib,libCryptoScraper.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\CryptoScraper.dir\linkLibs.rsp

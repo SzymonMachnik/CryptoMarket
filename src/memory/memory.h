@@ -4,7 +4,7 @@
 #define MEMORY_H
 
 #include <iostream>
-#include <curl.h>
+#include <curl/curl.h>
 #include "../crypto/crypto.h"
 #include <vector>
 #include <string>
