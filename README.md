@@ -27,15 +27,15 @@ Crypto Trader to aplikacja z interfejsem graicznym napisana w C++, która umożl
 
 ## 📦 Instalation
 ### Copy these commands into project folder for building:
-```
+<!-- ```
 cd build
 cmake ..
 cmake --build .
-```
+``` -->
 ### Copy these command for running project:
-```
+<!-- ```
 .\CryptoScraper.exe
-```
+``` -->
 
 ## 📜 Credits
 ### Curl for making crypto price requests:
