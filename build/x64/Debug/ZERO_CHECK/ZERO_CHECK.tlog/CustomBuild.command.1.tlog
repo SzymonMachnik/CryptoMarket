@@ -1,0 +1,10 @@
+^C:\CRYPTOSCRAPER\BUILD\CMAKEFILES\40F6396D9E6BD043446E62B65103C272\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/CryptoScraper -BC:/CryptoScraper/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/CryptoScraper/build/CryptoScraper.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
