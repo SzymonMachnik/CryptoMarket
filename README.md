@@ -25,18 +25,6 @@ Crypto Trader to aplikacja z interfejsem graicznym napisana w C++, która umożl
 ### ImGui:
   - Biblioteka do tworzenia interfejsów graficznych, umożliwiająca potencjalne rozszerzenie aplikacji o interfejs graficzny.
 
-## 📦 Instalation
-### Copy these commands into project folder for building:
-<!-- ```
-cd build
-cmake ..
-cmake --build .
-``` -->
-### Copy these command for running project:
-<!-- ```
-.\CryptoScraper.exe
-``` -->
-
 ## 📜 Credits
 ### Curl for making crypto price requests:
   - Github: https://github.com/curl/curl
