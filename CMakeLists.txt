@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(CryptoScraper)
+project(CryptoTrader)
 
 # Określenie standardu C++
 set(CMAKE_CXX_STANDARD 17)
@@ -9,11 +9,11 @@ set(CMAKE_CXX_STANDARD 17)
 include_directories(
     src
     libs/imgui
-    ${CMAKE_SOURCE_DIR}/libs/curl/include
+    libs/curl/include
     libs/sqliteLib  # Ścieżka do sqlite3.h
 )
 
-link_directories(${CMAKE_SOURCE_DIR}/libs/curl/lib)
+link_directories(libs/curl/lib)
 
 # Źródła projektu
 file(GLOB SOURCES
@@ -27,9 +27,9 @@ file(GLOB SOURCES
 )
 
 # Określenie pliku wykonywalnego
-add_executable(CryptoScraper ${SOURCES})
+add_executable(CryptoTrader ${SOURCES})
 
-target_link_libraries(CryptoScraper
+target_link_libraries(CryptoTrader
     d3d9
     dwmapi
     gdi32

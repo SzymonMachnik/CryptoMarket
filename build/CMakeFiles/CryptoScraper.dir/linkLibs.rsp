@@ -1,1 +1,0 @@
-  -LC:/CryptoScraper/libs/curl/lib  -ld3d9 -ldwmapi -lgdi32 -llibcurl -lssl -lcrypto -lws2_32 -lwinmm -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 
