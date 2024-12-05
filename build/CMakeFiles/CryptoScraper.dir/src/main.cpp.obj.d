@@ -1,5 +1,5 @@
 CMakeFiles/CryptoScraper.dir/src/main.cpp.obj: \
- C:/CryptoScraper/src/main.cpp \
+ C:\CryptoScraper\src\main.cpp \
  C:/msys64/ucrt64/include/c++/14.2.0/iostream \
  C:/msys64/ucrt64/include/c++/14.2.0/bits/requires_hosted.h \
  C:/msys64/ucrt64/include/c++/14.2.0/x86_64-w64-mingw32/bits/c++config.h \
@@ -388,7 +388,7 @@ CMakeFiles/CryptoScraper.dir/src/main.cpp.obj: \
  C:/msys64/ucrt64/include/c++/14.2.0/bits/quoted_string.h \
  C:/msys64/ucrt64/include/c++/14.2.0/sstream \
  C:/msys64/ucrt64/include/c++/14.2.0/bits/sstream.tcc \
- C:/CryptoScraper/src/crypto/crypto.h \
+ C:\CryptoScraper\src\crypto/crypto.h \
  C:/msys64/ucrt64/include/c++/14.2.0/map \
  C:/msys64/ucrt64/include/c++/14.2.0/bits/stl_tree.h \
  C:/msys64/ucrt64/include/c++/14.2.0/ext/aligned_buffer.h \
@@ -401,8 +401,8 @@ CMakeFiles/CryptoScraper.dir/src/main.cpp.obj: \
  C:/msys64/ucrt64/include/c++/14.2.0/bits/stl_vector.h \
  C:/msys64/ucrt64/include/c++/14.2.0/bits/stl_bvector.h \
  C:/msys64/ucrt64/include/c++/14.2.0/bits/vector.tcc \
- C:/CryptoScraper/src/memory/memory.h \
- C:/CryptoScraper/src/crypto/crypto.h C:/CryptoScraper/src/user/user.h \
+ C:\CryptoScraper\src\memory/memory.h \
+ C:/CryptoScraper/src/crypto/crypto.h C:\CryptoScraper\src\user/user.h \
  C:/msys64/ucrt64/include/c++/14.2.0/algorithm \
  C:/msys64/ucrt64/include/c++/14.2.0/bits/stl_algo.h \
  C:/msys64/ucrt64/include/c++/14.2.0/bits/algorithmfwd.h \
@@ -412,7 +412,7 @@ CMakeFiles/CryptoScraper.dir/src/main.cpp.obj: \
  C:/msys64/ucrt64/include/c++/14.2.0/pstl/glue_algorithm_defs.h \
  C:/msys64/ucrt64/include/c++/14.2.0/pstl/execution_defs.h \
  C:/CryptoScraper/src/crypto/crypto.h \
- C:/CryptoScraper/src/handleGui/handlegui.h \
+ C:\CryptoScraper\src\handleGui/handlegui.h \
  C:/CryptoScraper/src/crypto/crypto.h C:/CryptoScraper/src/user/user.h \
  C:/CryptoScraper/libs/imgui/imgui.h \
  C:/CryptoScraper/libs/imgui/imconfig.h \

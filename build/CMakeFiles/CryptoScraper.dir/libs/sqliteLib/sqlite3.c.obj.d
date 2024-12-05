@@ -1,5 +1,5 @@
 CMakeFiles/CryptoScraper.dir/libs/sqliteLib/sqlite3.c.obj: \
- C:/CryptoScraper/libs/sqliteLib/sqlite3.c \
+ C:\CryptoScraper\libs\sqliteLib\sqlite3.c \
  C:/msys64/ucrt64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/stdarg.h \
  C:/msys64/ucrt64/include/stdarg.h \
  C:/msys64/ucrt64/include/_mingw_stdarg.h \

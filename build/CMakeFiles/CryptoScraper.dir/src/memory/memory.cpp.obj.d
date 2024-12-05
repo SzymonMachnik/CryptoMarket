@@ -1,5 +1,5 @@
 CMakeFiles/CryptoScraper.dir/src/memory/memory.cpp.obj: \
- C:/CryptoScraper/src/memory/memory.cpp \
+ C:\CryptoScraper\src\memory\memory.cpp \
  C:/msys64/ucrt64/include/c++/14.2.0/iostream \
  C:/msys64/ucrt64/include/c++/14.2.0/bits/requires_hosted.h \
  C:/msys64/ucrt64/include/c++/14.2.0/x86_64-w64-mingw32/bits/c++config.h \
@@ -136,7 +136,7 @@ CMakeFiles/CryptoScraper.dir/src/memory/memory.cpp.obj: \
  C:/msys64/ucrt64/include/c++/14.2.0/bits/ostream.tcc \
  C:/msys64/ucrt64/include/c++/14.2.0/istream \
  C:/msys64/ucrt64/include/c++/14.2.0/bits/istream.tcc \
- C:/CryptoScraper/src/memory/memory.h \
+ C:\CryptoScraper\src\memory\memory.h \
  C:/CryptoScraper/libs/curl/include/curl/curl.h \
  C:/CryptoScraper/libs/curl/include/curl/curlver.h \
  C:/CryptoScraper/libs/curl/include/curl/system.h \

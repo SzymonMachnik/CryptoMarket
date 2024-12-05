@@ -1,5 +1,5 @@
 CMakeFiles/CryptoScraper.dir/src/crypto/crypto.cpp.obj: \
- C:/CryptoScraper/src/crypto/crypto.cpp \
+ C:\CryptoScraper\src\crypto\crypto.cpp \
  C:/msys64/ucrt64/include/c++/14.2.0/iostream \
  C:/msys64/ucrt64/include/c++/14.2.0/bits/requires_hosted.h \
  C:/msys64/ucrt64/include/c++/14.2.0/x86_64-w64-mingw32/bits/c++config.h \
@@ -141,7 +141,7 @@ CMakeFiles/CryptoScraper.dir/src/crypto/crypto.cpp.obj: \
  C:/msys64/ucrt64/include/c++/14.2.0/x86_64-w64-mingw32/bits/basic_file.h \
  C:/msys64/ucrt64/include/c++/14.2.0/x86_64-w64-mingw32/bits/c++io.h \
  C:/msys64/ucrt64/include/c++/14.2.0/bits/fstream.tcc \
- C:/CryptoScraper/src/crypto/crypto.h \
+ C:\CryptoScraper\src\crypto\crypto.h \
  C:/CryptoScraper/libs/sqliteLib/sqlite3.h \
  C:/msys64/ucrt64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/stdarg.h \
  C:/msys64/ucrt64/include/stdarg.h \

@@ -1,7 +1,7 @@
 CMakeFiles/CryptoScraper.dir/libs/imgui/imgui_impl_win32.cpp.obj: \
- C:/CryptoScraper/libs/imgui/imgui_impl_win32.cpp \
- C:/CryptoScraper/libs/imgui/imgui.h \
- C:/CryptoScraper/libs/imgui/imconfig.h \
+ C:\CryptoScraper\libs\imgui\imgui_impl_win32.cpp \
+ C:\CryptoScraper\libs\imgui\imgui.h \
+ C:\CryptoScraper\libs\imgui\imconfig.h \
  C:/msys64/ucrt64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/float.h \
  C:/msys64/ucrt64/include/float.h C:/msys64/ucrt64/include/crtdefs.h \
  C:/msys64/ucrt64/include/corecrt.h C:/msys64/ucrt64/include/_mingw.h \
@@ -32,7 +32,7 @@ CMakeFiles/CryptoScraper.dir/libs/imgui/imgui_impl_win32.cpp.obj: \
  C:/msys64/ucrt64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/mm_malloc.h \
  C:/msys64/ucrt64/include/errno.h \
  C:/msys64/ucrt64/include/c++/14.2.0/bits/std_abs.h \
- C:/CryptoScraper/libs/imgui/imgui_impl_win32.h \
+ C:\CryptoScraper\libs\imgui\imgui_impl_win32.h \
  C:/msys64/ucrt64/include/windows.h C:/msys64/ucrt64/include/sdkddkver.h \
  C:/msys64/ucrt64/include/excpt.h C:/msys64/ucrt64/include/windef.h \
  C:/msys64/ucrt64/include/winapifamily.h \

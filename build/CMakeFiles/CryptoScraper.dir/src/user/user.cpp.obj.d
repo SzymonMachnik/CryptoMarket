@@ -1,5 +1,5 @@
 CMakeFiles/CryptoScraper.dir/src/user/user.cpp.obj: \
- C:/CryptoScraper/src/user/user.cpp \
+ C:\CryptoScraper\src\user\user.cpp \
  C:/msys64/ucrt64/include/c++/14.2.0/iostream \
  C:/msys64/ucrt64/include/c++/14.2.0/bits/requires_hosted.h \
  C:/msys64/ucrt64/include/c++/14.2.0/x86_64-w64-mingw32/bits/c++config.h \
@@ -141,7 +141,7 @@ CMakeFiles/CryptoScraper.dir/src/user/user.cpp.obj: \
  C:/msys64/ucrt64/include/c++/14.2.0/x86_64-w64-mingw32/bits/basic_file.h \
  C:/msys64/ucrt64/include/c++/14.2.0/x86_64-w64-mingw32/bits/c++io.h \
  C:/msys64/ucrt64/include/c++/14.2.0/bits/fstream.tcc \
- C:/CryptoScraper/src/user/user.h \
+ C:\CryptoScraper\src\user\user.h \
  C:/msys64/ucrt64/include/c++/14.2.0/vector \
  C:/msys64/ucrt64/include/c++/14.2.0/bits/stl_uninitialized.h \
  C:/msys64/ucrt64/include/c++/14.2.0/bits/stl_vector.h \

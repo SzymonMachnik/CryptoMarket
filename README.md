@@ -34,7 +34,7 @@ cmake --build .
 ```
 ### Copy these command for running project:
 ```
-.\SudokuSolver.exe
+.\CryptoScraper.exe
 ```
 
 ## 📜 Credits
