@@ -1,1 +1,23 @@
-build/
+# Ignorowanie folderu build
+/build/**
+
+# Ignorowanie plików binarnych
+*.exe
+*.dll
+*.o
+*.a
+*.so
+*.dylib
+
+# Ignorowanie plików konfiguracyjnych IDE
+.vscode/
+.idea/
+
+# Ignorowanie plików systemowych
+.DS_Store
+Thumbs.db
+
+# Ignorowanie plików cache
+.gradle/
+.mvn/
+.tox/
