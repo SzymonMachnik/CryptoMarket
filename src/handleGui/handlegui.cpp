@@ -262,8 +262,6 @@ void HandleGui::renderTransactionsListSection(ImFont* transactionsListFont, User
 
     ostringstream streamValue;
     streamValue << fixed << setprecision(2) << stoi(transaction[5]) / 100.0;
-    ostringstream streamCryptoPriceDolars;
-    streamCryptoPriceDolars << fixed << setprecision(2) << stoi(transaction[4]) / 100.0;
 
     float textLineSize = 33.0f;
     float textColumnSize = 310.0f;
@@ -278,7 +276,7 @@ void HandleGui::renderTransactionsListSection(ImFont* transactionsListFont, User
     ImGui::SetCursorPos(ImVec2(10 + textColumnSize, 6));
     ImGui::Text((transaction[1]).c_str());  // Date of transaction
     ImGui::SetCursorPos(ImVec2(10 + textColumnSize, 6 + textLineSize));
-    ImGui::Text(("Price: " + streamCryptoPriceDolars.str() + "$").c_str());  // Price of crypto
+    ImGui::Text(("Price: " + transaction[4] + "$").c_str());  // Price of crypto
     ImGui::PopFont();
     ImGui::EndChild();
     ImGui::PopStyleColor();
@@ -352,9 +350,6 @@ void HandleGui::renderWalletSection(ImFont* walletFont, bool &depositMoney, User
 
     ostringstream streamValueDolars;
     streamValueDolars << fixed << setprecision(2) << stoi(record[2]) / 100.0;
-    
-    ostringstream streamCryptoPriceDolars;
-    streamCryptoPriceDolars << fixed << setprecision(2) << stoi(record[4]) / 100.0;
 
     float textLineSize = 33.0f;
     float textColumnSize = 310.0f;
@@ -367,7 +362,7 @@ void HandleGui::renderWalletSection(ImFont* walletFont, bool &depositMoney, User
     ImGui::SetCursorPos(ImVec2(10 + textColumnSize, 6));
     ImGui::Text(("Value: " + streamValueDolars.str() + "$").c_str());  // Value in $
     ImGui::SetCursorPos(ImVec2(10 + textColumnSize, 6 + textLineSize));
-    ImGui::Text(("Price: " + streamCryptoPriceDolars.str() + "$").c_str());  // Price of crypto
+    ImGui::Text(("Price: " + record[4] + "$").c_str());  // Price of crypto
     ImGui::PopFont();
     ImGui::EndChild();
     ImGui::PopStyleColor();
