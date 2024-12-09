@@ -1,4 +1,4 @@
-# 🚀 Crypto Trader
+# 🚀 Crypto Market
 ## 📃 Opis projektu
 Crypto Trader to aplikacja z interfejsem graicznym napisana w C++, która umożliwia użytkownikom kupowanie, sprzedawanie, deponowanie i zarządzanie kryptowalutami w portfelu. Dzięki integracji z bazą danych SQLite, aplikacja bezpiecznie przechowuje dane użytkowników, historię transakcji oraz informacje o portfelu.
 
@@ -24,18 +24,6 @@ Crypto Trader to aplikacja z interfejsem graicznym napisana w C++, która umożl
   - Używana do pobierania danych o cenach kryptowalut z API.
 ### ImGui:
   - Biblioteka do tworzenia interfejsów graficznych, umożliwiająca potencjalne rozszerzenie aplikacji o interfejs graficzny.
-
-## 📦 Instalation
-### Copy these commands into project folder for building:
-<!-- ```
-cd build
-cmake ..
-cmake --build .
-``` -->
-### Copy these command for running project:
-<!-- ```
-.\CryptoScraper.exe
-``` -->
 
 ## 📜 Credits
 ### Curl for making crypto price requests:
