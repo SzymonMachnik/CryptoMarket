@@ -5,16 +5,19 @@ Crypto Trader to aplikacja z interfejsem graicznym napisana w C++, która umożl
 ## 🛠️ Funkcjonalności
 ### Rejestracja i logowanie użytkowników
   - Użytkownik może założyć konto oraz logować się do istniejącego konta z wykorzystaniem loginu i hasła.
+    
   ![Wybór miedzy logowaniem a rejestrowaniem](READMEImg/registerOrLogin.png)
   ![Proces rejestrowania](READMEImg/register.png)
 ### Zarządzanie portfelem
   - Wyświetlanie posiadanych kryptowalut.
   - Aktualizacja cen kryptowalut w czasie rzeczywistym.
   - Kupno i sprzedaż kryptowalut.
+    
   ![Zakup kryptowalut](READMEImg/buy.png)
   ![Sprzedaż kryptowalut](READMEImg/sell.png)
 ### Lista transakcji
   - Przegląd historii transakcji zawierającej daty, kwoty oraz typy operacji (kupno/sprzedaż).
+    
   ![Lista transakcji](READMEImg/afterSell.png)
 ### Depozyty i zarządzanie saldem
   - Użytkownik może dokonywać depozytów i sprawdzać swoje saldo.
