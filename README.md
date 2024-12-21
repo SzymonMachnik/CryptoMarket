@@ -1,39 +1,38 @@
 # 🚀 Crypto Market
-## 📃 Opis projektu
-Crypto Trader to aplikacja z interfejsem graicznym napisana w C++, która umożliwia użytkownikom kupowanie, sprzedawanie, deponowanie i zarządzanie kryptowalutami w portfelu. Dzięki integracji z bazą danych SQLite, aplikacja bezpiecznie przechowuje dane użytkowników, historię transakcji oraz informacje o portfelu.
+## 📃 Brief description
+Crypto Market is an application with graphical interface programming in C++. In Crypto Market user is able to buy, sell and manage his cryptocurrencies in their own wallet. Application stores users’ data, transactions history and wallet information with maximum safety, by using the SQLite3 database locally.
 
-## 🛠️ Funkcjonalności
-### Rejestracja i logowanie użytkowników
-  - Użytkownik może założyć konto oraz logować się do istniejącego konta z wykorzystaniem loginu i hasła.
+## 🛠️ Functionals
+### User registration and login
+  - The user can create a new account or log into an existing one using their username and password.
     
   ![Proces rejestrowania](READMEImg/register.png)
-### Zarządzanie portfelem
-  - Wyświetlanie posiadanych kryptowalut.
-  - Aktualizacja cen kryptowalut w czasie rzeczywistym.
-  - Kupno i sprzedaż kryptowalut.
+### Wallet management
+  - Displaying currently own cryptocurrencies.
+  - Updating cryptocurrencies’ price in real time (with max 5 min delay).
+  - Depositing virtual fiat money into the wallet.
     
   ![Zakup kryptowalut](READMEImg/buy.png)
   ![Sprzedaż kryptowalut](READMEImg/sell.png)
-### Lista transakcji
-  - Przegląd historii transakcji zawierającej daty, kwoty oraz typy operacji (kupno/sprzedaż).
+### Transaction history
+  - Displaying transactions history contains name of cryptocurrency, price at which it was purchased / selled, amount of crypto, spended money, type of transactions and also date when transaction took place.
     
   ![Lista transakcji](READMEImg/afterSell.png)
-### Depozyty i zarządzanie saldem
-  - Użytkownik może dokonywać depozytów i sprawdzać swoje saldo.
+###Deposits and Balance Management
+  - The user can make deposits and check their balance.
 
 ## 💻 Tech Stack
-### Język programowania:
+### Programming language:
   - C++.
-### Baza danych:
-  - SQLite3 – lekka baza danych wbudowana w aplikację.
-## 📚 Biblioteki
+### Database:
+  - SQLite3.
+## 📚 Libraries
 ### Curl:
-  - Używana do pobierania danych o cenach kryptowalut z API.
+  - Used for making API requests to fetch cryptocurrency prices.
 ### ImGui:
-  - Biblioteka do tworzenia interfejsów graficznych, umożliwiająca potencjalne rozszerzenie aplikacji o interfejs graficzny.
-
+  - Used for creating the graphical interface.
 ## 📜 Credits
-### Curl for making crypto price requests:
+### Curl for fetching cryptocurrency prices:
   - Github: https://github.com/curl/curl
   - Website: https://curl.se/
 
@@ -41,5 +40,5 @@ Crypto Trader to aplikacja z interfejsem graicznym napisana w C++, która umożl
   - Github: https://github.com/ocornut/imgui
   - Website: https://github.com/ocornut/imgui
 
-### Roboto font for letters style:
+### Roboto font for typography:
   - Website: https://fonts.google.com/specimen/Roboto
