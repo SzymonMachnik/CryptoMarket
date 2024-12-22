@@ -31,7 +31,7 @@ void HandleGui::renderChooseRegsterOrLoginWindow(string &action) {
   }
   
   ImGui::SetCursorPos(ImVec2(200, 220));
-  if (ImGui::Button("Sign in", ImVec2(200, 80))) {
+  if (ImGui::Button("Register", ImVec2(200, 80))) {
     action = "register";
   }
 
@@ -104,7 +104,7 @@ void HandleGui::renderRegisterWindow( ImFont* errorFont, string &action, User &u
 
 
   ImGui::SetCursorPos(ImVec2(200, 570));
-  if (ImGui::Button("Sign in", ImVec2(200, 60))) {
+  if (ImGui::Button("Register", ImVec2(200, 60))) {
     int errorCode = user.registerUser(inputLogin, inputPassword, inputFirstName, inputLastName);
     inputLoginError = "";
     inputPasswordError = "";
