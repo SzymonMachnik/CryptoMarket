@@ -74,7 +74,8 @@
     "xmemory": "cpp",
     "xtr1common": "cpp",
     "xutility": "cpp",
-    "mutex": "cpp"
+    "mutex": "cpp",
+    "*.tcc": "cpp"
   },
   "cmake.sourceDirectory": "C:/CryptoScraper",
   "C_Cpp.errorSquiggles": "disabled"

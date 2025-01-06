@@ -8,3 +8,16 @@ tron
 toncoin
 cardano
 avalanche
+sui
+chainlink
+shibainu
+stellar
+hedera
+polkadot
+uniswap
+pepe
+hyperliquid
+litecoin
+leo
+bitget
+near

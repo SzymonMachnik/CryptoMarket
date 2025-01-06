@@ -8,3 +8,16 @@ tron
 the-open-network
 cardano
 avalanche-2
+sui
+chainlink
+shiba-inu
+stellar
+hedera-hashgraph
+polkadot
+uniswap
+pepe
+hyperliquid
+litecoin
+leo-token
+bitget-token
+near
