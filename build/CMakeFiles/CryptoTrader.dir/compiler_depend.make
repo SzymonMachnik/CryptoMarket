@@ -2168,6 +2168,7 @@ CMakeFiles/CryptoTrader.dir/src/main.cpp.obj: C:/CryptoTrader/src/main.cpp \
   C:/msys64/ucrt64/include/c++/14.2.0/bits/exception.h \
   C:/msys64/ucrt64/include/c++/14.2.0/bits/exception_defines.h \
   C:/msys64/ucrt64/include/c++/14.2.0/bits/exception_ptr.h \
+  C:/msys64/ucrt64/include/c++/14.2.0/bits/fstream.tcc \
   C:/msys64/ucrt64/include/c++/14.2.0/bits/functexcept.h \
   C:/msys64/ucrt64/include/c++/14.2.0/bits/functional_hash.h \
   C:/msys64/ucrt64/include/c++/14.2.0/bits/hash_bytes.h \
@@ -2252,6 +2253,7 @@ CMakeFiles/CryptoTrader.dir/src/main.cpp.obj: C:/CryptoTrader/src/main.cpp \
   C:/msys64/ucrt64/include/c++/14.2.0/ext/numeric_traits.h \
   C:/msys64/ucrt64/include/c++/14.2.0/ext/string_conversions.h \
   C:/msys64/ucrt64/include/c++/14.2.0/ext/type_traits.h \
+  C:/msys64/ucrt64/include/c++/14.2.0/fstream \
   C:/msys64/ucrt64/include/c++/14.2.0/initializer_list \
   C:/msys64/ucrt64/include/c++/14.2.0/iomanip \
   C:/msys64/ucrt64/include/c++/14.2.0/ios \
@@ -2281,8 +2283,10 @@ CMakeFiles/CryptoTrader.dir/src/main.cpp.obj: C:/CryptoTrader/src/main.cpp \
   C:/msys64/ucrt64/include/c++/14.2.0/typeinfo \
   C:/msys64/ucrt64/include/c++/14.2.0/vector \
   C:/msys64/ucrt64/include/c++/14.2.0/x86_64-w64-mingw32/bits/atomic_word.h \
+  C:/msys64/ucrt64/include/c++/14.2.0/x86_64-w64-mingw32/bits/basic_file.h \
   C:/msys64/ucrt64/include/c++/14.2.0/x86_64-w64-mingw32/bits/c++allocator.h \
   C:/msys64/ucrt64/include/c++/14.2.0/x86_64-w64-mingw32/bits/c++config.h \
+  C:/msys64/ucrt64/include/c++/14.2.0/x86_64-w64-mingw32/bits/c++io.h \
   C:/msys64/ucrt64/include/c++/14.2.0/x86_64-w64-mingw32/bits/c++locale.h \
   C:/msys64/ucrt64/include/c++/14.2.0/x86_64-w64-mingw32/bits/cpu_defines.h \
   C:/msys64/ucrt64/include/c++/14.2.0/x86_64-w64-mingw32/bits/ctype_base.h \
@@ -2625,6 +2629,7 @@ CMakeFiles/CryptoTrader.dir/src/memory/memory.cpp.obj: C:/CryptoTrader/src/memor
   C:/msys64/ucrt64/include/c++/14.2.0/bits/char_traits.h \
   C:/msys64/ucrt64/include/c++/14.2.0/bits/charconv.h \
   C:/msys64/ucrt64/include/c++/14.2.0/bits/chrono.h \
+  C:/msys64/ucrt64/include/c++/14.2.0/bits/codecvt.h \
   C:/msys64/ucrt64/include/c++/14.2.0/bits/concept_check.h \
   C:/msys64/ucrt64/include/c++/14.2.0/bits/cpp_type_traits.h \
   C:/msys64/ucrt64/include/c++/14.2.0/bits/cxxabi_forced.h \
@@ -2633,6 +2638,7 @@ CMakeFiles/CryptoTrader.dir/src/memory/memory.cpp.obj: C:/CryptoTrader/src/memor
   C:/msys64/ucrt64/include/c++/14.2.0/bits/exception.h \
   C:/msys64/ucrt64/include/c++/14.2.0/bits/exception_defines.h \
   C:/msys64/ucrt64/include/c++/14.2.0/bits/exception_ptr.h \
+  C:/msys64/ucrt64/include/c++/14.2.0/bits/fstream.tcc \
   C:/msys64/ucrt64/include/c++/14.2.0/bits/functexcept.h \
   C:/msys64/ucrt64/include/c++/14.2.0/bits/functional_hash.h \
   C:/msys64/ucrt64/include/c++/14.2.0/bits/hash_bytes.h \
@@ -2705,6 +2711,7 @@ CMakeFiles/CryptoTrader.dir/src/memory/memory.cpp.obj: C:/CryptoTrader/src/memor
   C:/msys64/ucrt64/include/c++/14.2.0/ext/numeric_traits.h \
   C:/msys64/ucrt64/include/c++/14.2.0/ext/string_conversions.h \
   C:/msys64/ucrt64/include/c++/14.2.0/ext/type_traits.h \
+  C:/msys64/ucrt64/include/c++/14.2.0/fstream \
   C:/msys64/ucrt64/include/c++/14.2.0/initializer_list \
   C:/msys64/ucrt64/include/c++/14.2.0/ios \
   C:/msys64/ucrt64/include/c++/14.2.0/iosfwd \
@@ -2729,8 +2736,10 @@ CMakeFiles/CryptoTrader.dir/src/memory/memory.cpp.obj: C:/CryptoTrader/src/memor
   C:/msys64/ucrt64/include/c++/14.2.0/typeinfo \
   C:/msys64/ucrt64/include/c++/14.2.0/vector \
   C:/msys64/ucrt64/include/c++/14.2.0/x86_64-w64-mingw32/bits/atomic_word.h \
+  C:/msys64/ucrt64/include/c++/14.2.0/x86_64-w64-mingw32/bits/basic_file.h \
   C:/msys64/ucrt64/include/c++/14.2.0/x86_64-w64-mingw32/bits/c++allocator.h \
   C:/msys64/ucrt64/include/c++/14.2.0/x86_64-w64-mingw32/bits/c++config.h \
+  C:/msys64/ucrt64/include/c++/14.2.0/x86_64-w64-mingw32/bits/c++io.h \
   C:/msys64/ucrt64/include/c++/14.2.0/x86_64-w64-mingw32/bits/c++locale.h \
   C:/msys64/ucrt64/include/c++/14.2.0/x86_64-w64-mingw32/bits/cpu_defines.h \
   C:/msys64/ucrt64/include/c++/14.2.0/x86_64-w64-mingw32/bits/ctype_base.h \

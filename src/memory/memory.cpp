@@ -74,7 +74,7 @@ void Memory::formatStringReceivedFromApiRequestAndSaveIntoDb(string &data) {
   map<string, string> mapIdAndNameCrypto;
   mapIdAndNameCrypto = crypto.getCryptoApiIdAndNameMap(); 
 
-  for (int i = 0; i < data.size(); i++) {
+  for (size_t i = 0; i < data.size(); i++) {
     if (data[i] == '"') {
       string cryptoApiId;
       int j = i + 1;
@@ -121,7 +121,7 @@ void Memory::printCryptoNameAndPriceDb() {
 
   auto callback = [](void *data, int argc, char **argv, char **azColName) -> int {
     string *result = static_cast<string *>(data);
-    for (int i = 0; i < argc; i++) {
+    for (size_t i = 0; i < argc; i++) {
       *result += string(azColName[i]) + ": " + (argv[i] ? argv[i] : "NULL") + "\t";
     }
     *result += "\n";

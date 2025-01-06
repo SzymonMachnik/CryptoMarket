@@ -14,7 +14,7 @@ string HandleGui::firstLetterToUpperCase(string text) {
 }
 
 string HandleGui::allLettersToUpperCase(string text) {
-  for (int i = 0; i < text.size(); i++) {
+  for (size_t i = 0; i < text.size(); i++) {
     text[i] -= 32;
   }
   return text;
@@ -193,7 +193,7 @@ void HandleGui::renderCryptoListSection(string &buyCrypto, string &sellCrypto, C
 
   ImGui::Begin("Crypto list", nullptr, ImGuiWindowFlags_AlwaysVerticalScrollbar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar);
 
-  for (int i = 0; i < crypto.numberOfCrypto; i++)
+  for (size_t i = 0; i < crypto.numberOfCrypto; i++)
   {
     ImVec2 rowSize(containerWidth, 100);
 

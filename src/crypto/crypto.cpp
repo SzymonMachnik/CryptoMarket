@@ -97,7 +97,7 @@ string Crypto::getCryptoName(int cryptoId) {
 
   auto callback = [](void *data, int argc, char **argv, char **azColName) -> int {
     string *result = static_cast<string *>(data);
-    for (int i = 0; i < argc; i++) {
+    for (size_t i = 0; i < argc; i++) {
       *result += string(argv[i]);
     }
     
@@ -135,7 +135,7 @@ string Crypto::getCryptoPrice(int cryptoId) {
 
   auto callback = [](void *data, int argc, char **argv, char **azColName) -> int {
     string *result = static_cast<string *>(data);
-    for (int i = 0; i < argc; i++) {
+    for (size_t i = 0; i < argc; i++) {
       *result += string(argv[i]);
     }
     
@@ -211,7 +211,7 @@ int Crypto::getCryptoId(string cryptoName) {
 
   auto callback = [](void *data, int argc, char **argv, char **azColName) -> int {
     string *result = static_cast<string *>(data);
-    for (int i = 0; i < argc; i++) {
+    for (size_t i = 0; i < argc; i++) {
       *result += string(argv[i]);
     }
     

@@ -43,7 +43,7 @@ void User::loginUser() {
 
   auto callback = [](void *data, int argc, char **argv, char **azColName) -> int {
     string *passwordInDb = static_cast<string *>(data);
-    for (int i = 0; i < argc; i++) {
+    for (size_t i = 0; i < argc; i++) {
       *passwordInDb += string(argv[i]);
     }
     
@@ -92,7 +92,7 @@ void User::loginUser(string tempLogin, string tempPassword) {
 
   auto callback = [](void *data, int argc, char **argv, char **azColName) -> int {
     string *passwordInDb = static_cast<string *>(data);
-    for (int i = 0; i < argc; i++) {
+    for (size_t i = 0; i < argc; i++) {
       *passwordInDb += string(argv[i]);
     }
     
@@ -339,7 +339,7 @@ void User::displayWallet() {
 
   auto callback = [](void *data, int argc, char **argv, char **azColName) -> int {
       string *result = static_cast<string *>(data);
-      for (int i = 0; i < argc; i++) {
+      for (size_t i = 0; i < argc; i++) {
           if (string(azColName[i]) == "value_cent") {            
               double value = stod(argv[i]);
               // tranform to real value (not cents)
@@ -428,7 +428,7 @@ void User::displayTransactionsList() {
 
   auto callback = [](void *data, int argc, char **argv, char **azColName) -> int {
     string *result = static_cast<string *>(data);
-    for (int i = 0; i < argc; i++) {
+    for (size_t i = 0; i < argc; i++) {
       *result += string(argv[i]) + "\t";
     }
     *result += "\n";
@@ -744,7 +744,7 @@ void User::setUserId() {
 
   auto callback = [](void *data, int argc, char **argv, char **azColName) -> int {
     string *result = static_cast<string *>(data);
-    for (int i = 0; i < argc; i++) {
+    for (size_t i = 0; i < argc; i++) {
       *result += string(argv[i]);
     }
     
@@ -852,7 +852,7 @@ bool User::doesLoginExistInDb(string login) {
 
   auto callback = [](void *data, int argc, char **argv, char **azColName) -> int {
     string *result = static_cast<string *>(data);
-    for (int i = 0; i < argc; i++) {
+    for (size_t i = 0; i < argc; i++) {
       *result += string(azColName[i]) + ": " + (argv[i] ? argv[i] : "NULL") + "\t";
     }
     *result += "\n";
@@ -950,7 +950,7 @@ bool User::doesCryptoExistInWallet(string cryptoName) {
 
   auto callback = [](void *data, int argc, char **argv, char **azColName) -> int {
     string *result = static_cast<string *>(data);
-    for (int i = 0; i < argc; i++) {
+    for (size_t i = 0; i < argc; i++) {
       *result += string(argv[i]);
     }
     
@@ -1093,7 +1093,7 @@ double User::getAmountOfCryptoInWallet(int cryptoId) {
 
   auto callback = [](void *data, int argc, char **argv, char **azColName) -> int {
     string *result = static_cast<string *>(data);
-    for (int i = 0; i < argc; i++) {
+    for (size_t i = 0; i < argc; i++) {
       *result += string(argv[i]);
     }
     
