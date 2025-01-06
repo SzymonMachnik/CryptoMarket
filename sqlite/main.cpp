@@ -50,14 +50,14 @@ int main() {
     return 1;
   }
 
-  // Wyczyszczenie tabeli
+  // Clear table
   const char *clearTableSQL = "DELETE FROM crypto_price;";
   if (sqlite3_exec(db, clearTableSQL, nullptr, nullptr, &errMsg) != SQLITE_OK) {
       std::cerr << "Błąd podczas czyszczenia tabeli: " << errMsg << std::endl;
       sqlite3_free(errMsg);
   }
 
-  // Zresetowanie autoincrement
+  // Reset autoincrement
   const char *resetAutoIncrementSQL = "DELETE FROM sqlite_sequence WHERE name = 'crypto_price';";
   if (sqlite3_exec(db, resetAutoIncrementSQL, nullptr, nullptr, &errMsg) != SQLITE_OK) {
       std::cerr << "Błąd podczas resetowania AI: " << errMsg << std::endl;
@@ -66,13 +66,12 @@ int main() {
 
   for (size_t i = 0; i < cryptoNameVector.size(); i++) {
 
-    //cout << cryptoNameVector[i] << cryptoApiIdVector[i] << endl;
     // Create a sql request
     ostringstream sql;
     sql << "INSERT INTO crypto_price (name, api)"
         << "VALUES ('" << cryptoNameVector[i] << "', '" << cryptoApiIdVector[i] << "');";
 
-    // Wykonanie zapytania SQL
+    // Make a sql request
     if (sqlite3_exec(db, sql.str().c_str(), nullptr, nullptr, &errMsg) != SQLITE_OK) {
         std::cerr << "Błąd wykonania zapytania SQL: " << errMsg << std::endl;
         sqlite3_free(errMsg);
