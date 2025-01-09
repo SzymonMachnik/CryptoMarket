@@ -18,7 +18,7 @@ Crypto Market is an application with graphical interface programming in C++. In 
   - Displaying transactions history contains name of cryptocurrency, price at which it was purchased / selled, amount of crypto, spended money, type of transactions and also date when transaction took place.
     
   ![Lista transakcji](READMEImg/afterSell.png)
-###Deposits and Balance Management
+### Deposits and Balance Management
   - The user can make deposits and check their balance.
 
 ## 💻 Tech Stack
