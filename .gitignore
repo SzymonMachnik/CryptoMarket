@@ -1,5 +1,7 @@
 # Ignorowanie folderu build
-/build/**
+./build/*
+
+./libs/*
 
 # Ignorowanie plików binarnych
 *.exe
