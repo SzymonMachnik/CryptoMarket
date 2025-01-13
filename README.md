@@ -1,4 +1,14 @@
 # 🚀 Crypto Market
+
+## 🧭 Navigation
+* [📃 Brief description](#-brief-description)
+* [🛠️ Functionals](#%EF%B8%8F-functionals)
+* [💻 Tech Stack](#-tech-stack)
+* [📚 Libraries](#-libraries)
+* [📒 To-Do](#-to-do)
+* [📘 Last update](#-last-update)
+* [📜 Credits](#-credits)
+
 ## 📃 Brief description
 Crypto Market is an application with graphical interface programming in C++. In Crypto Market user is able to buy, sell and manage his cryptocurrencies in their own wallet. Application stores users’ data, transactions history and wallet information with maximum safety, by using the SQLite3 database locally.
 
@@ -31,6 +41,14 @@ Crypto Market is an application with graphical interface programming in C++. In 
   - Used for making API requests to fetch cryptocurrency prices.
 ### ImGui:
   - Used for creating the graphical interface.
+
+## 📒 To-Do
+### - Add exporting transaction history and wallet to csv file. 
+### - Hashing data in database.
+
+## 📘 Last update
+### 6.01.2022 - Added more cryptocurrencies.
+
 ## 📜 Credits
 ### Curl for fetching cryptocurrency prices:
   - Github: https://github.com/curl/curl
