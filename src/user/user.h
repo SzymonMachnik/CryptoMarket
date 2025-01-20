@@ -32,6 +32,10 @@ class User {
 
     mutex db_mutex;
 
+    // Hashing
+    string encrypt(string text);
+    string decrypt(string text);
+
     // Manage user data
     void setUserLogin();
     int setUserLogin(string tempLogin);

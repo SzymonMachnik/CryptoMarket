@@ -488,6 +488,35 @@ vector<vector<string>> User::returnAllTransactions() {
 
 // PRIVATE FUNCTIONS
 
+// Hashing
+string User::encrypt(string text) {
+  string encryptedText = "";
+  for (char c : text) {
+    if (islower(c)) {
+      encryptedText += (c - 'a' + 4) % 26 + 'a';
+    } else if (isupper(c)) {
+      encryptedText += (c - 'A' + 4) % 26 + 'A';
+    } else {
+      encryptedText += c;
+    }
+  }
+  return encryptedText;
+}
+
+string User::decrypt(string text) {
+  string decryptedText = "";
+  for (char c : text) {
+    if (islower(c)) {
+      decryptedText += (c - 'a' - 4 + 26) % 26 + 'a';
+    } else if (isupper(c)) {
+      decryptedText += (c - 'A' - 4 + 26) % 26 + 'A';
+    } else {
+      decryptedText += c;
+    }
+  }
+  return decryptedText;
+}
+
 // Manage user data
 void User::setUserLogin() {
   
